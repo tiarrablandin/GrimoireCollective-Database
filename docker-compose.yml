@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: grimoire-postgres
+    environment:
+      POSTGRES_DB: grimoire_collective
+      POSTGRES_USER: grimoire_user
+      POSTGRES_PASSWORD: grimoire_password
+      PGDATA: /var/lib/postgresql/data/pgdata
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U grimoire_user -d grimoire_collective"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - grimoire-network
+
+volumes:
+  postgres_data:
+    driver: local
+
+networks:
+  grimoire-network:
+    driver: bridge
