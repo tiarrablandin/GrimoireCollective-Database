@@ -11,12 +11,62 @@ This repository contains PostgreSQL database configuration and initialization sc
 ## Project Structure
 ```
 database/
-├── docker-compose.yml      # PostgreSQL container configuration
-├── init/
-│   └── 01-init.sql        # Database initialization script
-├── .env.example           # Environment variables template
-└── README.md
+├── docker-compose.yml         # PostgreSQL container configuration
+├── init/                      # SQL initialization scripts
+│   ├── 01-init.sql           # Extensions and basic setup
+│   ├── 02-schema.sql         # Complete database schema
+│   └── 03-seed-data.sql      # Sample/development data
+├── docs/                      # 📚 All documentation goes here
+│   ├── README.md             # Documentation index
+│   ├── QUICKSTART.md         # Getting started guide
+│   ├── SCHEMA.md             # Schema reference
+│   ├── QUERIES.md            # SQL query examples
+│   ├── ARCHITECTURE.md       # Design patterns
+│   ├── BUILD_COMPLETE.md     # Build summary
+│   └── TESTING.md            # Testing checklist
+├── .env.example              # Environment variables template
+├── README.md                 # Main entry point
+└── DEVELOPMENT_GUIDELINES.md # This file
 ```
+
+### Documentation Standards
+
+**All documentation must be placed in the `docs/` directory.**
+
+- **Technical documentation**: Place in `docs/` (e.g., schema docs, architecture)
+- **API references**: Place in `docs/`
+- **User guides**: Place in `docs/`
+- **Development notes**: Place in `docs/`
+
+**Root-level files** should only include:
+- `README.md` - Main entry point and overview
+- `DEVELOPMENT_GUIDELINES.md` - This file
+- Configuration files (`.env.example`, `docker-compose.yml`)
+- Essential operational files
+
+**Creating new documentation:**
+1. Place the file in `docs/`
+2. Add an entry to `docs/README.md` index
+3. Link from main `README.md` if appropriate
+4. Use consistent markdown formatting
+5. Include examples where helpful
+
+## Core Principles
+
+### DRY (Don't Repeat Yourself)
+**All code must follow DRY principles:**
+- Avoid duplicating SQL logic or data definitions
+- Use views, functions, or CTEs to encapsulate reusable queries
+- Define constraints and defaults once, reference everywhere
+- Extract common patterns into reusable components
+- If you find yourself copying code, refactor it
+
+### Data File Management
+**Never create separate "update" files for existing data:**
+- Add new data directly to the existing entity data files
+- If modifying existing data, update it in place within the original file
+- Keep all data for an entity type in its dedicated file (e.g., all crystals in `06-crystal-data.sql`)
+- This maintains a single source of truth and prevents fragmentation
 
 ## Database Design Principles
 
