@@ -653,6 +653,64 @@ CREATE TABLE traditions (
 CREATE INDEX idx_traditions_slug ON traditions(slug);
 CREATE INDEX idx_traditions_type ON traditions(tradition_type);
 
+-- =============================================================================
+-- SPELL METHODS (The "How")
+-- =============================================================================
+-- Different techniques/delivery systems for spellwork
+
+CREATE TABLE spell_methods (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(100) NOT NULL UNIQUE,
+    slug VARCHAR(100) UNIQUE NOT NULL,
+    description TEXT,
+    difficulty_level VARCHAR(20), -- 'beginner', 'intermediate', 'advanced'
+    typical_duration VARCHAR(100), -- 'Instant', 'Minutes', 'Days', 'Ongoing', etc.
+    materials_needed TEXT[], -- Common materials for this method
+    instructions_summary TEXT, -- Basic overview of the technique
+    tips TEXT, -- Helpful tips for this method
+    warnings TEXT, -- Safety or ethical warnings
+    related_methods TEXT[], -- Names of similar or related methods
+    icon VARCHAR(50),
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT valid_difficulty CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced'))
+);
+
+CREATE INDEX idx_spell_methods_slug ON spell_methods(slug);
+CREATE INDEX idx_spell_methods_difficulty ON spell_methods(difficulty_level);
+
+-- =============================================================================
+-- SPELL ETHICS (The "Vibe")
+-- =============================================================================
+-- Ethical categorization and intensity of spellwork
+
+CREATE TABLE spell_ethics (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(100) NOT NULL UNIQUE,
+    slug VARCHAR(100) UNIQUE NOT NULL,
+    category VARCHAR(50) NOT NULL, -- 'magick_color', 'harmful', 'neutral'
+    description TEXT,
+    ethical_considerations TEXT, -- Important ethical points to consider
+    intensity_level VARCHAR(20), -- 'minor', 'moderate', 'serious', 'severe'
+    is_controversial BOOLEAN DEFAULT FALSE, -- Does this spark ethical debate?
+    wiccan_rede_compatible BOOLEAN, -- Is this compatible with "Harm None"?
+    threefold_law_warning BOOLEAN DEFAULT FALSE, -- Should practitioners be warned about karmic return?
+    when_appropriate TEXT, -- When might this type of work be appropriate
+    alternatives TEXT, -- Suggest less harmful alternatives
+    icon VARCHAR(50),
+    color VARCHAR(7), -- Visual indicator color
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT valid_category CHECK (category IN ('magick_color', 'harmful', 'neutral')),
+    CONSTRAINT valid_intensity CHECK (intensity_level IN ('minor', 'moderate', 'serious', 'severe'))
+);
+
+CREATE INDEX idx_spell_ethics_slug ON spell_ethics(slug);
+CREATE INDEX idx_spell_ethics_category ON spell_ethics(category);
+CREATE INDEX idx_spell_ethics_intensity ON spell_ethics(intensity_level);
+
 -- Junction table for grimoires to traditions
 CREATE TABLE grimoire_traditions (
     grimoire_id UUID NOT NULL REFERENCES grimoires(id) ON DELETE CASCADE,

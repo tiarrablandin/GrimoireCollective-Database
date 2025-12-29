@@ -391,3 +391,39 @@ CREATE TABLE user_bookmarks (
 
 CREATE INDEX idx_user_bookmarks_user ON user_bookmarks(user_id);
 CREATE INDEX idx_user_bookmarks_type_id ON user_bookmarks(entity_type, entity_id);
+
+-- =============================================================================
+-- GRIMOIRE SPELL ATTRIBUTES
+-- =============================================================================
+-- Link spells/rituals to their methods and ethical categories
+
+-- Link grimoires to spell methods (e.g., "This spell uses candle magick and sigils")
+CREATE TABLE grimoire_spell_methods (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    grimoire_id UUID NOT NULL REFERENCES grimoires(id) ON DELETE CASCADE,
+    spell_method_id UUID NOT NULL REFERENCES spell_methods(id) ON DELETE CASCADE,
+    is_primary BOOLEAN DEFAULT FALSE, -- Is this the primary method used?
+    notes TEXT, -- Specific notes about how this method is used in this spell
+    display_order INTEGER DEFAULT 0,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(grimoire_id, spell_method_id)
+);
+
+CREATE INDEX idx_grimoire_spell_methods_grimoire ON grimoire_spell_methods(grimoire_id);
+CREATE INDEX idx_grimoire_spell_methods_method ON grimoire_spell_methods(spell_method_id);
+
+-- Link grimoires to ethical categories (e.g., "This is white magick" or "This is a hex")
+CREATE TABLE grimoire_spell_ethics (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    grimoire_id UUID NOT NULL REFERENCES grimoires(id) ON DELETE CASCADE,
+    spell_ethic_id UUID NOT NULL REFERENCES spell_ethics(id) ON DELETE CASCADE,
+    notes TEXT, -- Context or justification for this classification
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(grimoire_id, spell_ethic_id)
+);
+
+CREATE INDEX idx_grimoire_spell_ethics_grimoire ON grimoire_spell_ethics(grimoire_id);
+CREATE INDEX idx_grimoire_spell_ethics_ethic ON grimoire_spell_ethics(spell_ethic_id);
+
