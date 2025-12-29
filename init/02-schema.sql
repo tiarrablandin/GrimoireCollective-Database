@@ -295,8 +295,8 @@ CREATE TABLE categories (
     slug VARCHAR(100) UNIQUE NOT NULL,
     description TEXT,
     parent_id UUID REFERENCES categories(id) ON DELETE CASCADE,
-    icon VARCHAR(50),
-    color VARCHAR(7),
+    -- NOTE: Removed icon and color columns - these are UI concerns that belong in the frontend
+    -- Frontend should map category slugs to icons/colors in its own configuration
     is_active BOOLEAN DEFAULT TRUE,
     sort_order INTEGER DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,

@@ -77,22 +77,24 @@ WHERE name IN (
 -- SAMPLE CATEGORIES
 -- =============================================================================
 
-INSERT INTO categories (name, slug, description, icon, color) VALUES
-    ('Spellwork', 'spellwork', 'All types of magical spells', 'sparkles', '#9333EA'),
-    ('Divination', 'divination', 'Fortune telling and insight practices', 'crystal-ball', '#EC4899'),
-    ('Herbalism', 'herbalism', 'Magical and medicinal herbs', 'leaf', '#10B981'),
-    ('Crystals & Stones', 'crystals-stones', 'Crystal healing and properties', 'gem', '#3B82F6'),
-    ('Rituals & Ceremonies', 'rituals-ceremonies', 'Ceremonial practices', 'candles', '#F59E0B'),
-    ('Calendar & Celebrations', 'calendar-celebrations', 'Wheel of the Year, Sabbats, and Esbats', 'calendar', '#EF4444'),
-    ('Deities & Spirits', 'deities-spirits', 'Working with divine entities', 'crown', '#8B5CF6'),
-    ('Astrology', 'astrology', 'Celestial influences and horoscopes', 'stars', '#06B6D4'),
-    ('Moon Magic', 'moon-magic', 'Lunar phases and moon rituals', 'moon', '#6366F1'),
-    ('Kitchen Witchery', 'kitchen-witchery', 'Culinary magic and recipes', 'cooking', '#F97316'),
-    ('Protection Magic', 'protection-magic', 'Warding and protective spells', 'shield', '#14B8A6'),
-    ('Love & Relationships', 'love-relationships', 'Romance and connection magic', 'heart', '#F43F5E'),
-    ('Prosperity & Abundance', 'prosperity-abundance', 'Wealth and success magic', 'coins', '#84CC16'),
-    ('Healing', 'healing', 'Physical and spiritual healing practices', 'medical', '#22C55E'),
-    ('Shadow Work', 'shadow-work', 'Inner work and transformation', 'shadow', '#6B7280');
+-- NOTE: Categories are pure data - no UI concerns (icons, colors) stored here.
+-- Frontend should map category slugs to appropriate icons/colors in its own config.
+INSERT INTO categories (name, slug, description) VALUES
+    ('Spellwork', 'spellwork', 'All types of magical spells'),
+    ('Divination', 'divination', 'Fortune telling and insight practices'),
+    ('Herbalism', 'herbalism', 'Magical and medicinal herbs'),
+    ('Crystals & Stones', 'crystals-stones', 'Crystal healing and properties'),
+    ('Rituals & Ceremonies', 'rituals-ceremonies', 'Ceremonial practices'),
+    ('Calendar & Celebrations', 'calendar-celebrations', 'Wheel of the Year, Sabbats, and Esbats'),
+    ('Deities & Spirits', 'deities-spirits', 'Working with divine entities'),
+    ('Astrology', 'astrology', 'Celestial influences and horoscopes'),
+    ('Moon Magic', 'moon-magic', 'Lunar phases and moon rituals'),
+    ('Kitchen Witchery', 'kitchen-witchery', 'Culinary magic and recipes'),
+    ('Protection Magic', 'protection-magic', 'Warding and protective spells'),
+    ('Love & Relationships', 'love-relationships', 'Romance and connection magic'),
+    ('Prosperity & Abundance', 'prosperity-abundance', 'Wealth and success magic'),
+    ('Healing', 'healing', 'Physical and spiritual healing practices'),
+    ('Shadow Work', 'shadow-work', 'Inner work and transformation');
 
 -- =============================================================================
 -- SAMPLE TAGS
