@@ -196,30 +196,26 @@ CREATE TABLE candles (
     -- Physical Properties
     color VARCHAR(50) NOT NULL,
     
-    -- Magical Properties
-    magical_properties TEXT[], -- e.g., ['love', 'passion', 'courage', 'vitality']
-    element VARCHAR(20),
-    planet VARCHAR(50),
-    chakra VARCHAR(50),
-    zodiac_signs TEXT[],
-    day_of_week VARCHAR(20), -- Best day to use
-    moon_phase VARCHAR(30), -- Best moon phase to use
+    -- NOTE: Magical properties now linked via entity_intentions junction table
+    -- NOTE: Elements now linked via entity_elements junction table (if needed, or stored as single element reference)
+    -- NOTE: Planets now linked via entity_planets junction table
+    -- NOTE: Chakras now linked via entity_chakras junction table
+    -- NOTE: Zodiac signs now linked via entity_zodiac_signs junction table
+    -- NOTE: Spell types now linked via grimoire_spell_methods/grimoire_spell_ethics tables
+    -- NOTE: Pairings now linked via entity_pairings junction table
+    
+    -- Core Attributes (non-relational)
+    day_of_week VARCHAR(20), -- Best day to use (could be linked to planets via day correspondences)
+    moon_phase VARCHAR(30), -- Best moon phase to use (could link to moon_phases table if needed)
     
     -- Usage Information
     description TEXT NOT NULL,
-    magical_uses TEXT,
+    magical_uses TEXT, -- General description of magical uses
     ritual_purposes TEXT,
-    spell_types TEXT[], -- Types of spells this candle is good for
     
     -- Timing & Direction
     best_time_to_use TEXT, -- Dawn, noon, dusk, midnight, etc.
     direction_to_face VARCHAR(20), -- North, East, South, West
-    
-    -- Combinations
-    pairs_well_with TEXT[], -- Other candle colors that work well together
-    herb_combinations TEXT[], -- Herbs to use with this candle
-    crystal_combinations TEXT[], -- Crystals to use with this candle
-    oil_combinations TEXT[], -- Oils to dress/anoint the candle with
     
     -- Instructions
     dressing_instructions TEXT, -- How to dress/anoint the candle
@@ -230,7 +226,7 @@ CREATE TABLE candles (
     history TEXT,
     
     -- Extended metadata
-    metadata JSONB, -- symbolism, deities, correspondences, etc.
+    metadata JSONB, -- symbolism, deities, additional correspondences, etc.
     
     -- Media: Use entity_media table to link to media_files
     
@@ -245,16 +241,12 @@ CREATE TABLE candles (
     -- Timestamps
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    
-    CONSTRAINT valid_element CHECK (element IN ('Earth', 'Air', 'Fire', 'Water', 'Spirit', 'All'))
+    deleted_at TIMESTAMP
 );
 
 -- Indexes for candles
 CREATE INDEX idx_candles_slug ON candles(slug) WHERE deleted_at IS NULL;
 CREATE INDEX idx_candles_color ON candles(color) WHERE deleted_at IS NULL;
-CREATE INDEX idx_candles_properties ON candles USING GIN (magical_properties);
-CREATE INDEX idx_candles_element ON candles(element) WHERE deleted_at IS NULL;
 CREATE INDEX idx_candles_verified ON candles(is_verified) WHERE deleted_at IS NULL;
 
 -- Full-text search for candles
