@@ -523,11 +523,11 @@ CREATE TABLE calendar (
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(100) UNIQUE NOT NULL,
     celebration_type VARCHAR(20) NOT NULL,
-    tradition VARCHAR(100),
+    -- NOTE: tradition now linked via grimoire_traditions junction table
+    -- NOTE: themes now linked via entity_intentions junction table
     date_type VARCHAR(20) NOT NULL,
     fixed_date DATE,
     description TEXT,
-    themes TEXT[],
     colors TEXT[],
     symbols TEXT[],
     image_url TEXT,
@@ -547,6 +547,8 @@ CREATE TABLE grimoire_calendar (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     PRIMARY KEY (grimoire_id, calendar_id)
 );
+
+-- NOTE: calendar_traditions junction table is defined after traditions table (below)
 
 -- Elements (Classical and Spirit)
 CREATE TABLE elements (
@@ -661,6 +663,18 @@ CREATE TABLE grimoire_traditions (
 
 CREATE INDEX idx_grimoire_traditions_grimoire ON grimoire_traditions(grimoire_id);
 CREATE INDEX idx_grimoire_traditions_tradition ON grimoire_traditions(tradition_id);
+
+-- Calendar to Traditions junction (many-to-many since a holiday can be celebrated by multiple traditions)
+CREATE TABLE calendar_traditions (
+    calendar_id UUID NOT NULL REFERENCES calendar(id) ON DELETE CASCADE,
+    tradition_id UUID NOT NULL REFERENCES traditions(id) ON DELETE CASCADE,
+    is_primary BOOLEAN DEFAULT FALSE, -- Mark if this is the primary tradition for this holiday
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (calendar_id, tradition_id)
+);
+
+CREATE INDEX idx_calendar_traditions_calendar ON calendar_traditions(calendar_id);
+CREATE INDEX idx_calendar_traditions_tradition ON calendar_traditions(tradition_id);
 
 -- Zodiac Signs
 CREATE TABLE zodiac_signs (
