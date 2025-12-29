@@ -1,0 +1,203 @@
+-- =============================================================================
+-- GRIMOIRE COLLECTIVE - CANDLE DATA
+-- =============================================================================
+-- Purpose: Comprehensive candle color data for magical workings
+-- Note: This is permanent data, not sample data
+-- =============================================================================
+
+DO $$
+DECLARE
+    admin_user_id UUID;
+BEGIN
+    SELECT id INTO admin_user_id FROM users WHERE username = 'admin' LIMIT 1;
+
+INSERT INTO candles (
+    name, slug, color, magical_properties,
+    element, planet, chakra, day_of_week,
+    description, magical_uses, ritual_purposes,
+    dressing_instructions, burning_instructions,
+    history,
+    created_by, is_verified
+) VALUES
+(
+    'White Candle',
+    'white-candle',
+    'White',
+        ARRAY['purity', 'protection', 'peace', 'truth', 'cleansing', 'healing'],
+    'All',
+    'Moon',
+    'Crown',
+    'Monday',
+    'White candles are the most versatile candles in magical practice. They can substitute for any other color and represent purity, truth, and spiritual enlightenment. White is the color of the divine and contains all colors within it.',
+    'Use for purification, protection spells, healing rituals, meditation, connecting with spirit guides, cleansing spaces, and as a substitute for any color you don''t have.',
+    'Perfect for new beginnings, baby blessings, handfastings, peace work, and working with lunar energy.',
+    'Dress from center outward for drawing energy, or from ends to center for banishing. Anoint with blessing oil, protection oil, or leave plain for purity.',
+    'Always burn in a fire-safe holder. Never leave unattended. Allow to burn completely if possible, or pinch out (don''t blow out) to preserve the energy.',
+    'White candles have been used since ancient times to represent purity and divine light. In many religious traditions, white symbolizes the sacred and holy. Ancient Romans used white candles in ceremonies honoring Vesta, goddess of hearth and home. Christianity adopted white candles for baptisms, communions, and representing Christ''s purity. In magical practice, white has always been considered the universal color containing all others, making it the most versatile candle color. White candles were traditionally made from beeswax, considered the purest form.',
+    admin_user_id,
+    true
+),
+(
+    'Black Candle',
+    'black-candle',
+    'Black',
+        ARRAY['protection', 'banishing', 'binding', 'absorbing_negativity', 'hex_breaking'],
+    'Earth',
+    'Saturn',
+    'Root',
+    'Saturday',
+    'Black candles are powerful for protection and banishing work. They absorb negative energy and are used in binding spells. Contrary to popular belief, black candles are not "evil" - they are protective and used to remove obstacles.',
+    'Use for protection, banishing negativity, binding harmful people or situations, breaking hexes, absorbing illness, removing obstacles, and shadow work.',
+    'Ideal for Samhain, dark moon rituals, banishing ceremonies, and working with Crone goddesses.',
+    'Dress from ends to center to draw out negativity, or carve symbols of what you want to banish. Anoint with protection oils.',
+    'Always burn with clear intention. Visualize negativity being absorbed into the flame. Dispose of remains away from your home after banishing work.',
+    'Black candles have been used in protection magic throughout history. In folk magic traditions, black was used to absorb illness and misfortune. European folk witches used black candles to bind harmful people and break curses. Saturn, the ruling planet of black, was invoked for protection and justice. In hoodoo tradition, black candles are used to reverse hexes and return negative energy to its sender. The misconception that black candles are "evil" comes from Hollywood and has no basis in actual magical practice. Black represents the void from which all creation comes and the rest between cycles.',
+    admin_user_id,
+    true
+),
+(
+    'Red Candle',
+    'red-candle',
+    'Red',
+        ARRAY['passion', 'love', 'courage', 'strength', 'vitality', 'power'],
+    'Fire',
+    'Mars',
+    'Root',
+    'Tuesday',
+    'Red candles are used for passion, courage, and vital energy. They represent the life force and are powerful for love magic, especially passionate love. Red brings strength and motivation.',
+    'Use for passionate love spells, courage before challenges, vitality and energy work, strength and power magic, root chakra healing, and protection through power.',
+    'Perfect for Beltane, working with fire energy, love magic, and energizing any spell.',
+    'Dress away from you for sending passionate energy outward, toward you for drawing love in. Anoint with rose oil, cinnamon, or dragon''s blood.',
+    'Red candles burn hot and fast. Use fire-safe holders. Excellent for quick, powerful spells. The faster it burns, the faster results manifest.',
+    'Red candles have been used in love and passion magic since ancient times. Romans burned red candles in ceremonies honoring Venus and Mars. In ancient Greece, red was sacred to Aphrodite and Ares. Red has always represented life force, blood, and vital energy across cultures. In Chinese tradition, red symbolizes good fortune, joy, and celebration. Medieval love magic heavily featured red candles for drawing passionate love. Mars, the ruling planet, lends red candles warrior energy for courage and strength. Red candles have been central to Beltane fire festivals celebrating fertility and life force.',
+    admin_user_id,
+    true
+),
+(
+    'Pink Candle',
+    'pink-candle',
+    'Pink',
+        ARRAY['love', 'friendship', 'compassion', 'emotional_healing', 'self_love', 'romance'],
+    'Water',
+    'Venus',
+    'Heart',
+    'Friday',
+    'Pink candles represent gentle love, compassion, and emotional healing. They are used for romantic love, self-love work, friendship, and healing emotional wounds. Pink is softer than red, perfect for tender matters of the heart.',
+    'Use for attracting romantic love, healing emotional pain, self-love rituals, friendship magic, compassion work, and healing heart chakra.',
+    'Ideal for love spells, self-care rituals, healing broken hearts, and attracting gentle romance.',
+    'Dress toward you to draw love, away from you to send loving energy to others. Anoint with rose oil or self-love blends.',
+    'Pink candles create gentle, nurturing energy. Allow them to burn in a calm, peaceful setting. Perfect for bath rituals and self-care.',
+    'Pink candles emerged as a gentler alternative to red for love magic. While red represents passionate, sexual love, pink embodies romantic, tender affection and emotional connection. Victorian era popularized pink for expressing gentle romantic feelings. Venus, ruling planet of pink, governs love, beauty, and harmony. In color magic, pink was developed for working specifically with the heart chakra and emotional healing. Modern Wicca and witchcraft extensively use pink for self-love and self-care work, recognizing that loving oneself is foundational to all other love. Pink candles have become essential in healing trauma and emotional wounds.',
+    admin_user_id,
+    true
+),
+(
+    'Green Candle',
+    'green-candle',
+    'Green',
+        ARRAY['prosperity', 'abundance', 'money', 'growth', 'fertility', 'luck'],
+    'Earth',
+    'Venus',
+    'Heart',
+    'Friday',
+    'Green candles are used for prosperity, abundance, and growth. They attract money, promote healing, and represent the fertile Earth. Green brings luck and success in financial matters.',
+    'Use for money spells, prosperity magic, attracting abundance, job success, business growth, healing, fertility, and luck magic.',
+    'Perfect for prosperity rituals, business blessing, garden magic, and healing work.',
+    'Dress toward you to draw money and abundance in. Anoint with prosperity oils, cinnamon, basil, or mint.',
+    'Green candles work well with coins, dollar bills, or bay leaves carved with dollar amounts. Burn during waxing moon for growth.',
+    'Green candles have long been associated with Earth''s fertility and abundance. Ancient agricultural societies recognized green as the color of growth and harvest. In folk magic, green was used to ensure good crops and financial success. During the Renaissance, green became associated with merchant success and trade prosperity. In American hoodoo and conjure traditions, green candles dressed with specific oils became central to money-drawing work. The association of green with money is particularly strong in America due to green currency. Green also represents the heart chakra, connecting prosperity consciousness with heart-centered abundance.',
+    admin_user_id,
+    true
+),
+(
+    'Blue Candle',
+    'blue-candle',
+    'Blue',
+        ARRAY['peace', 'healing', 'truth', 'wisdom', 'protection', 'communication'],
+    'Water',
+    'Moon',
+    'Throat',
+    'Monday',
+    'Blue candles bring peace, healing, and truth. They enhance communication, promote wisdom, and provide gentle protection. Blue is calming and associated with water and sky.',
+    'Use for healing rituals, peace work, truth spells, improving communication, wisdom and learning, calming anxiety, and gentle protection.',
+    'Ideal for healing ceremonies, peaceful meditation, truth-seeking work, and communication enhancement.',
+    'Dress from center outward for spreading peace, toward you for healing. Anoint with lavender, chamomile, or peace blend oils.',
+    'Blue candles create peaceful, calming energy. Perfect for meditation spaces. Burn for healing work or when seeking truth and clarity.',
+    'Blue candles have been used for healing and peace since ancient times. In ancient Egypt, blue was the color of the sky goddess Nut and the Nile''s life-giving water. Ancient Greeks associated blue with Zeus and the heavens. Blue lapis lazuli was prized for spiritual work and communication with divine. In Christian tradition, blue represents Virgin Mary and heavenly grace. Folk magic used blue for healing and protection, particularly for children. Blue candles became associated with throat chakra work for truthful communication. In magical practice, blue is considered gentle yet powerful for healing, protection, and finding truth.',
+    admin_user_id,
+    true
+),
+(
+    'Purple Candle',
+    'purple-candle',
+    'Purple',
+        ARRAY['spirituality', 'psychic_abilities', 'wisdom', 'power', 'divination', 'connection_to_divine'],
+    'Spirit',
+    'Jupiter',
+    'Third Eye',
+    'Thursday',
+    'Purple candles are used for spiritual work, psychic development, and connecting with the divine. They represent wisdom, power, and higher consciousness. Purple is the color of royalty and spiritual authority.',
+    'Use for psychic development, divination, meditation, spiritual growth, connecting with guides, third eye opening, and working with spiritual power.',
+    'Perfect for full moon rituals, psychic work, divination sessions, and honoring deity.',
+    'Dress from bottom to top for raising consciousness, or from center outward for expanding spiritual awareness. Anoint with frankincense, myrrh, or psychic development oils.',
+    'Purple candles are powerful for spiritual work. Use during meditation or divination. Combine with crystals like amethyst for enhanced psychic work.',
+    'Purple has been the color of royalty and spiritual power throughout history. In ancient times, purple dye was extremely expensive, made from thousands of murex snails, making it available only to royalty and priests. Roman emperors wore purple togas. Purple became associated with spiritual authority and divine power. In magical practice, purple connects to Jupiter''s expansive wisdom and spiritual growth. The color purple naturally stimulates the third eye chakra, making purple candles essential for psychic development. Modern witchcraft uses purple extensively for divination, meditation, and connecting with higher realms. Purple represents the bridge between physical and spiritual worlds.',
+    admin_user_id,
+    true
+),
+(
+    'Yellow Candle',
+    'yellow-candle',
+    'Yellow',
+        ARRAY['success', 'confidence', 'creativity', 'mental_clarity', 'communication', 'joy'],
+    'Air',
+    'Sun',
+    'Solar Plexus',
+    'Sunday',
+    'Yellow candles represent the sun, success, and mental clarity. They bring confidence, creativity, and joy. Yellow enhances communication and learning, bringing optimism and positive energy.',
+    'Use for success spells, confidence building, creativity work, mental clarity, studying, communication magic, and attracting joy and happiness.',
+    'Ideal for solar magic, success rituals, exam preparation, and creative projects.',
+    'Dress toward you for drawing success, away from you for sending clear communication. Anoint with lemon oil, cinnamon, or rosemary.',
+    'Yellow candles bring bright, positive energy. Perfect for morning rituals and solar work. Burn when you need mental clarity or confidence boost.',
+    'Yellow candles have been associated with the sun and solar deities throughout history. Ancient sun worship across cultures recognized yellow/gold as the color of solar power. Egyptian sun god Ra was represented by gold. In Greek and Roman traditions, Apollo''s golden light brought clarity and prophecy. Yellow has always been associated with gold, wealth, and success. In color magic, yellow stimulates the solar plexus chakra, the center of personal power and confidence. Yellow candles are used in folk magic for success in business, passing exams, and gaining confidence. The bright, cheerful energy of yellow makes it perfect for joy and optimism work.',
+    admin_user_id,
+    true
+),
+(
+    'Orange Candle',
+    'orange-candle',
+    'Orange',
+        ARRAY['creativity', 'enthusiasm', 'attraction', 'success', 'energy', 'ambition'],
+    'Fire',
+    'Sun',
+    'Sacral',
+    'Sunday',
+    'Orange candles combine the energy of red with the joy of yellow. They bring creativity, enthusiasm, and attraction. Orange encourages success, ambition, and adaptability.',
+    'Use for creativity spells, attracting opportunities, success in goals, energy and motivation, adaptability, and encouraging enthusiasm.',
+    'Perfect for creative projects, career success, attracting positive opportunities, and sacral chakra work.',
+    'Dress toward you to attract success and opportunities. Anoint with orange oil, cinnamon, or creativity-boosting oils.',
+    'Orange candles burn with enthusiastic energy. Perfect for project launches and new ventures. Creates vibrant, attractive energy.',
+    'Orange candles in magical practice emerged as practitioners recognized the unique blend of red''s passion and yellow''s mental energy. In color theory, orange combines physical energy with mental clarity. Ancient cultures associated orange with harvest abundance - the color of ripe fruits and autumn plenty. In Eastern traditions, orange represents sacred knowledge and spiritual transformation (Buddhist monk robes). In Western magic, orange became associated with mercury and quick success. Orange candles are used for attracting opportunities, as orange is highly visible and attractive. The sacral chakra''s orange color connects these candles to creativity, pleasure, and manifestation of desires.',
+    admin_user_id,
+    true
+),
+(
+    'Brown Candle',
+    'brown-candle',
+    'Brown',
+        ARRAY['grounding', 'stability', 'home', 'animals', 'material_matters', 'endurance'],
+    'Earth',
+    'Saturn',
+    'Root',
+    'Saturday',
+    'Brown candles are grounding and stabilizing. They represent the Earth, home, and material security. Brown is used for working with animals, grounding energy, and practical matters.',
+    'Use for grounding rituals, home protection, animal magic, manifesting material needs, stability in finances, and connecting with Earth energy.',
+    'Ideal for home blessing, pet protection, financial stability, and grounding work.',
+    'Dress from bottom to top for stability and grounding. Anoint with earthy oils like patchouli or cedarwood.',
+    'Brown candles create solid, stable energy. Perfect for home and hearth work. Use when you need to feel grounded and secure.',
+    'Brown candles represent the most fundamental element - Earth itself. In folk magic traditions, brown has always been associated with soil, harvest, and material abundance. Brown is the color of tree trunks that provide shelter, of fertile soil that grows food, and of the stable Earth beneath our feet. In hoodoo and conjure, brown candles are used for court cases and legal matters, representing solid, stable outcomes. Brown candles are particularly important in animal magic and working with animal spirits. The practical, no-nonsense energy of brown makes it essential for manifesting tangible, material results. Saturn''s influence brings structure and discipline to brown candle work.',
+    admin_user_id,
+    true
+);
+
+END $$;

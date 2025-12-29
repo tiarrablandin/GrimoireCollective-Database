@@ -156,7 +156,6 @@ CREATE TABLE herbs (
     -- Additional Fields
     history TEXT,
     directions TEXT,
-    blending_notes TEXT,
     scent_profile TEXT,
     skin_safe BOOLEAN DEFAULT NULL,
     
@@ -207,10 +206,6 @@ CREATE TABLE candles (
     
     -- Physical Properties
     color VARCHAR(50) NOT NULL,
-    color_hex VARCHAR(7), -- Hex code for the color
-    candle_type VARCHAR(50), -- taper, pillar, votive, tea_light, jar, chime, figure, etc.
-    size VARCHAR(50), -- small, medium, large, or specific dimensions
-    scent VARCHAR(100), -- unscented, or specific scent
     
     -- Magical Properties
     magical_properties TEXT[], -- e.g., ['love', 'passion', 'courage', 'vitality']
@@ -270,7 +265,6 @@ CREATE TABLE candles (
 -- Indexes for candles
 CREATE INDEX idx_candles_slug ON candles(slug) WHERE deleted_at IS NULL;
 CREATE INDEX idx_candles_color ON candles(color) WHERE deleted_at IS NULL;
-CREATE INDEX idx_candles_type ON candles(candle_type) WHERE deleted_at IS NULL;
 CREATE INDEX idx_candles_properties ON candles USING GIN (magical_properties);
 CREATE INDEX idx_candles_element ON candles(element) WHERE deleted_at IS NULL;
 CREATE INDEX idx_candles_verified ON candles(is_verified) WHERE deleted_at IS NULL;
@@ -327,11 +321,9 @@ CREATE TABLE incense (
     -- Additional Fields
     history TEXT,
     shelf_life TEXT,
-    directions TEXT,
     storage_instructions TEXT,
     pet_safe BOOLEAN DEFAULT NULL,
     pregnancy_safe BOOLEAN DEFAULT NULL,
-    blending_notes TEXT,
     
     -- Extended metadata
     metadata JSONB,
@@ -419,8 +411,6 @@ CREATE TABLE oils (
     
     -- Additional Fields
     history TEXT,
-    directions TEXT,
-    blending_notes TEXT,
     scent_profile TEXT,
     
     -- Extended metadata
@@ -472,7 +462,6 @@ CREATE TABLE salts (
     -- Physical Properties
     color VARCHAR(50),
     texture VARCHAR(30), -- fine, coarse, chunky
-    scent VARCHAR(100), -- if scented
     
     -- Magical Properties
     magical_properties TEXT[],
@@ -509,10 +498,6 @@ CREATE TABLE salts (
     
     -- Additional Fields
     history TEXT,
-    directions TEXT,
-    blending_notes TEXT,
-    botanical_source TEXT,
-    scent_profile TEXT,
     
     -- Extended metadata
     metadata JSONB,
