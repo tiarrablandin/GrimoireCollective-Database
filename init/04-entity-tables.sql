@@ -18,17 +18,13 @@ CREATE TABLE crystals (
     slug VARCHAR(100) UNIQUE NOT NULL,
     alternative_names TEXT[], -- Array for multiple alternative names
     
-    -- Crystal Properties
+    -- Crystal Properties (visual/physical only)
     color VARCHAR(50),
-    chakra VARCHAR(50), -- Root, Sacral, Solar Plexus, Heart, Throat, Third Eye, Crown
-    zodiac_signs TEXT[], -- Can be associated with multiple signs
-    element VARCHAR(20), -- Earth, Air, Fire, Water, Spirit
-    planet VARCHAR(50),
-    crystal_system VARCHAR(50), -- Cubic, Hexagonal, Monoclinic, etc.
-    chemical_composition TEXT,
     
-    -- Magical Properties (as array for multiple properties)
-    magical_properties TEXT[], -- e.g., ['prosperity', 'cleansing', 'protection', 'healing']
+    -- NOTE: chakra, zodiac_signs, element, and planet are now in junction tables:
+    -- entity_chakras, entity_zodiac_signs, entity_pairings (for elements), entity_planets
+    
+    -- NOTE: magical_properties now tracked via entity_intentions junction table
     
     -- Cleansing Methods (as array)
     cleansing_methods TEXT[], -- e.g., ['full_moon', 'sun', 'running_water', 'salt', 'smoke', 'sound']
@@ -42,7 +38,6 @@ CREATE TABLE crystals (
     description TEXT NOT NULL, -- Main description
     uses TEXT, -- How to use this crystal
     affirmations TEXT[], -- Affirmations to use with this crystal
-    meditation_guidance TEXT, -- How to meditate with this crystal
     
     -- Care & Safety
     water_safe BOOLEAN DEFAULT TRUE,
@@ -62,10 +57,9 @@ CREATE TABLE crystals (
     safety_warnings TEXT,
     
     -- Extended metadata as JSONB for flexibility
-    metadata JSONB, -- Can include: folklore, historical_uses, deities_associated, etc.
+    metadata JSONB, -- Can include: folklore, historical_uses, crystal_system, chemical_composition, etc.
     
-    -- Media
-    primary_image_url TEXT,
+    -- Media: Use entity_media table to link to media_files
     
     -- SEO
     meta_description TEXT,
@@ -80,16 +74,12 @@ CREATE TABLE crystals (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
     
-    CONSTRAINT valid_element CHECK (element IN ('Earth', 'Air', 'Fire', 'Water', 'Spirit', 'All')),
     CONSTRAINT valid_rarity CHECK (rarity IN ('common', 'uncommon', 'rare', 'very_rare'))
 );
 
 -- Indexes for crystals
 CREATE INDEX idx_crystals_slug ON crystals(slug) WHERE deleted_at IS NULL;
 CREATE INDEX idx_crystals_name ON crystals(name) WHERE deleted_at IS NULL;
-CREATE INDEX idx_crystals_properties ON crystals USING GIN (magical_properties);
-CREATE INDEX idx_crystals_element ON crystals(element) WHERE deleted_at IS NULL;
-CREATE INDEX idx_crystals_chakra ON crystals(chakra) WHERE deleted_at IS NULL;
 CREATE INDEX idx_crystals_verified ON crystals(is_verified) WHERE deleted_at IS NULL;
 
 -- Full-text search for crystals
@@ -123,7 +113,7 @@ CREATE TABLE herbs (
     planet VARCHAR(50),
     zodiac_signs TEXT[],
     deities_associated TEXT[],
-    sabbats_associated TEXT[],
+    sabbats_associated TEXT[], -- Calendar event names (Sabbats/Esbats) this herb is associated with
     
     -- Usage Information
     description TEXT NOT NULL,
@@ -162,8 +152,7 @@ CREATE TABLE herbs (
     -- Extended metadata
     metadata JSONB, -- folklore, history, correspondences, etc.
     
-    -- Media
-    primary_image_url TEXT,
+    -- Media: Use entity_media table to link to media_files
     
     -- SEO
     meta_description TEXT,
@@ -243,8 +232,7 @@ CREATE TABLE candles (
     -- Extended metadata
     metadata JSONB, -- symbolism, deities, correspondences, etc.
     
-    -- Media
-    primary_image_url TEXT,
+    -- Media: Use entity_media table to link to media_files
     
     -- SEO
     meta_description TEXT,
@@ -328,8 +316,7 @@ CREATE TABLE incense (
     -- Extended metadata
     metadata JSONB,
     
-    -- Media
-    primary_image_url TEXT,
+    -- Media: Use entity_media table to link to media_files
     
     -- SEO
     meta_description TEXT,
@@ -416,8 +403,7 @@ CREATE TABLE oils (
     -- Extended metadata
     metadata JSONB,
     
-    -- Media
-    primary_image_url TEXT,
+    -- Media: Use entity_media table to link to media_files
     
     -- SEO
     meta_description TEXT,
@@ -502,8 +488,7 @@ CREATE TABLE salts (
     -- Extended metadata
     metadata JSONB,
     
-    -- Media
-    primary_image_url TEXT,
+    -- Media: Use entity_media table to link to media_files
     
     -- SEO
     meta_description TEXT,
@@ -530,105 +515,148 @@ CREATE INDEX idx_salts_verified ON salts(is_verified) WHERE deleted_at IS NULL;
 CREATE INDEX idx_salts_has_recipe ON salts(has_recipe) WHERE has_recipe = true AND deleted_at IS NULL;
 
 -- =============================================================================
--- ENTITY MEDIA JUNCTION TABLES
+-- ENTITY MEDIA
+-- =============================================================================
+-- Note: Entity media is now handled by the unified entity_media table in 02-schema.sql
+-- which links any entity type to media_files.
+-- 
+-- Removed fields:
+-- - primary_image_url from all entity tables
+--
+-- Removed tables:
+-- - grimoire_media (replaced by entity_media)
+-- - crystal_media, herb_media, candle_media, incense_media, oil_media, salt_media
+--
+-- All entities now use: entity_media -> media_files
+
+-- =============================================================================
+-- DIVINATION METHODS
 -- =============================================================================
 
--- Crystal media
-CREATE TABLE crystal_media (
-    crystal_id UUID NOT NULL REFERENCES crystals(id) ON DELETE CASCADE,
-    media_id UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
-    display_order INTEGER DEFAULT 0,
-    is_primary BOOLEAN DEFAULT FALSE,
+CREATE TABLE divination_methods (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    
+    -- Basic Info
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    alternative_names TEXT[],
+    
+    -- Classification
+    method_type VARCHAR(100), -- e.g., 'cartomancy', 'lithomancy', 'scrying', 'geomancy'
+    difficulty_level VARCHAR(20), -- beginner, intermediate, advanced
+    tradition VARCHAR(100), -- e.g., 'European', 'Celtic', 'Norse', 'Romani'
+    
+    -- Description
+    description TEXT NOT NULL,
+    history TEXT,
+    
+    -- How to Practice
+    how_to_use TEXT,
+    interpretation_guide TEXT,
+    common_spreads TEXT[], -- For card-based systems
+    
+    -- Tools & Materials Needed
+    tools_required TEXT[],
+    materials_needed TEXT,
+    
+    -- Best Uses
+    best_for TEXT[], -- e.g., ['yes/no questions', 'future insight', 'decision making']
+    magical_properties TEXT[],
+    
+    -- Timing & Associations
+    best_moon_phase TEXT[],
+    associated_elements TEXT[],
+    deities_associated TEXT[],
+    
+    -- Metadata
+    image_url TEXT,
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
-    PRIMARY KEY (crystal_id, media_id)
+    
+    -- Media: Use entity_media table to link to media_files
+    -- Categories: Use entity_categories table with entity_type='divination_method'
+    -- Tags: Use entity_tags table with entity_type='divination_method'
+    
+    CONSTRAINT valid_difficulty CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced', 'expert'))
 );
 
-CREATE INDEX idx_crystal_media_crystal ON crystal_media(crystal_id);
+CREATE INDEX idx_divination_methods_slug ON divination_methods(slug);
+CREATE INDEX idx_divination_methods_type ON divination_methods(method_type);
+CREATE INDEX idx_divination_methods_difficulty ON divination_methods(difficulty_level);
 
--- Herb media
-CREATE TABLE herb_media (
-    herb_id UUID NOT NULL REFERENCES herbs(id) ON DELETE CASCADE,
-    media_id UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
-    display_order INTEGER DEFAULT 0,
-    is_primary BOOLEAN DEFAULT FALSE,
+-- =============================================================================
+-- RITUAL TOOLS
+-- =============================================================================
+
+CREATE TABLE ritual_tools (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    
+    -- Basic Info
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    alternative_names TEXT[],
+    
+    -- Classification
+    tool_category VARCHAR(100), -- e.g., 'elemental', 'altar', 'energy_direction', 'divination'
+    element VARCHAR(20), -- Air, Fire, Water, Earth, Spirit
+    tradition VARCHAR(100),
+    
+    -- Description
+    description TEXT NOT NULL,
+    history TEXT,
+    symbolism TEXT,
+    
+    -- Usage
+    magical_uses TEXT,
+    how_to_use TEXT,
+    consecration_methods TEXT,
+    charging_methods TEXT,
+    
+    -- Magical Properties
+    magical_properties TEXT[],
+    purposes TEXT[], -- e.g., ['directing energy', 'casting circle', 'divination']
+    
+    -- Materials & Creation
+    traditional_materials TEXT[], -- e.g., ['wood', 'metal', 'crystal']
+    how_to_make TEXT,
+    where_to_acquire TEXT,
+    
+    -- Care & Maintenance
+    cleansing_methods TEXT[],
+    storage_recommendations TEXT,
+    
+    -- Associations
+    associated_deities TEXT[],
+    zodiac_signs TEXT[],
+    sabbats_associated TEXT[],
+    
+    -- Metadata
+    image_url TEXT,
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
-    PRIMARY KEY (herb_id, media_id)
+    
+    -- Media: Use entity_media table to link to media_files
+    -- Categories: Use entity_categories table with entity_type='ritual_tool'
+    -- Tags: Use entity_tags table with entity_type='ritual_tool'
+    
+    CONSTRAINT valid_element CHECK (element IN ('Air', 'Fire', 'Water', 'Earth', 'Spirit', 'All'))
 );
 
-CREATE INDEX idx_herb_media_herb ON herb_media(herb_id);
-
--- Candle media
-CREATE TABLE candle_media (
-    candle_id UUID NOT NULL REFERENCES candles(id) ON DELETE CASCADE,
-    media_id UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
-    display_order INTEGER DEFAULT 0,
-    is_primary BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    PRIMARY KEY (candle_id, media_id)
-);
-
-CREATE INDEX idx_candle_media_candle ON candle_media(candle_id);
-
--- Incense media
-CREATE TABLE incense_media (
-    incense_id UUID NOT NULL REFERENCES incense(id) ON DELETE CASCADE,
-    media_id UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
-    display_order INTEGER DEFAULT 0,
-    is_primary BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    PRIMARY KEY (incense_id, media_id)
-);
-
-CREATE INDEX idx_incense_media_incense ON incense_media(incense_id);
-
--- Oil media
-CREATE TABLE oil_media (
-    oil_id UUID NOT NULL REFERENCES oils(id) ON DELETE CASCADE,
-    media_id UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
-    display_order INTEGER DEFAULT 0,
-    is_primary BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    PRIMARY KEY (oil_id, media_id)
-);
-
-CREATE INDEX idx_oil_media_oil ON oil_media(oil_id);
-
--- Salt media
-CREATE TABLE salt_media (
-    salt_id UUID NOT NULL REFERENCES salts(id) ON DELETE CASCADE,
-    media_id UUID NOT NULL REFERENCES media_files(id) ON DELETE CASCADE,
-    display_order INTEGER DEFAULT 0,
-    is_primary BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    PRIMARY KEY (salt_id, media_id)
-);
-
-CREATE INDEX idx_salt_media_salt ON salt_media(salt_id);
+CREATE INDEX idx_ritual_tools_slug ON ritual_tools(slug);
+CREATE INDEX idx_ritual_tools_category ON ritual_tools(tool_category);
+CREATE INDEX idx_ritual_tools_element ON ritual_tools(element);
 
 -- =============================================================================
 -- TRIGGERS FOR UPDATED_AT
 -- =============================================================================
 
--- Trigger function to update updated_at timestamp
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = CURRENT_TIMESTAMP;
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
+-- Note: update_updated_at_column() function is defined in 02-schema.sql
 
 -- Apply triggers to all entity tables
 CREATE TRIGGER update_crystals_updated_at BEFORE UPDATE ON crystals
@@ -649,21 +677,11 @@ CREATE TRIGGER update_oils_updated_at BEFORE UPDATE ON oils
 CREATE TRIGGER update_salts_updated_at BEFORE UPDATE ON salts
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
--- Apply triggers to media junction tables
-CREATE TRIGGER update_crystal_media_updated_at BEFORE UPDATE ON crystal_media
+CREATE TRIGGER update_divination_methods_updated_at BEFORE UPDATE ON divination_methods
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_herb_media_updated_at BEFORE UPDATE ON herb_media
+CREATE TRIGGER update_ritual_tools_updated_at BEFORE UPDATE ON ritual_tools
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
-CREATE TRIGGER update_candle_media_updated_at BEFORE UPDATE ON candle_media
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+-- Media junction table triggers removed (tables no longer exist)
 
-CREATE TRIGGER update_incense_media_updated_at BEFORE UPDATE ON incense_media
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
-CREATE TRIGGER update_oil_media_updated_at BEFORE UPDATE ON oil_media
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
-CREATE TRIGGER update_salt_media_updated_at BEFORE UPDATE ON salt_media
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
