@@ -3,7 +3,8 @@
 -- =============================================================================
 -- Purpose: Link candles to their magical properties (intentions), planets, 
 --          chakras, and elements using junction tables
--- Dependencies: Requires 09-candle-data.sql to populate candles first
+-- Dependencies: Requires 12-candle-data.sql (candle entity data),
+--               05-intentions-data.sql (all intention data)
 -- =============================================================================
 
 DO $$
@@ -95,75 +96,6 @@ DECLARE
     material_matters_id UUID;
     endurance_id UUID;
 BEGIN
-
-    -- =========================================================================
-    -- ADD MISSING INTENTIONS (if they don't already exist)
-    -- =========================================================================
-    INSERT INTO intentions (name, slug, description, category, keywords, usage_guide)
-    VALUES
-    -- Protection & Spiritual Purity
-    ('Purity', 'purity', 'Spiritual cleanliness and innocence', 'spiritual',
-     ARRAY['cleanliness', 'innocence', 'virginity', 'untainted'],
-     'Use white candles and clear quartz. Focus on releasing impurities.'),
-    ('Truth', 'truth', 'Seeking and speaking honesty', 'spiritual',
-     ARRAY['honesty', 'authenticity', 'reality', 'veracity'],
-     'Work with blue energy and throat chakra. Speak your truth with clarity.'),
-    ('Absorbing Negativity', 'absorbing-negativity', 'Drawing in and neutralizing negative energy', 'protection', 
-     ARRAY['absorb', 'neutralize', 'shield', 'negative energy'], 
-     'Use with black candles and grounding stones. Visualize negativity being absorbed and transmuted.'),
-    -- Healing
-    ('Emotional Healing', 'emotional-healing', 'Healing emotional wounds and trauma', 'healing',
-     ARRAY['emotional', 'wounds', 'trauma', 'heart healing'],
-     'Work gently with heart-centered practices. Combine with self-love and compassion work.'),
-    -- Love & Relationships
-    ('Romance', 'romance', 'Romantic love and intimate relationships', 'love',
-     ARRAY['romantic', 'intimate', 'dating', 'partnership'],
-     'Focus on attracting or enhancing romantic connections. Use with Venus energy and rose quartz.'),
-    ('Compassion', 'compassion', 'Cultivating empathy and kindness', 'love',
-     ARRAY['empathy', 'kindness', 'understanding', 'mercy'],
-     'Open your heart to others. Practice loving-kindness meditation.'),
-    -- Prosperity
-    ('Money', 'money', 'Attracting financial abundance and currency', 'prosperity',
-     ARRAY['cash', 'currency', 'dollars', 'financial flow'],
-     'Use green candles and citrine. Focus on specific monetary amounts or steady flow.'),
-    -- Mental & Growth
-    ('Mental Clarity', 'mental-clarity', 'Clear thinking and mental focus', 'growth',
-     ARRAY['clarity', 'mental', 'focus', 'clear mind'],
-     'Use before important decisions or study. Combine with air element and yellow/blue colors.'),
-    ('Joy', 'joy', 'Experiencing happiness and delight', 'emotional',
-     ARRAY['happiness', 'delight', 'pleasure', 'celebration'],
-     'Celebrate life. Work with sun energy and yellow/orange colors.'),
-    ('Enthusiasm', 'enthusiasm', 'Energetic excitement and passion for life', 'emotional',
-     ARRAY['excitement', 'passion', 'zest', 'vigor'],
-     'Embrace your passions. Channel fire energy for motivation.'),
-    ('Attraction', 'attraction', 'Drawing desired people, opportunities, or circumstances', 'manifestation',
-     ARRAY['magnetism', 'drawing', 'allure', 'pull'],
-     'Focus on what you want to attract. Use visualization and positive energy.'),
-    ('Ambition', 'ambition', 'Drive to achieve goals and succeed', 'growth',
-     ARRAY['drive', 'determination', 'aspiration', 'goals'],
-     'Set clear goals. Use with Mars energy and red/orange candles.'),
-    -- Spiritual
-    ('Spirituality', 'spirituality', 'Connection to spiritual practice and growth', 'spiritual',
-     ARRAY['spiritual practice', 'devotion', 'faith', 'sacred'],
-     'Dedicate regular time to spiritual work. Create sacred space.'),
-    ('Connection to Divine', 'connection-to-divine', 'Connecting with higher power or deity', 'spiritual',
-     ARRAY['divine', 'deity', 'higher power', 'sacred connection'],
-     'Create sacred space. Use during meditation or prayer. Work with devotional practices.'),
-    -- Prosperity & Material
-    ('Material Matters', 'material-matters', 'Physical world concerns and practical needs', 'prosperity',
-     ARRAY['practical', 'physical', 'material', 'tangible'],
-     'Ground your work in earth energy. Focus on specific, tangible goals.'),
-    ('Stability', 'stability', 'Creating lasting foundations and security', 'grounding',
-     ARRAY['foundation', 'security', 'steady', 'reliable'],
-     'Work with earth element and Saturn energy. Build slowly and steadily.'),
-    ('Endurance', 'endurance', 'Stamina and persistence', 'growth',
-     ARRAY['stamina', 'persistence', 'lasting', 'durability'],
-     'Work with earth energy for lasting results. Practice patience.'),
-    -- Home & Nature
-    ('Animals', 'animals', 'Working with and honoring animals', 'nature',
-     ARRAY['pets', 'animal spirits', 'familiars', 'wildlife'],
-     'Honor animal companions. Work with animal spirit guides.')
-    ON CONFLICT (slug) DO NOTHING;
 
     -- =========================================================================
     -- FETCH CANDLE IDs

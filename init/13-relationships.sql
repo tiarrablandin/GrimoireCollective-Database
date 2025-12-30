@@ -291,7 +291,7 @@ CREATE TABLE entity_intentions (
     CONSTRAINT valid_entity_type CHECK (entity_type IN (
         'crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 
         'deity', 'divination_method', 'ritual_tool', 'element',
-        'moon_phase', 'zodiac_sign', 'calendar'
+        'moon_phase', 'zodiac_sign', 'calendar', 'chakra'
     )),
     CONSTRAINT valid_strength CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive'))
 );

@@ -992,13 +992,14 @@ CREATE TABLE chakras (
     slug VARCHAR(50) UNIQUE NOT NULL,
     sanskrit_name VARCHAR(100),
     location VARCHAR(100),
-    color VARCHAR(30),
-    element VARCHAR(20),
-    note VARCHAR(10), -- Musical note
+    color VARCHAR(30), -- Traditional chakra color association (part of chakra system knowledge)
+    -- NOTE: Removed element column - chakra elements (Earth, Water, Fire, Air, Sound, Light, Thought) 
+    -- are not standard elements and should be handled differently if needed
+    note VARCHAR(10), -- Musical note for sound healing
     number INTEGER, -- Position 1-7 (root to crown)
     description TEXT,
     associated_with TEXT[], -- Body systems, emotions, etc.
-    keywords TEXT[], -- Key concepts/themes
+    -- NOTE: Removed keywords column - use entity_intentions junction table instead
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -1006,35 +1007,30 @@ CREATE INDEX idx_chakras_slug ON chakras(slug);
 CREATE INDEX idx_chakras_number ON chakras(number);
 
 -- Seed chakra data
-INSERT INTO chakras (name, slug, sanskrit_name, location, color, element, note, number, description, associated_with, keywords) VALUES
-    ('Root', 'root', 'Muladhara', 'Base of spine', 'Red', 'Earth', 'C', 1,
+-- NOTE: Keywords/properties moved to entity_intentions junction table
+-- NOTE: Element associations removed (Sound, Light, Thought aren't standard elements)
+INSERT INTO chakras (name, slug, sanskrit_name, location, color, note, number, description, associated_with) VALUES
+    ('Root', 'root', 'Muladhara', 'Base of spine', 'Red', 'C', 1,
      'The foundation chakra, connecting us to the physical world and our survival instincts.',
-     ARRAY['legs', 'feet', 'bones', 'large intestine', 'adrenal glands'],
-     ARRAY['survival', 'grounding', 'stability', 'security', 'foundation']),
-    ('Sacral', 'sacral', 'Svadhisthana', 'Lower abdomen', 'Orange', 'Water', 'D', 2,
+     ARRAY['legs', 'feet', 'bones', 'large intestine', 'adrenal glands']),
+    ('Sacral', 'sacral', 'Svadhisthana', 'Lower abdomen', 'Orange', 'D', 2,
      'The center of creativity, sexuality, and emotional expression.',
-     ARRAY['reproductive organs', 'kidneys', 'bladder', 'circulatory system'],
-     ARRAY['creativity', 'sexuality', 'pleasure', 'emotions', 'intimacy']),
-    ('Solar Plexus', 'solar-plexus', 'Manipura', 'Upper abdomen', 'Yellow', 'Fire', 'E', 3,
+     ARRAY['reproductive organs', 'kidneys', 'bladder', 'circulatory system']),
+    ('Solar Plexus', 'solar-plexus', 'Manipura', 'Upper abdomen', 'Yellow', 'E', 3,
      'The power chakra, governing personal power, will, and self-esteem.',
-     ARRAY['digestive system', 'liver', 'pancreas', 'stomach', 'metabolism'],
-     ARRAY['power', 'confidence', 'self-esteem', 'will', 'transformation']),
-    ('Heart', 'heart', 'Anahata', 'Center of chest', 'Green', 'Air', 'F', 4,
+     ARRAY['digestive system', 'liver', 'pancreas', 'stomach', 'metabolism']),
+    ('Heart', 'heart', 'Anahata', 'Center of chest', 'Green', 'F', 4,
      'The bridge between physical and spiritual, governing love and compassion.',
-     ARRAY['heart', 'lungs', 'circulatory system', 'arms', 'hands'],
-     ARRAY['love', 'compassion', 'healing', 'relationships', 'forgiveness']),
-    ('Throat', 'throat', 'Vishuddha', 'Throat', 'Blue', 'Sound', 'G', 5,
+     ARRAY['heart', 'lungs', 'circulatory system', 'arms', 'hands']),
+    ('Throat', 'throat', 'Vishuddha', 'Throat', 'Blue', 'G', 5,
      'The communication chakra, governing expression and truth.',
-     ARRAY['throat', 'thyroid', 'neck', 'mouth', 'teeth', 'ears'],
-     ARRAY['communication', 'truth', 'expression', 'creativity', 'authenticity']),
-    ('Third Eye', 'third-eye', 'Ajna', 'Forehead between eyes', 'Indigo', 'Light', 'A', 6,
+     ARRAY['throat', 'thyroid', 'neck', 'mouth', 'teeth', 'ears']),
+    ('Third Eye', 'third-eye', 'Ajna', 'Forehead between eyes', 'Indigo', 'A', 6,
      'The intuition chakra, connecting to inner wisdom and psychic abilities.',
-     ARRAY['pituitary gland', 'eyes', 'brain', 'nervous system'],
-     ARRAY['intuition', 'wisdom', 'insight', 'psychic abilities', 'perception']),
-    ('Crown', 'crown', 'Sahasrara', 'Top of head', 'Violet', 'Thought', 'B', 7,
+     ARRAY['pituitary gland', 'eyes', 'brain', 'nervous system']),
+    ('Crown', 'crown', 'Sahasrara', 'Top of head', 'Violet', 'B', 7,
      'The spiritual connection chakra, linking to divine consciousness.',
-     ARRAY['pineal gland', 'brain', 'nervous system'],
-     ARRAY['spirituality', 'enlightenment', 'consciousness', 'unity', 'transcendence']);
+     ARRAY['pineal gland', 'brain', 'nervous system']);
 
 -- =============================================================================
 -- PLANETS
