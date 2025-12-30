@@ -500,7 +500,6 @@ CREATE TABLE deities (
     name VARCHAR(100) NOT NULL,
     slug VARCHAR(100) UNIQUE NOT NULL,
     pantheon_id UUID REFERENCES pantheons(id) ON DELETE SET NULL,
-    culture VARCHAR(100),
     gender VARCHAR(50),
     domains TEXT[],
     symbols TEXT[],
