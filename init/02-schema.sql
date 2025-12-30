@@ -560,7 +560,6 @@ CREATE TABLE elements (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(50) NOT NULL UNIQUE,
     slug VARCHAR(50) UNIQUE NOT NULL,
-    element_type VARCHAR(20) NOT NULL, -- 'classical', 'spirit', 'combined'
     
     -- Characteristics
     direction VARCHAR(20), -- North, South, East, West, Center
@@ -572,28 +571,27 @@ CREATE TABLE elements (
     energy_type VARCHAR(20), -- 'active', 'passive', 'balanced'
     polarity VARCHAR(20), -- 'masculine', 'feminine', 'neutral'
     
-    -- Associations
+    -- Visual associations
     colors TEXT[],
-    zodiac_signs TEXT[],
-    planets TEXT[],
-    tarot_suit VARCHAR(50), -- Wands, Cups, Swords, Pentacles
-    
-    -- Magical Properties
-    magical_properties TEXT[],
-    ritual_uses TEXT,
-    invocation_methods TEXT,
     
     -- Symbolism
     symbols TEXT[], -- triangles, circles, etc.
-    tools TEXT[], -- ritual tools associated with element
     description TEXT,
-    correspondences JSONB, -- flexible storage for additional correspondences
+    
+    -- Magical usage
+    ritual_uses TEXT,
+    invocation_methods TEXT,
+    
+    -- NOTE: zodiac_signs → link via entity relationships or directly to zodiac_signs table
+    -- NOTE: planets → link via planet table when created
+    -- NOTE: tarot → link via entity_elements junction to tarot_cards
+    -- NOTE: magical_properties → link via entity_intentions junction table
+    -- NOTE: tools → link via entity_ritual_tools junction table
     
     -- Metadata
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
-    CONSTRAINT valid_element_type CHECK (element_type IN ('classical', 'spirit', 'combined')),
     CONSTRAINT valid_energy_type CHECK (energy_type IN ('active', 'passive', 'balanced')),
     CONSTRAINT valid_polarity CHECK (polarity IN ('masculine', 'feminine', 'neutral'))
 );
@@ -601,7 +599,6 @@ CREATE TABLE elements (
 -- Media: Use entity_media table with entity_type='element'
 
 CREATE INDEX idx_elements_slug ON elements(slug);
-CREATE INDEX idx_elements_type ON elements(element_type);
 
 -- =============================================================================
 -- MAGICAL INTENTIONS
