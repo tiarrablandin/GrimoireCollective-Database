@@ -561,19 +561,18 @@ CREATE TABLE divination_methods (
     deities_associated TEXT[],
     
     -- Metadata
-    image_url TEXT,
     is_verified BOOLEAN DEFAULT FALSE,
     created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
     
-    -- Media: Use entity_media table to link to media_files
-    -- Categories: Use entity_categories table with entity_type='divination_method'
-    -- Tags: Use entity_tags table with entity_type='divination_method'
-    
     CONSTRAINT valid_difficulty CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced', 'expert'))
 );
+
+-- Media: Use entity_media table with entity_type='divination_method'
+-- Categories: Use entity_categories table with entity_type='divination_method'
+-- Tags: Use entity_tags table with entity_type='divination_method'
 
 CREATE INDEX idx_divination_methods_slug ON divination_methods(slug);
 CREATE INDEX idx_divination_methods_type ON divination_methods(method_type);
@@ -626,19 +625,18 @@ CREATE TABLE ritual_tools (
     sabbats_associated TEXT[],
     
     -- Metadata
-    image_url TEXT,
     is_verified BOOLEAN DEFAULT FALSE,
     created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
     
-    -- Media: Use entity_media table to link to media_files
-    -- Categories: Use entity_categories table with entity_type='ritual_tool'
-    -- Tags: Use entity_tags table with entity_type='ritual_tool'
-    
     CONSTRAINT valid_element CHECK (element IN ('Air', 'Fire', 'Water', 'Earth', 'Spirit', 'All'))
 );
+
+-- Media: Use entity_media table with entity_type='ritual_tool'
+-- Categories: Use entity_categories table with entity_type='ritual_tool'
+-- Tags: Use entity_tags table with entity_type='ritual_tool'
 
 CREATE INDEX idx_ritual_tools_slug ON ritual_tools(slug);
 CREATE INDEX idx_ritual_tools_category ON ritual_tools(tool_category);

@@ -271,8 +271,11 @@ CREATE TABLE entity_media (
     UNIQUE(entity_type, entity_id, media_id),
     
     CONSTRAINT valid_entity_type CHECK (entity_type IN (
-        'crystal', 'herb', 'candle', 'incense', 'oil', 'salt',
-        'grimoire', 'deity', 'sabbat', 'moon_phase', 'zodiac_sign'
+        'candle', 'chakra', 'crystal', 'deity', 'divination_method',
+        'element', 'grimoire', 'herb', 'incense', 'moon_phase',
+        'oil', 'pantheon', 'planet', 'ritual_tool', 'sabbat', 
+        'salt', 'spell_ethic', 'spell_method', 'tradition', 
+        'user', 'user_board', 'zodiac_sign'
     ))
 );
 
@@ -444,12 +447,13 @@ CREATE TABLE user_boards (
     name VARCHAR(100) NOT NULL,
     description TEXT,
     is_public BOOLEAN DEFAULT TRUE,
-    cover_image_url TEXT,
     sort_order INTEGER DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP
 );
+
+-- Media: Use entity_media table with entity_type='user_board'
 
 CREATE INDEX idx_user_boards_user ON user_boards(user_id) WHERE deleted_at IS NULL;
 
@@ -482,10 +486,11 @@ CREATE TABLE pantheons (
     time_period VARCHAR(100),
     description TEXT,
     mythology_type VARCHAR(50),
-    image_url TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Media: Use entity_media table with entity_type='pantheon'
 
 CREATE INDEX idx_pantheons_slug ON pantheons(slug);
 CREATE INDEX idx_pantheons_culture ON pantheons(culture);
@@ -501,10 +506,11 @@ CREATE TABLE deities (
     domains TEXT[],
     symbols TEXT[],
     description TEXT,
-    image_url TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Media: Use entity_media table with entity_type='deity'
 
 CREATE INDEX idx_deities_slug ON deities(slug);
 CREATE INDEX idx_deities_pantheon ON deities(pantheon_id);
@@ -530,12 +536,13 @@ CREATE TABLE calendar (
     description TEXT,
     colors TEXT[],
     symbols TEXT[],
-    image_url TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT valid_celebration_type CHECK (celebration_type IN ('sabbat', 'esbat', 'other')),
     CONSTRAINT valid_date_type CHECK (date_type IN ('fixed', 'solar', 'lunar'))
 );
+
+-- Media: Use entity_media table with entity_type='sabbat'
 
 CREATE INDEX idx_calendar_slug ON calendar(slug);
 CREATE INDEX idx_calendar_type ON calendar(celebration_type);
@@ -585,7 +592,6 @@ CREATE TABLE elements (
     correspondences JSONB, -- flexible storage for additional correspondences
     
     -- Metadata
-    image_url TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
@@ -593,6 +599,8 @@ CREATE TABLE elements (
     CONSTRAINT valid_energy_type CHECK (energy_type IN ('active', 'passive', 'balanced')),
     CONSTRAINT valid_polarity CHECK (polarity IN ('masculine', 'feminine', 'neutral'))
 );
+
+-- Media: Use entity_media table with entity_type='element'
 
 CREATE INDEX idx_elements_slug ON elements(slug);
 CREATE INDEX idx_elements_type ON elements(element_type);
