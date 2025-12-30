@@ -306,6 +306,231 @@ CREATE TRIGGER update_entity_intentions_updated_at BEFORE UPDATE ON entity_inten
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =============================================================================
+-- ENTITY TRADITIONS (UNIFIED)
+-- =============================================================================
+
+-- Universal entity-to-tradition mapping - links any entity to magical traditions
+-- Examples: "Athame is Wiccan/Western", "Runes are Norse", "Smudging is Native American"
+-- Replaces the tradition VARCHAR columns in individual entity tables
+CREATE TABLE entity_traditions (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    
+    -- Entity (polymorphic)
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id UUID NOT NULL,
+    
+    -- Tradition
+    tradition_id UUID NOT NULL REFERENCES traditions(id) ON DELETE CASCADE,
+    
+    -- Relationship details
+    is_primary BOOLEAN DEFAULT FALSE, -- Is this the primary/origin tradition?
+    historical_context TEXT, -- How this entity relates to this tradition
+    notes TEXT,
+    
+    -- Metadata
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(entity_type, entity_id, tradition_id),
+    CONSTRAINT valid_entity_type CHECK (entity_type IN (
+        'crystal', 'herb', 'candle', 'oil', 'incense', 'salt',
+        'deity', 'divination_method', 'ritual_tool', 'element',
+        'sabbat', 'moon_phase', 'zodiac_sign', 'spell_method',
+        'pantheon', 'grimoire', 'calendar'
+    ))
+);
+
+CREATE INDEX idx_entity_traditions_entity ON entity_traditions(entity_type, entity_id);
+CREATE INDEX idx_entity_traditions_tradition ON entity_traditions(tradition_id);
+CREATE INDEX idx_entity_traditions_type_tradition ON entity_traditions(entity_type, tradition_id);
+CREATE INDEX idx_entity_traditions_primary ON entity_traditions(is_primary) WHERE is_primary = TRUE;
+
+CREATE TRIGGER update_entity_traditions_updated_at BEFORE UPDATE ON entity_traditions
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- =============================================================================
+-- ENTITY RITUAL TOOLS (UNIFIED)
+-- =============================================================================
+
+-- Universal entity-to-ritual_tool mapping - links entities to the tools used with them
+-- Examples: "Tarot uses a reading cloth", "Scrying uses crystal ball", "Circle casting uses athame"
+-- Replaces the tools_required TEXT[] columns
+CREATE TABLE entity_ritual_tools (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    
+    -- Entity (polymorphic)
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id UUID NOT NULL,
+    
+    -- Ritual Tool
+    ritual_tool_id UUID NOT NULL REFERENCES ritual_tools(id) ON DELETE CASCADE,
+    
+    -- Relationship details
+    is_required BOOLEAN DEFAULT FALSE, -- Is this tool required or optional?
+    purpose TEXT, -- What the tool is used for with this entity
+    alternatives TEXT, -- Alternative tools that could be used
+    notes TEXT,
+    
+    -- Metadata
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(entity_type, entity_id, ritual_tool_id),
+    CONSTRAINT valid_entity_type CHECK (entity_type IN (
+        'divination_method', 'grimoire', 'spell_method', 'sabbat',
+        'ritual_tool', 'deity', 'tradition', 'element'
+    ))
+);
+
+CREATE INDEX idx_entity_ritual_tools_entity ON entity_ritual_tools(entity_type, entity_id);
+CREATE INDEX idx_entity_ritual_tools_tool ON entity_ritual_tools(ritual_tool_id);
+CREATE INDEX idx_entity_ritual_tools_required ON entity_ritual_tools(is_required) WHERE is_required = TRUE;
+
+CREATE TRIGGER update_entity_ritual_tools_updated_at BEFORE UPDATE ON entity_ritual_tools
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- =============================================================================
+-- ENTITY MOON PHASES (UNIFIED)
+-- =============================================================================
+
+-- Universal entity-to-moon_phase mapping - links entities to optimal moon phases
+-- Examples: "Divination best at Full Moon", "Banishing at Waning Moon", "New beginnings at New Moon"
+-- Replaces the best_moon_phase TEXT[] columns
+CREATE TABLE entity_moon_phases (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    
+    -- Entity (polymorphic)
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id UUID NOT NULL,
+    
+    -- Moon Phase
+    moon_phase_id UUID NOT NULL REFERENCES moon_phases(id) ON DELETE CASCADE,
+    
+    -- Relationship details
+    effectiveness VARCHAR(20) DEFAULT 'optimal', -- 'optimal', 'good', 'suitable', 'avoid'
+    reason TEXT, -- Why this moon phase is good/bad for this entity
+    notes TEXT,
+    
+    -- Metadata
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(entity_type, entity_id, moon_phase_id),
+    CONSTRAINT valid_entity_type CHECK (entity_type IN (
+        'crystal', 'herb', 'divination_method', 'grimoire', 'spell_method',
+        'ritual_tool', 'intention', 'sabbat', 'deity'
+    )),
+    CONSTRAINT valid_effectiveness CHECK (effectiveness IN ('optimal', 'good', 'suitable', 'avoid'))
+);
+
+CREATE INDEX idx_entity_moon_phases_entity ON entity_moon_phases(entity_type, entity_id);
+CREATE INDEX idx_entity_moon_phases_phase ON entity_moon_phases(moon_phase_id);
+CREATE INDEX idx_entity_moon_phases_effectiveness ON entity_moon_phases(effectiveness);
+
+CREATE TRIGGER update_entity_moon_phases_updated_at BEFORE UPDATE ON entity_moon_phases
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- =============================================================================
+-- ENTITY ELEMENTS (UNIFIED)
+-- =============================================================================
+
+-- Universal entity-to-element mapping - links entities to elemental associations
+-- Examples: "Athame is Air", "Chalice is Water", "Wands is Fire", "Amethyst has Water energy"
+-- Replaces the associated_elements TEXT[] and element VARCHAR columns
+CREATE TABLE entity_elements (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    
+    -- Entity (polymorphic)
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id UUID NOT NULL,
+    
+    -- Element
+    element_id UUID NOT NULL REFERENCES elements(id) ON DELETE CASCADE,
+    
+    -- Relationship details
+    is_primary BOOLEAN DEFAULT FALSE, -- Is this the primary elemental association?
+    strength VARCHAR(20) DEFAULT 'moderate', -- 'primary', 'strong', 'moderate', 'subtle'
+    context TEXT, -- In what context does this elemental association apply?
+    notes TEXT,
+    
+    -- Metadata
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(entity_type, entity_id, element_id),
+    CONSTRAINT valid_entity_type CHECK (entity_type IN (
+        'crystal', 'herb', 'candle', 'oil', 'incense', 'salt',
+        'deity', 'divination_method', 'ritual_tool', 'zodiac_sign',
+        'sabbat', 'moon_phase', 'intention', 'spell_method', 'tarot_card', 'rune'
+    )),
+    CONSTRAINT valid_strength CHECK (strength IN ('primary', 'strong', 'moderate', 'subtle'))
+);
+
+CREATE INDEX idx_entity_elements_entity ON entity_elements(entity_type, entity_id);
+CREATE INDEX idx_entity_elements_element ON entity_elements(element_id);
+CREATE INDEX idx_entity_elements_primary ON entity_elements(is_primary) WHERE is_primary = TRUE;
+CREATE INDEX idx_entity_elements_type_element ON entity_elements(entity_type, element_id);
+
+CREATE TRIGGER update_entity_elements_updated_at BEFORE UPDATE ON entity_elements
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- =============================================================================
+-- ENTITY DEITIES (UNIFIED)
+-- =============================================================================
+
+-- Universal entity-to-deity mapping - links entities to associated deities
+-- Examples: "Roses are sacred to Aphrodite", "Mugwort is for Artemis", "Full Moon honors Selene"
+-- Replaces the deities_associated TEXT[] columns
+CREATE TABLE entity_deities (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    
+    -- Entity (polymorphic)
+    entity_type VARCHAR(50) NOT NULL,
+    entity_id UUID NOT NULL,
+    
+    -- Deity
+    deity_id UUID NOT NULL REFERENCES deities(id) ON DELETE CASCADE,
+    
+    -- Relationship details
+    relationship_type VARCHAR(50), -- 'sacred_to', 'offering', 'invocation', 'symbol', 'associated'
+    significance TEXT, -- Why this deity is associated with this entity
+    historical_source TEXT, -- Source of this association (mythology, UPG, historical text)
+    notes TEXT,
+    
+    -- Metadata
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(entity_type, entity_id, deity_id),
+    CONSTRAINT valid_entity_type CHECK (entity_type IN (
+        'crystal', 'herb', 'candle', 'oil', 'incense', 'salt',
+        'divination_method', 'ritual_tool', 'element', 'sabbat',
+        'moon_phase', 'zodiac_sign', 'animal', 'tree', 'planet'
+    )),
+    CONSTRAINT valid_relationship CHECK (relationship_type IN (
+        'sacred_to', 'offering', 'invocation', 'symbol', 'associated', 'devotional'
+    ))
+);
+
+CREATE INDEX idx_entity_deities_entity ON entity_deities(entity_type, entity_id);
+CREATE INDEX idx_entity_deities_deity ON entity_deities(deity_id);
+CREATE INDEX idx_entity_deities_relationship ON entity_deities(relationship_type);
+CREATE INDEX idx_entity_deities_type_deity ON entity_deities(entity_type, deity_id);
+
+CREATE TRIGGER update_entity_deities_updated_at BEFORE UPDATE ON entity_deities
+    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+
+-- =============================================================================
 -- ENTITY CATEGORIES & TAGS
 -- =============================================================================
 -- Note: Entity-specific category and tag tables have been removed.

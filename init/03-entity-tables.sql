@@ -613,6 +613,206 @@ CREATE INDEX idx_divination_spreads_method ON divination_spreads(divination_meth
 CREATE INDEX idx_divination_spreads_positions ON divination_spreads(position_count);
 
 -- =============================================================================
+-- TAROT CARDS
+-- =============================================================================
+
+CREATE TABLE tarot_cards (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    
+    -- Card classification
+    card_type VARCHAR(20) NOT NULL, -- 'major' or 'minor'
+    suit VARCHAR(20), -- 'wands', 'cups', 'swords', 'pentacles' (NULL for Major Arcana)
+    number INTEGER, -- 0-21 for Major Arcana, 1-10 for pips, NULL for court cards
+    court_rank VARCHAR(20), -- 'page', 'knight', 'queen', 'king' (NULL for non-court cards)
+    arcana_number INTEGER, -- Position in deck (0-77)
+    
+    -- Meanings
+    keywords TEXT[],
+    upright_meaning TEXT NOT NULL,
+    reversed_meaning TEXT,
+    
+    -- Deeper interpretation
+    description TEXT,
+    symbolism TEXT, -- Description of imagery and symbols
+    elemental_association VARCHAR(20), -- Fire, Water, Air, Earth, Spirit
+    astrological_association VARCHAR(100), -- Zodiac sign or planet
+    numerological_meaning TEXT,
+    
+    -- Journey and lessons
+    archetype VARCHAR(255), -- e.g., 'The Fool', 'The Magician', 'The High Priestess'
+    life_lesson TEXT,
+    spiritual_message TEXT,
+    shadow_work TEXT, -- What this card reveals about shadow aspects
+    
+    -- Practical guidance
+    advice TEXT,
+    questions_to_ask TEXT[], -- Reflective questions for this card
+    affirmation TEXT,
+    
+    -- In readings
+    love_career_health JSONB, -- {"love": "...", "career": "...", "health": "..."}
+    timing VARCHAR(100), -- When this might manifest
+    yes_no VARCHAR(20), -- 'yes', 'no', 'maybe', 'unclear'
+    
+    -- Metadata
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT valid_card_type CHECK (card_type IN ('major', 'minor')),
+    CONSTRAINT valid_suit CHECK (suit IS NULL OR suit IN ('wands', 'cups', 'swords', 'pentacles')),
+    CONSTRAINT valid_court_rank CHECK (court_rank IS NULL OR court_rank IN ('page', 'knight', 'queen', 'king')),
+    CONSTRAINT valid_yes_no CHECK (yes_no IS NULL OR yes_no IN ('yes', 'no', 'maybe', 'unclear'))
+);
+
+CREATE INDEX idx_tarot_cards_slug ON tarot_cards(slug);
+CREATE INDEX idx_tarot_cards_type ON tarot_cards(card_type);
+CREATE INDEX idx_tarot_cards_suit ON tarot_cards(suit);
+CREATE INDEX idx_tarot_cards_arcana ON tarot_cards(arcana_number);
+
+-- =============================================================================
+-- ORACLE CARDS
+-- =============================================================================
+
+CREATE TABLE oracle_card_decks (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    
+    -- Deck info
+    author VARCHAR(255),
+    artist VARCHAR(255),
+    publisher VARCHAR(255),
+    year_published INTEGER,
+    card_count INTEGER NOT NULL,
+    
+    -- Description
+    description TEXT NOT NULL,
+    theme VARCHAR(255), -- e.g., 'Angels', 'Nature', 'Goddesses', 'Moon', 'Chakras'
+    tradition VARCHAR(100), -- e.g., 'Modern', 'Shamanic', 'Celtic', 'Buddhist'
+    
+    -- Usage
+    best_for TEXT[],
+    difficulty_level VARCHAR(20),
+    guidebook_included BOOLEAN DEFAULT TRUE,
+    
+    -- Metadata
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT valid_oracle_difficulty CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced'))
+);
+
+CREATE INDEX idx_oracle_decks_slug ON oracle_card_decks(slug);
+CREATE INDEX idx_oracle_decks_theme ON oracle_card_decks(theme);
+
+CREATE TABLE oracle_cards (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    deck_id UUID NOT NULL REFERENCES oracle_card_decks(id) ON DELETE CASCADE,
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) NOT NULL, -- Unique within deck
+    card_number INTEGER, -- Position in deck
+    
+    -- Meanings
+    keywords TEXT[],
+    core_message TEXT NOT NULL,
+    extended_meaning TEXT,
+    
+    -- Interpretation
+    description TEXT,
+    symbolism TEXT,
+    
+    -- Guidance
+    advice TEXT,
+    affirmation TEXT,
+    questions_to_ask TEXT[],
+    
+    -- In readings
+    love_career_health JSONB,
+    spiritual_guidance TEXT,
+    
+    -- Metadata
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    UNIQUE(deck_id, slug)
+);
+
+CREATE INDEX idx_oracle_cards_deck ON oracle_cards(deck_id);
+CREATE INDEX idx_oracle_cards_slug ON oracle_cards(slug);
+
+-- =============================================================================
+-- RUNES (Elder Futhark)
+-- =============================================================================
+
+CREATE TABLE runes (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL, -- e.g., 'Fehu', 'Uruz', 'Thurisaz'
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    
+    -- Rune identity
+    symbol VARCHAR(10) NOT NULL, -- The actual rune character: ᚠ, ᚢ, ᚦ, etc.
+    pronunciation VARCHAR(50),
+    letter_equivalent VARCHAR(10), -- Latin alphabet equivalent
+    position_in_futhark INTEGER, -- 1-24 for Elder Futhark
+    aett VARCHAR(50), -- Which aett (group of 8): 'freyja', 'heimdall', 'tyr'
+    
+    -- Meanings
+    keywords TEXT[],
+    upright_meaning TEXT NOT NULL,
+    reversed_meaning TEXT, -- Some traditions don't use reversed
+    merkstave_meaning TEXT, -- Alternative term for reversed
+    
+    -- Deeper interpretation
+    description TEXT,
+    element VARCHAR(20), -- Fire, Water, Air, Earth, Ice
+    associated_god VARCHAR(100), -- Norse deity associated with this rune
+    tree_association VARCHAR(100), -- Tree in Norse tradition
+    
+    -- Symbolic meaning
+    literal_meaning VARCHAR(255), -- e.g., Fehu = 'cattle', 'wealth'
+    esoteric_meaning TEXT,
+    divinatory_meaning TEXT,
+    magical_uses TEXT, -- How to use in rune magic/bindrunes
+    
+    -- In readings
+    advice TEXT,
+    challenge TEXT, -- What challenge this rune presents
+    gift TEXT, -- What gift/strength this rune offers
+    
+    -- Practical applications
+    in_love TEXT,
+    in_work TEXT,
+    in_health TEXT,
+    spiritual_lesson TEXT,
+    
+    -- Rune magic
+    galdr TEXT, -- Rune chant/incantation
+    stances TEXT, -- Body positions for this rune (stadha)
+    colors TEXT[], -- Associated colors
+    
+    -- Metadata
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT valid_rune_aett CHECK (aett IN ('freyja', 'heimdall', 'tyr')),
+    CONSTRAINT valid_position CHECK (position_in_futhark BETWEEN 1 AND 24)
+);
+
+CREATE INDEX idx_runes_slug ON runes(slug);
+CREATE INDEX idx_runes_aett ON runes(aett);
+CREATE INDEX idx_runes_position ON runes(position_in_futhark);
+
+-- =============================================================================
 -- RITUAL TOOLS
 -- =============================================================================
 
