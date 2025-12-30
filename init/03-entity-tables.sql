@@ -536,7 +536,7 @@ CREATE TABLE divination_methods (
     -- Classification
     method_type VARCHAR(100), -- e.g., 'cartomancy', 'lithomancy', 'scrying', 'geomancy'
     difficulty_level VARCHAR(20), -- beginner, intermediate, advanced
-    tradition VARCHAR(100), -- e.g., 'European', 'Celtic', 'Norse', 'Romani'
+    -- NOTE: Traditions should be linked via entity_traditions junction table (needs creation)
     
     -- Description
     description TEXT NOT NULL,
@@ -545,20 +545,18 @@ CREATE TABLE divination_methods (
     -- How to Practice
     how_to_use TEXT,
     interpretation_guide TEXT,
-    common_spreads TEXT[], -- For card-based systems
     
-    -- Tools & Materials Needed
-    tools_required TEXT[],
-    materials_needed TEXT,
+    -- NOTE: Spreads are now in divination_spreads table (for card/rune systems)
+    -- NOTE: Tools should be linked via entity_ritual_tools junction table (needs creation)
+    -- NOTE: Materials/ingredients should be linked via entity ingredients junction tables
     
     -- Best Uses
     best_for TEXT[], -- e.g., ['yes/no questions', 'future insight', 'decision making']
     magical_properties TEXT[],
     
-    -- Timing & Associations
-    best_moon_phase TEXT[],
-    associated_elements TEXT[],
-    deities_associated TEXT[],
+    -- NOTE: Moon phases should be linked via entity_moon_phases junction table (needs creation)
+    -- NOTE: Elements should be linked via entity_elements junction table (needs creation)
+    -- NOTE: Deities should be linked via entity_deities junction table (needs creation)
     
     -- Metadata
     is_verified BOOLEAN DEFAULT FALSE,
@@ -577,6 +575,42 @@ CREATE TABLE divination_methods (
 CREATE INDEX idx_divination_methods_slug ON divination_methods(slug);
 CREATE INDEX idx_divination_methods_type ON divination_methods(method_type);
 CREATE INDEX idx_divination_methods_difficulty ON divination_methods(difficulty_level);
+
+-- =============================================================================
+-- DIVINATION SPREADS (for card and rune systems)
+-- =============================================================================
+
+CREATE TABLE divination_spreads (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    name VARCHAR(255) NOT NULL,
+    slug VARCHAR(255) UNIQUE NOT NULL,
+    
+    -- Which systems use this spread
+    divination_method_id UUID REFERENCES divination_methods(id) ON DELETE CASCADE,
+    
+    -- Spread details
+    description TEXT NOT NULL,
+    position_count INTEGER NOT NULL, -- How many cards/runes in this spread
+    positions JSONB, -- Array of position meanings: [{"position": 1, "name": "Past", "meaning": "..."}]
+    layout_diagram TEXT, -- ASCII or description of physical layout
+    difficulty_level VARCHAR(20),
+    
+    -- Usage
+    best_for TEXT[], -- What questions/situations this spread is good for
+    interpretation_tips TEXT,
+    
+    -- Metadata
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT valid_spread_difficulty CHECK (difficulty_level IN ('beginner', 'intermediate', 'advanced'))
+);
+
+CREATE INDEX idx_divination_spreads_slug ON divination_spreads(slug);
+CREATE INDEX idx_divination_spreads_method ON divination_spreads(divination_method_id);
+CREATE INDEX idx_divination_spreads_positions ON divination_spreads(position_count);
 
 -- =============================================================================
 -- RITUAL TOOLS

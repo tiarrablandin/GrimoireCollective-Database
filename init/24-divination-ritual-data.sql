@@ -13,111 +13,164 @@
 DO $$
 DECLARE
     admin_user_id UUID;
+    tarot_id UUID;
+    runes_id UUID;
+    scrying_id UUID;
+    pendulum_id UUID;
 BEGIN
     SELECT id INTO admin_user_id FROM users WHERE username = 'admin' LIMIT 1;
 
+    -- Insert divination methods (without the removed columns)
     INSERT INTO divination_methods (
-        name, slug, alternative_names, method_type, difficulty_level, tradition,
-        description, history, how_to_use, interpretation_guide, tools_required,
-        best_for, magical_properties, best_moon_phase, associated_elements,
+        name, slug, alternative_names, method_type, difficulty_level,
+        description, history, how_to_use, interpretation_guide,
+        best_for, magical_properties,
         created_by, is_verified
     ) VALUES
     
     -- Tarot
     (
         'Tarot Reading', 'tarot', ARRAY['Tarot Cards', 'Cartomancy'],
-        'cartomancy', 'intermediate', 'European',
+        'cartomancy', 'intermediate',
         'A system of divination using a deck of 78 cards with symbolic imagery, divided into Major Arcana (22 cards) and Minor Arcana (56 cards). Each card carries specific meanings and together they tell a story.',
         'Tarot originated in 15th century Europe as playing cards. By the 18th century, they were being used for divination. The Rider-Waite deck (1909) became the most popular and influential tarot system.',
         'Shuffle the deck while focusing on your question. Draw cards in your chosen spread pattern. Interpret each card''s meaning in position, considering both upright and reversed meanings. Look at how cards relate to each other.',
         'Major Arcana represent life lessons and spiritual growth. Minor Arcana represent daily life: Wands (Fire/creativity), Cups (Water/emotions), Swords (Air/thoughts), Pentacles (Earth/material). Court cards represent people or personality aspects.',
-        ARRAY['78-card tarot deck', 'cloth for reading surface', 'guidebook (for beginners)'],
         ARRAY['complex questions', 'life path guidance', 'spiritual insight', 'relationship advice', 'decision making'],
         ARRAY['intuition', 'psychic development', 'self-reflection', 'spiritual guidance'],
-        ARRAY['Full Moon', 'New Moon'],
-        ARRAY['All elements represented in deck'],
         admin_user_id, TRUE
-    ),
+    )
+    RETURNING id INTO tarot_id;
+    
+    INSERT INTO divination_methods (
+        name, slug, alternative_names, method_type, difficulty_level,
+        description, history, how_to_use, interpretation_guide,
+        best_for, magical_properties,
+        created_by, is_verified
+    ) VALUES
     
     -- Runes
     (
         'Rune Casting', 'runes', ARRAY['Rune Stones', 'Runecasting', 'Runic Divination'],
-        'lithomancy', 'beginner', 'Norse',
+        'lithomancy', 'beginner',
         'Ancient Norse alphabet used for divination. 24 runes in the Elder Futhark, each with specific meanings. Cast and read runes to gain insight and guidance.',
         'Runes were the alphabet of Germanic peoples, used from 150-1000 CE. Each rune held meaning beyond its letter sound. Vikings used runes for writing, magic, and divination.',
         'Focus on your question. Draw runes from a bag, or cast them onto a cloth. Read the runes that land face-up. The position and proximity to other runes affects meaning.',
         'Each rune has a specific meaning. Reversed runes may have opposite or blocked meanings. Consider the question, the rune''s position, and your intuition.',
-        ARRAY['set of 24 rune stones or wooden pieces', 'cloth or leather bag', 'casting cloth'],
         ARRAY['yes/no questions', 'simple guidance', 'quick insights', 'connecting with Norse tradition'],
         ARRAY['ancient wisdom', 'direct answers', 'connection to ancestors', 'protection'],
-        ARRAY['Full Moon', 'Dark Moon'],
-        ARRAY['Earth', 'Air'],
         admin_user_id, TRUE
-    ),
+    )
+    RETURNING id INTO runes_id;
+    
+    INSERT INTO divination_methods (
+        name, slug, alternative_names, method_type, difficulty_level,
+        description, history, how_to_use, interpretation_guide,
+        best_for, magical_properties,
+        created_by, is_verified
+    ) VALUES
     
     -- Scrying
     (
         'Scrying', 'scrying', ARRAY['Crystal Ball Gazing', 'Mirror Gazing', 'Water Gazing'],
-        'scrying', 'advanced', 'Universal',
+        'scrying', 'advanced',
         'The practice of gazing into a reflective surface to receive visions, messages, or insights. Can be done with crystal balls, black mirrors, water, or other reflective surfaces.',
         'Scrying has been practiced across cultures for thousands of years. Ancient Egyptians used oil lamps, Nostradamus used a bowl of water, John Dee used a black obsidian mirror. Crystal balls became popular in Victorian era.',
         'Set up in dim lighting. Gaze softly at the surface without straining. Let your eyes unfocus slightly. Watch for images, symbols, or impressions that arise. Record what you see immediately after.',
         'Images may be literal or symbolic. Trust your intuition. Visions might appear as clouds, colors, symbols, or full scenes. Some see with their mind''s eye rather than physical eyes.',
-        ARRAY['crystal ball, black mirror, or bowl of water', 'candles for dim lighting', 'quiet space', 'journal for recording'],
         ARRAY['future insight', 'spirit communication', 'deep meditation', 'psychic development'],
         ARRAY['psychic vision', 'trance states', 'spirit contact', 'prophecy'],
-        ARRAY['Full Moon', 'Dark Moon'],
-        ARRAY['Water', 'Spirit'],
         admin_user_id, TRUE
-    ),
+    )
+    RETURNING id INTO scrying_id;
+    
+    INSERT INTO divination_methods (
+        name, slug, alternative_names, method_type, difficulty_level,
+        description, history, how_to_use, interpretation_guide,
+        best_for, magical_properties,
+        created_by, is_verified
+    ) VALUES
     
     -- Pendulum
     (
         'Pendulum Dowsing', 'pendulum', ARRAY['Pendulum Divination', 'Dowsing'],
-        'divination tool', 'beginner', 'Universal',
+        'divination tool', 'beginner',
         'Using a weighted object on a chain or string to receive yes/no answers and find things. The pendulum swings in different directions to communicate answers.',
         'Dowsing with pendulums dates back thousands of years. Used to find water, minerals, and lost objects. Became popular for divination in the 1900s.',
         'Hold the pendulum chain between thumb and forefinger. Ask it to show you "yes" and "no" (usually circular vs. linear motions). Ask clear yes/no questions. Watch the pendulum''s movement for answers.',
-        'Establish your yes/no signals before starting. Ask one question at a time. Be specific. The pendulum responds to your subconscious mind and energy.',
-        ARRAY['pendulum (crystal, metal, or wood on chain)', 'pendulum board or mat (optional)'],
-        ARRAY['yes/no questions', 'finding lost objects', 'decision making', 'chakra balancing', 'quick answers'],
-        ARRAY['clarity', 'direct communication', 'dowsing', 'energy work'],
-        ARRAY['any phase works well'],
-        ARRAY['All elements'],
+        'Program your pendulum first by asking it to show yes/no/maybe. Clear your mind before asking. Questions must be specific and yes/no format. Can also be used over maps or charts.',
+        ARRAY['yes/no questions', 'finding lost objects', 'quick answers', 'energy detection'],
+        ARRAY['simple divination', 'dowsing', 'energy work', 'decision making'],
+        admin_user_id, TRUE
+    )
+    RETURNING id INTO pendulum_id;
+    
+    -- Insert common tarot spreads
+    INSERT INTO divination_spreads (
+        name, slug, divination_method_id, description, position_count,
+        positions, layout_diagram, difficulty_level, best_for, interpretation_tips,
+        created_by, is_verified
+    ) VALUES
+    (
+        'Three Card Spread', 'three-card', tarot_id,
+        'Simple three card layout representing past, present, and future, or situation, action, outcome.',
+        3,
+        '[
+            {"position": 1, "name": "Past/Situation", "meaning": "What led to this moment or the current situation"},
+            {"position": 2, "name": "Present/Action", "meaning": "Current energies or recommended action"},
+            {"position": 3, "name": "Future/Outcome", "meaning": "Likely outcome or future influence"}
+        ]'::jsonb,
+        'Card 1  Card 2  Card 3',
+        'beginner',
+        ARRAY['quick readings', 'simple questions', 'daily guidance', 'learning tarot'],
+        'Read cards left to right. Consider how they flow together as a story. Can be adapted for many question types.',
         admin_user_id, TRUE
     ),
-    
-    -- Tea Leaf Reading
     (
-        'Tasseography', 'tea-leaves', ARRAY['Tea Leaf Reading', 'Tasseomancy'],
-        'interpretation', 'intermediate', 'European/Middle Eastern',
-        'Divination by interpreting patterns made by tea leaves (or coffee grounds) left in a cup. The shapes and symbols reveal insights about the future.',
-        'Tea leaf reading became popular in 17th century Europe after tea was introduced from China. Romani people became known for this practice. Coffee ground reading (Turkish coffee) is similar.',
-        'Drink tea from a light-colored cup, leaving small amount of liquid and leaves. Swirl cup three times counterclockwise. Turn upside down on saucer. Turn right-side up. Read the symbols formed by leaves.',
-        'Symbols near the rim represent near future, bottom represents distant future. Handle side is the querent. Opposite side is external influences. Interpret traditional symbols (hearts=love, birds=messages, trees=growth) and trust intuition.',
-        ARRAY['loose leaf tea', 'light-colored teacup and saucer', 'hot water', 'guidebook of symbols'],
-        ARRAY['general life guidance', 'timing of events', 'relationship insights', 'opportunity recognition'],
-        ARRAY['intuition', 'pattern recognition', 'fortune telling', 'domestic magic'],
-        ARRAY['any phase'],
-        ARRAY['Water', 'Earth'],
-        admin_user_id, TRUE
-    ),
-    
-    -- Oracle Cards
-    (
-        'Oracle Card Reading', 'oracle-cards', ARRAY['Oracle Decks', 'Card Reading'],
-        'cartomancy', 'beginner', 'Modern',
-        'Using decks of cards with inspirational or divinatory messages. Unlike tarot, oracle decks vary in structure and number of cards. More intuitive and freeform than traditional tarot.',
-        'Oracle cards as distinct from tarot emerged in the 1970s-1980s. Each deck is unique with its own theme, imagery, and number of cards. Popular for their accessible, positive approach.',
-        'Shuffle while thinking of your question. Draw one or more cards. Read the card meanings from the guidebook or interpret intuitively. Reflect on how the message applies to your situation.',
-        'Oracle cards are designed to be intuitive. Trust your first impression. The images and words work together. There are no reversed meanings unless the deck specifies.',
-        ARRAY['oracle card deck', 'guidebook included with deck'],
-        ARRAY['daily guidance', 'affirmations', 'gentle insight', 'beginners', 'positive messages'],
-        ARRAY['encouragement', 'clarity', 'intuitive guidance', 'self-care'],
-        ARRAY['any phase'],
-        ARRAY['Spirit', 'All elements'],
+        'Celtic Cross', 'celtic-cross', tarot_id,
+        'Classic 10-card spread providing comprehensive insight into a situation.',
+        10,
+        '[
+            {"position": 1, "name": "Present", "meaning": "Current situation or heart of the matter"},
+            {"position": 2, "name": "Challenge", "meaning": "Obstacle or opposing force"},
+            {"position": 3, "name": "Past", "meaning": "Foundation or past influences"},
+            {"position": 4, "name": "Future", "meaning": "What is approaching"},
+            {"position": 5, "name": "Above", "meaning": "Conscious goals or best outcome"},
+            {"position": 6, "name": "Below", "meaning": "Unconscious influences or hidden factors"},
+            {"position": 7, "name": "Advice", "meaning": "Your role or suggested approach"},
+            {"position": 8, "name": "External", "meaning": "External influences or others'' perspectives"},
+            {"position": 9, "name": "Hopes/Fears", "meaning": "Inner hopes and fears"},
+            {"position": 10, "name": "Outcome", "meaning": "Final outcome"}
+        ]'::jsonb,
+        E'      5\n      |\n  3-1-2-4\n      |\n      6\n\n  7 8 9 10',
+        'intermediate',
+        ARRAY['complex situations', 'life decisions', 'deep insight', 'comprehensive readings'],
+        'Card 1 and 2 form the cross at center. Cards 3-6 form the circle around them. Cards 7-10 form the staff on the right. Read in sequence but also look for patterns.',
         admin_user_id, TRUE
     );
+    
+    -- Insert sample rune spread
+    INSERT INTO divination_spreads (
+        name, slug, divination_method_id, description, position_count,
+        positions, layout_diagram, difficulty_level, best_for, interpretation_tips,
+        created_by, is_verified
+    ) VALUES
+    (
+        'Three Rune Spread', 'three-rune', runes_id,
+        'Simple three rune layout for past, present, future or situation, action, outcome.',
+        3,
+        '[
+            {"position": 1, "name": "Past/Overview", "meaning": "What has led to this situation"},
+            {"position": 2, "name": "Present/Challenge", "meaning": "Current situation or main challenge"},
+            {"position": 3, "name": "Future/Action", "meaning": "Outcome or recommended action"}
+        ]'::jsonb,
+        'Rune 1  Rune 2  Rune 3',
+        'beginner',
+        ARRAY['quick guidance', 'daily readings', 'simple questions', 'rune practice'],
+        'Draw three runes or cast and read the first three that land face-up. Read in order but also consider their interaction.',
+        admin_user_id, TRUE
+    );
+
 END $$;
 
 -- =============================================================================
