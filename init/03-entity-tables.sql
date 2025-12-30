@@ -552,11 +552,11 @@ CREATE TABLE divination_methods (
     
     -- Best Uses
     best_for TEXT[], -- e.g., ['yes/no questions', 'future insight', 'decision making']
-    magical_properties TEXT[],
     
-    -- NOTE: Moon phases should be linked via entity_moon_phases junction table (needs creation)
-    -- NOTE: Elements should be linked via entity_elements junction table (needs creation)
-    -- NOTE: Deities should be linked via entity_deities junction table (needs creation)
+    -- NOTE: Magical properties should be linked via entity_intentions junction table
+    -- NOTE: Moon phases should be linked via entity_moon_phases junction table
+    -- NOTE: Elements should be linked via entity_elements junction table
+    -- NOTE: Deities should be linked via entity_deities junction table
     
     -- Metadata
     is_verified BOOLEAN DEFAULT FALSE,

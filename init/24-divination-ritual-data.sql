@@ -24,7 +24,7 @@ BEGIN
     INSERT INTO divination_methods (
         name, slug, alternative_names, method_type, difficulty_level,
         description, history, how_to_use, interpretation_guide,
-        best_for, magical_properties,
+        best_for,
         created_by, is_verified
     ) VALUES
     
@@ -37,7 +37,6 @@ BEGIN
         'Shuffle the deck while focusing on your question. Draw cards in your chosen spread pattern. Interpret each card''s meaning in position, considering both upright and reversed meanings. Look at how cards relate to each other.',
         'Major Arcana represent life lessons and spiritual growth. Minor Arcana represent daily life: Wands (Fire/creativity), Cups (Water/emotions), Swords (Air/thoughts), Pentacles (Earth/material). Court cards represent people or personality aspects.',
         ARRAY['complex questions', 'life path guidance', 'spiritual insight', 'relationship advice', 'decision making'],
-        ARRAY['intuition', 'psychic development', 'self-reflection', 'spiritual guidance'],
         admin_user_id, TRUE
     )
     RETURNING id INTO tarot_id;
@@ -45,7 +44,7 @@ BEGIN
     INSERT INTO divination_methods (
         name, slug, alternative_names, method_type, difficulty_level,
         description, history, how_to_use, interpretation_guide,
-        best_for, magical_properties,
+        best_for,
         created_by, is_verified
     ) VALUES
     
@@ -58,7 +57,6 @@ BEGIN
         'Focus on your question. Draw runes from a bag, or cast them onto a cloth. Read the runes that land face-up. The position and proximity to other runes affects meaning.',
         'Each rune has a specific meaning. Reversed runes may have opposite or blocked meanings. Consider the question, the rune''s position, and your intuition.',
         ARRAY['yes/no questions', 'simple guidance', 'quick insights', 'connecting with Norse tradition'],
-        ARRAY['ancient wisdom', 'direct answers', 'connection to ancestors', 'protection'],
         admin_user_id, TRUE
     )
     RETURNING id INTO runes_id;
@@ -66,7 +64,7 @@ BEGIN
     INSERT INTO divination_methods (
         name, slug, alternative_names, method_type, difficulty_level,
         description, history, how_to_use, interpretation_guide,
-        best_for, magical_properties,
+        best_for,
         created_by, is_verified
     ) VALUES
     
@@ -79,7 +77,6 @@ BEGIN
         'Set up in dim lighting. Gaze softly at the surface without straining. Let your eyes unfocus slightly. Watch for images, symbols, or impressions that arise. Record what you see immediately after.',
         'Images may be literal or symbolic. Trust your intuition. Visions might appear as clouds, colors, symbols, or full scenes. Some see with their mind''s eye rather than physical eyes.',
         ARRAY['future insight', 'spirit communication', 'deep meditation', 'psychic development'],
-        ARRAY['psychic vision', 'trance states', 'spirit contact', 'prophecy'],
         admin_user_id, TRUE
     )
     RETURNING id INTO scrying_id;
@@ -87,7 +84,7 @@ BEGIN
     INSERT INTO divination_methods (
         name, slug, alternative_names, method_type, difficulty_level,
         description, history, how_to_use, interpretation_guide,
-        best_for, magical_properties,
+        best_for,
         created_by, is_verified
     ) VALUES
     
@@ -100,7 +97,6 @@ BEGIN
         'Hold the pendulum chain between thumb and forefinger. Ask it to show you "yes" and "no" (usually circular vs. linear motions). Ask clear yes/no questions. Watch the pendulum''s movement for answers.',
         'Program your pendulum first by asking it to show yes/no/maybe. Clear your mind before asking. Questions must be specific and yes/no format. Can also be used over maps or charts.',
         ARRAY['yes/no questions', 'finding lost objects', 'quick answers', 'energy detection'],
-        ARRAY['simple divination', 'dowsing', 'energy work', 'decision making'],
         admin_user_id, TRUE
     )
     RETURNING id INTO pendulum_id;
