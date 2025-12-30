@@ -136,7 +136,6 @@ CREATE TABLE content_types (
     name VARCHAR(50) UNIQUE NOT NULL,
     slug VARCHAR(50) UNIQUE NOT NULL,
     description TEXT,
-    icon VARCHAR(50),
     is_active BOOLEAN DEFAULT TRUE,
     sort_order INTEGER DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -144,22 +143,22 @@ CREATE TABLE content_types (
 );
 
 -- Insert default content types
-INSERT INTO content_types (name, slug, description, icon) VALUES
-    ('Spell', 'spell', 'Magical spells and incantations', 'sparkles'),
-    ('Ritual', 'ritual', 'Ceremonial rituals and practices', 'moon'),
-    ('Recipe', 'recipe', 'Potions, tinctures, and magical recipes', 'beaker'),
-    ('Guide', 'guide', 'Instructions and how-to guides (casting circles, grounding, etc.)', 'book-open'),
-    ('Herb', 'herb', 'Information about magical herbs', 'leaf'),
-    ('Crystal', 'crystal', 'Crystal properties and uses', 'gem'),
-    ('Deity', 'deity', 'Gods, goddesses, and deities', 'crown'),
-    ('Holiday', 'holiday', 'Magical holidays and celebrations (Sabbats, Esbats, etc.)', 'calendar'),
-    ('Divination', 'divination', 'Divination methods and techniques', 'eye'),
-    ('Astrology', 'astrology', 'Astrological information and charts', 'stars'),
-    ('Meditation', 'meditation', 'Meditation practices and guides', 'om'),
-    ('Principles', 'principles', 'Magical laws, redes, ethics, and guidelines', 'balance-scale'),
-    ('Tradition', 'tradition', 'Information about magical traditions and paths', 'compass'),
-    ('Article', 'article', 'General articles and information', 'document'),
-    ('Note', 'note', 'Personal notes and observations', 'pencil');
+INSERT INTO content_types (name, slug, description) VALUES
+    ('Spell', 'spell', 'Magical spells and incantations'),
+    ('Ritual', 'ritual', 'Ceremonial rituals and practices'),
+    ('Recipe', 'recipe', 'Potions, tinctures, and magical recipes'),
+    ('Guide', 'guide', 'Instructions and how-to guides (casting circles, grounding, etc.)'),
+    ('Herb', 'herb', 'Information about magical herbs'),
+    ('Crystal', 'crystal', 'Crystal properties and uses'),
+    ('Deity', 'deity', 'Gods, goddesses, and deities'),
+    ('Holiday', 'holiday', 'Magical holidays and celebrations (Sabbats, Esbats, etc.)'),
+    ('Divination', 'divination', 'Divination methods and techniques'),
+    ('Astrology', 'astrology', 'Astrological information and charts'),
+    ('Meditation', 'meditation', 'Meditation practices and guides'),
+    ('Principles', 'principles', 'Magical laws, redes, ethics, and guidelines'),
+    ('Tradition', 'tradition', 'Information about magical traditions and paths'),
+    ('Article', 'article', 'General articles and information'),
+    ('Note', 'note', 'Personal notes and observations');
 
 -- =============================================================================
 -- MAIN CONTENT TABLE (GRIMOIRES)
@@ -621,7 +620,6 @@ CREATE TABLE intentions (
     usage_guide TEXT, -- How to work with this intention
     related_elements TEXT[], -- Which elements support this intention
     moon_phases TEXT[], -- Best moon phases for this intention
-    icon VARCHAR(50),
     color VARCHAR(7),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -649,7 +647,6 @@ CREATE TABLE traditions (
     deities_honored TEXT[], -- Associated deities or pantheons
     related_traditions TEXT[], -- Names of related or similar traditions
     resources TEXT[], -- Books, websites, or other resources
-    icon VARCHAR(50),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
@@ -678,7 +675,6 @@ CREATE TABLE spell_methods (
     tips TEXT, -- Helpful tips for this method
     warnings TEXT, -- Safety or ethical warnings
     related_methods TEXT[], -- Names of similar or related methods
-    icon VARCHAR(50),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
@@ -706,7 +702,6 @@ CREATE TABLE spell_ethics (
     threefold_law_warning BOOLEAN DEFAULT FALSE, -- Should practitioners be warned about karmic return?
     when_appropriate TEXT, -- When might this type of work be appropriate
     alternatives TEXT, -- Suggest less harmful alternatives
-    icon VARCHAR(50),
     color VARCHAR(7), -- Visual indicator color
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
