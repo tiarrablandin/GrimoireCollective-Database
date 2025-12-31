@@ -614,9 +614,9 @@ CREATE TABLE intentions (
     category VARCHAR(50), -- e.g., 'healing', 'protection', 'manifestation', 'spiritual', 'emotional'
     keywords TEXT[], -- Related search terms
     usage_guide TEXT, -- How to work with this intention
-    related_elements TEXT[], -- Which elements support this intention
-    moon_phases TEXT[], -- Best moon phases for this intention
-    color VARCHAR(7),
+    -- NOTE: Related elements are linked via intention_elements junction table
+    -- NOTE: Moon phases are linked via intention_moon_phases junction table
+    -- NOTE: Colors removed - use UI theming or tag system instead
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

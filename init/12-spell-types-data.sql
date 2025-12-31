@@ -301,18 +301,15 @@ INSERT INTO spell_ethics (name, slug, category, description, ethical_considerati
      '#FFB3C1');
 
 -- Add missing intentions related to spell types that weren't already in the system
-INSERT INTO intentions (name, slug, description, category, keywords, usage_guide, related_elements, moon_phases, color) VALUES
+-- NOTE: Related elements linked via intention_elements junction table
+-- NOTE: Moon phases linked via intention_moon_phases junction table
+-- NOTE: Colors removed - use UI theming or tag system instead
+INSERT INTO intentions (name, slug, description, category, keywords, usage_guide) VALUES
     ('Glamour', 'glamour', 'Enhancing how others perceive you through magical means', 'expression',
      ARRAY['illusion', 'perception', 'beauty', 'confidence', 'appearance'],
-     'Work on yourself, not others. Enhance natural qualities rather than create false impressions. Good for interviews, dates, performances.',
-     ARRAY['Air', 'Venus'],
-     ARRAY['Waxing Moon', 'Friday'],
-     '#EC4899'),
+     'Work on yourself, not others. Enhance natural qualities rather than create false impressions. Good for interviews, dates, performances.'),
     
     ('Sweetening', 'sweetening', 'Making people or situations more favorable and kind toward you', 'relationships',
      ARRAY['honey', 'sugar', 'gentle influence', 'favor', 'disposition'],
-     'Use honey or sugar in spells to "sweeten" someone''s disposition. Ethical when used to smooth relationships, not control them.',
-     ARRAY['Water', 'Venus'],
-     ARRAY['Waxing Moon', 'Full Moon'],
-     '#F59E0B')
+     'Use honey or sugar in spells to "sweeten" someone''s disposition. Ethical when used to smooth relationships, not control them.')
 ON CONFLICT (slug) DO NOTHING; -- Skip if already exists
