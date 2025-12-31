@@ -262,13 +262,6 @@ CREATE TABLE incense (
     scent_profile TEXT, -- Sweet, earthy, woody, floral, spicy, etc.
     ingredients TEXT[], -- Main ingredients
     
-    -- Magical Properties
-    magical_properties TEXT[], -- e.g., ['purification', 'meditation', 'prosperity']
-    element VARCHAR(20),
-    planet VARCHAR(50),
-    zodiac_signs TEXT[],
-    deities_associated TEXT[],
-    
     -- Usage Information
     description TEXT NOT NULL,
     magical_uses TEXT,
@@ -276,16 +269,20 @@ CREATE TABLE incense (
     meditation_uses TEXT,
     best_used_for TEXT[],
     
+    -- NOTE: Magical properties → link via entity_intentions junction table
+    -- NOTE: Element → link via entity_elements junction table
+    -- NOTE: Planet → link via planets table when created
+    -- NOTE: Zodiac signs → link via entity_zodiac_signs junction table
+    -- NOTE: Deities → link via entity_deities junction table
+    -- NOTE: Moon phase → link via entity_moon_phases junction table
+    -- NOTE: Blends well with → link via entity_substitutes or new incense_combinations table
+    -- NOTE: Herb combinations → link via junction table to herbs
+    -- NOTE: Crystal combinations → link via junction table to crystals
+    
     -- Burning Information
     burn_time TEXT, -- Approximate burn time
     burning_instructions TEXT,
     best_time_to_burn TEXT,
-    moon_phase VARCHAR(30),
-    
-    -- Combinations
-    blends_well_with TEXT[], -- Other incense that pair well
-    herb_combinations TEXT[],
-    crystal_combinations TEXT[],
     
     -- Safety
     safety_warnings TEXT,
@@ -314,15 +311,12 @@ CREATE TABLE incense (
     -- Timestamps
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    
-    CONSTRAINT valid_element CHECK (element IN ('Earth', 'Air', 'Fire', 'Water', 'Spirit', 'All'))
+    deleted_at TIMESTAMP
 );
 
 -- Indexes for incense
 CREATE INDEX idx_incense_slug ON incense(slug) WHERE deleted_at IS NULL;
 CREATE INDEX idx_incense_name ON incense(name) WHERE deleted_at IS NULL;
-CREATE INDEX idx_incense_properties ON incense USING GIN (magical_properties);
 CREATE INDEX idx_incense_verified ON incense(is_verified) WHERE deleted_at IS NULL;
 
 -- =============================================================================

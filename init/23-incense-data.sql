@@ -3,6 +3,17 @@
 -- =============================================================================
 -- Purpose: Comprehensive incense data for magical workings
 -- Note: This is permanent data, not sample data
+--
+-- NOTE: The following data is now linked through junction tables:
+-- - magical_properties → Link via entity_intentions junction table
+-- - element → Link via entity_elements junction table
+-- - planet → Link via planets table when created
+-- - zodiac_signs → Link via entity_zodiac_signs junction table
+-- - deities_associated → Link via entity_deities junction table
+-- - moon_phase → Link via entity_moon_phases junction table
+-- - blends_well_with → Link via incense combinations table or entity_substitutes
+-- - herb_combinations → Link via junction table to herbs
+-- - crystal_combinations → Link via junction table to crystals
 -- =============================================================================
 
 DO $$
@@ -13,8 +24,7 @@ BEGIN
 
 INSERT INTO incense (
     name, slug, incense_type, ingredients,
-    magical_properties, magical_uses, element, planet, deities_associated,
-    description, burning_instructions, created_by, is_verified,
+    magical_uses, description, burning_instructions, created_by, is_verified,
     history, shelf_life, storage_instructions, pet_safe, pregnancy_safe
 ) VALUES
 (
@@ -22,11 +32,8 @@ INSERT INTO incense (
     'frankincense',
     'resin',
     ARRAY['frankincense resin (Boswellia)'],
-    ARRAY['purification', 'protection', 'spirituality', 'consecration', 'blessing'],
+    
     'Burn for meditation, ritual purification, blessing sacred space, consecrating tools, connecting with divine.',
-    'Fire',
-    'Sun',
-    ARRAY['Ra', 'Apollo', 'Baal'],
     'Frankincense is one of the most sacred incenses, used for thousands of years in religious and magical ceremonies. It purifies space, consecrates objects, and elevates spiritual consciousness.',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
@@ -42,11 +49,8 @@ INSERT INTO incense (
     'myrrh',
     'resin',
     ARRAY['myrrh resin (Commiphora)'],
-    ARRAY['protection', 'healing', 'purification', 'spirituality', 'banishing'],
+    
     'Burn for protection, healing work, purification, banishing negativity, and connecting with ancient wisdom.',
-    'Water',
-    'Moon',
-    ARRAY['Isis', 'Hecate', 'Cybele'],
     'Myrrh is an ancient protective and healing incense. Used in funeral rites, healing ceremonies, and protection magic. Its energy is deep, mysterious, and powerfully protective.',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
@@ -62,11 +66,8 @@ INSERT INTO incense (
     'dragons-blood',
     'resin',
     ARRAY['dragon''s blood resin (Daemonorops draco)'],
-    ARRAY['protection', 'power', 'love', 'purification', 'potency'],
+    
     'Burn for powerful protection, amplifying spells, love magic, and adding power to any working.',
-    'Fire',
-    'Mars',
-    ARRAY['Mars', 'Hecate'],
     'Dragon''s Blood is a powerful resin that amplifies magic and provides strong protection. It adds potency to spells and is used extensively in love and protection magic.',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
@@ -82,11 +83,8 @@ INSERT INTO incense (
     'sandalwood',
     'wood',
     ARRAY['sandalwood powder (Santalum)'],
-    ARRAY['spirituality', 'meditation', 'healing', 'protection', 'wishes'],
+    
     'Burn for meditation, spiritual work, healing rituals, granting wishes, and creating sacred space.',
-    'Spirit',
-    'Moon',
-    ARRAY['Ganesha', 'Buddha', 'Shiva'],
     'Sandalwood is sacred wood used in meditation and spiritual practices. It calms the mind, opens spiritual awareness, and is believed to carry prayers to the divine.',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
@@ -102,11 +100,8 @@ INSERT INTO incense (
     'sage',
     'herb',
     ARRAY['white sage (Salvia apiana) or garden sage (Salvia officinalis)'],
-    ARRAY['purification', 'cleansing', 'wisdom', 'protection', 'removing_negativity'],
+    
     'Burn to cleanse spaces, remove negative energy, purify before rituals, and promote wisdom.',
-    'Air',
-    'Jupiter',
-    ARRAY['Zeus', 'Jupiter', 'Athena'],
     'Sage is one of the most popular cleansing herbs. Burning sage (smudging) clears negative energy, purifies spaces, and promotes wisdom. Essential for space clearing.',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
@@ -122,11 +117,8 @@ INSERT INTO incense (
     'copal',
     'resin',
     ARRAY['copal resin (various Protium and Bursera species)'],
-    ARRAY['purification', 'protection', 'spirituality', 'love', 'clearing'],
+    
     'Burn for purification, spiritual ceremonies, offerings to spirits/deities, clearing energy, love magic.',
-    'Fire',
-    'Sun',
-    ARRAY['Aztec deities', 'Mayan deities', 'Quetzalcoatl'],
     'Copal is sacred resin used for thousands of years in Mesoamerican spiritual practices. It purifies, protects, and connects to spiritual realms. The "frankincense of the Americas."',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
@@ -142,11 +134,8 @@ INSERT INTO incense (
     'lavender',
     'herb',
     ARRAY['lavender flowers (Lavandula)'],
-    ARRAY['peace', 'love', 'sleep', 'purification', 'happiness', 'healing'],
+    
     'Burn for peace, love magic, promoting sleep, gentle purification, happiness, and healing.',
-    'Air',
-    'Mercury',
-    ARRAY['Hecate', 'Saturn'],
     'Lavender incense creates peaceful, loving energy. Used for calming, sleep magic, gentle purification, love work, and healing. One of the most versatile and gentle herbs.',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
@@ -162,11 +151,8 @@ INSERT INTO incense (
     'cinnamon',
     'spice',
     ARRAY['cinnamon bark powder (Cinnamomum)'],
-    ARRAY['prosperity', 'success', 'protection', 'love', 'psychic_abilities', 'power'],
+    
     'Burn for prosperity, fast success, protection, passionate love, and empowering spells.',
-    'Fire',
-    'Sun',
-    ARRAY['Aphrodite', 'Venus'],
     'Cinnamon incense brings fast success, prosperity, and power. It speeds up manifestation, attracts money, and adds heat to love magic. Warming and empowering.',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
@@ -182,11 +168,8 @@ INSERT INTO incense (
     'patchouli',
     'herb',
     ARRAY['patchouli leaves (Pogostemon cablin)'],
-    ARRAY['money', 'prosperity', 'love', 'lust', 'grounding', 'protection'],
+    
     'Burn for money drawing, grounding, passionate love, fertility, and earth magic.',
-    'Earth',
-    'Saturn',
-    ARRAY['Pan', 'Dionysus'],
     'Patchouli is earthy, grounding incense used for money magic, passionate love, fertility, and grounding work. Its rich, distinctive scent attracts prosperity and physical love.',
     'Burn on charcoal disc in fire-safe holder. Ensure good ventilation. Use in ritual or meditation space.',
     admin_user_id,
