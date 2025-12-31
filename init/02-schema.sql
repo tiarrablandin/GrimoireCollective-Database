@@ -767,7 +767,7 @@ CREATE TABLE moon_phases (
     name VARCHAR(50) NOT NULL,
     slug VARCHAR(50) UNIQUE NOT NULL,
     description TEXT,
-    magical_properties TEXT[],
+    -- NOTE: Magical properties are linked via entity_intentions junction table
     best_for TEXT[],
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -924,31 +924,24 @@ CREATE TRIGGER update_entity_media_updated_at BEFORE UPDATE ON entity_media
 -- =============================================================================
 -- SAMPLE DATA FOR MOON PHASES
 -- =============================================================================
+-- NOTE: Magical properties are linked via entity_intentions junction table
 
-INSERT INTO moon_phases (name, slug, description, magical_properties, best_for) VALUES
+INSERT INTO moon_phases (name, slug, description, best_for) VALUES
     ('New Moon', 'new-moon', 'The beginning of the lunar cycle', 
-     ARRAY['new beginnings', 'setting intentions', 'manifestation'],
      ARRAY['starting new projects', 'goal setting', 'fresh starts']),
     ('Waxing Crescent', 'waxing-crescent', 'Growth and expansion phase',
-     ARRAY['attraction', 'growth', 'building'],
      ARRAY['building momentum', 'attracting opportunities', 'constructive magic']),
     ('First Quarter', 'first-quarter', 'Time of action and decision',
-     ARRAY['action', 'strength', 'determination'],
      ARRAY['making decisions', 'taking action', 'overcoming obstacles']),
     ('Waxing Gibbous', 'waxing-gibbous', 'Refinement and preparation',
-     ARRAY['refinement', 'preparation', 'analysis'],
      ARRAY['perfecting plans', 'fine-tuning', 'preparation']),
     ('Full Moon', 'full-moon', 'Peak of lunar power',
-     ARRAY['power', 'manifestation', 'completion', 'divination'],
      ARRAY['powerful spells', 'divination', 'charging tools', 'releasing']),
     ('Waning Gibbous', 'waning-gibbous', 'Sharing and gratitude',
-     ARRAY['gratitude', 'sharing', 'teaching'],
      ARRAY['giving thanks', 'sharing knowledge', 'reflection']),
     ('Last Quarter', 'last-quarter', 'Release and forgiveness',
-     ARRAY['release', 'forgiveness', 'breaking patterns'],
      ARRAY['banishing', 'letting go', 'breaking bad habits']),
     ('Waning Crescent', 'waning-crescent', 'Rest and restoration',
-     ARRAY['rest', 'reflection', 'wisdom'],
      ARRAY['introspection', 'rest', 'contemplation', 'divination']);
 
 -- =============================================================================
