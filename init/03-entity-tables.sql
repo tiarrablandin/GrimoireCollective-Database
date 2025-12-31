@@ -107,19 +107,18 @@ CREATE TABLE herbs (
     -- Parts Used
     parts_used TEXT[], -- leaves, flowers, roots, bark, seeds, whole_plant
     
-    -- Magical Properties
-    magical_properties TEXT[], -- e.g., ['love', 'prosperity', 'protection', 'healing']
-    element VARCHAR(20),
-    planet VARCHAR(50),
-    zodiac_signs TEXT[],
-    deities_associated TEXT[],
-    sabbats_associated TEXT[], -- Calendar event names (Sabbats/Esbats) this herb is associated with
-    
     -- Usage Information
     description TEXT NOT NULL,
     magical_uses TEXT,
     ritual_uses TEXT,
-    medicinal_uses TEXT, -- Traditional/historical only, not medical advice
+    
+    -- NOTE: Magical properties → link via entity_intentions junction table
+    -- NOTE: Element → link via entity_elements junction table
+    -- NOTE: Planet → link via planets table when created
+    -- NOTE: Zodiac signs → link via entity_zodiac_signs junction table
+    -- NOTE: Deities → link via entity_deities junction table
+    -- NOTE: Sabbats → link via calendar table (sabbats_associated removed)
+    -- NOTE: Substitutes → link via entity_substitutes junction table
     
     -- Preparation Methods
     preparation_methods TEXT[], -- tea, tincture, oil, sachet, incense, fresh, dried
@@ -139,9 +138,6 @@ CREATE TABLE herbs (
     pregnancy_safe BOOLEAN DEFAULT NULL, -- NULL means unknown/uncatalogued
     pet_safe BOOLEAN DEFAULT NULL,
     contraindications TEXT, -- Medical interactions/warnings
-    
-    -- Substitutions
-    magical_substitutes TEXT[], -- Other herbs with similar properties
     
     -- Additional Fields
     history TEXT,
@@ -167,7 +163,6 @@ CREATE TABLE herbs (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
     
-    CONSTRAINT valid_element CHECK (element IN ('Earth', 'Air', 'Fire', 'Water', 'Spirit', 'All')),
     CONSTRAINT valid_toxicity CHECK (toxicity_level IN ('non_toxic', 'mildly_toxic', 'toxic', 'highly_toxic', 'unknown'))
 );
 
@@ -175,8 +170,6 @@ CREATE TABLE herbs (
 CREATE INDEX idx_herbs_slug ON herbs(slug) WHERE deleted_at IS NULL;
 CREATE INDEX idx_herbs_name ON herbs(name) WHERE deleted_at IS NULL;
 CREATE INDEX idx_herbs_scientific ON herbs(scientific_name) WHERE deleted_at IS NULL;
-CREATE INDEX idx_herbs_properties ON herbs USING GIN (magical_properties);
-CREATE INDEX idx_herbs_element ON herbs(element) WHERE deleted_at IS NULL;
 CREATE INDEX idx_herbs_verified ON herbs(is_verified) WHERE deleted_at IS NULL;
 
 -- Full-text search for herbs
