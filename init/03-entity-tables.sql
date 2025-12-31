@@ -337,34 +337,34 @@ CREATE TABLE oils (
     extraction_method VARCHAR(50), -- cold_press, steam_distillation, solvent, etc.
     
     -- Physical Properties
-    color VARCHAR(50),
-    consistency VARCHAR(30), -- thin, medium, thick
+    -- NOTE: color removed - not essential for magical work
+    -- NOTE: consistency removed - not essential for magical work
     shelf_life TEXT,
     storage_instructions TEXT,
     
     -- Magical Properties
-    magical_properties TEXT[],
-    element VARCHAR(20),
-    planet VARCHAR(50),
-    zodiac_signs TEXT[],
-    chakras TEXT[],
+    -- NOTE: magical_properties → Link via entity_intentions junction table
+    -- NOTE: element → Link via entity_elements junction table
+    -- NOTE: planet → Link via planets table when created
+    -- NOTE: zodiac_signs → Link via entity_zodiac_signs junction table
+    -- NOTE: chakras → Link via entity_chakras junction table
     
     -- Usage Information
     description TEXT NOT NULL,
     magical_uses TEXT,
     ritual_uses TEXT,
     anointing_uses TEXT,
-    aromatherapy_uses TEXT,
+    -- NOTE: aromatherapy_uses removed - out of scope for magical database
     
     -- Application Methods
     application_methods TEXT[], -- topical, diffusion, bath, anointing, ritual
     dilution_guidelines TEXT,
     
     -- Combinations
-    blends_well_with TEXT[], -- Other oils that pair well
-    herb_combinations TEXT[],
-    crystal_combinations TEXT[],
-    candle_uses TEXT, -- How to use with candles
+    -- NOTE: blends_well_with → Link via oils combinations table or entity_substitutes
+    -- NOTE: herb_combinations → Link via junction table to herbs
+    -- NOTE: crystal_combinations → Link via junction table to crystals
+    -- NOTE: candle_uses removed - use grimoire recipes instead
     
     -- Safety
     skin_safe BOOLEAN DEFAULT FALSE,
@@ -397,15 +397,13 @@ CREATE TABLE oils (
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     deleted_at TIMESTAMP,
     
-    CONSTRAINT valid_oil_type CHECK (oil_type IN ('essential', 'carrier', 'infused', 'blend', 'magical')),
-    CONSTRAINT valid_element CHECK (element IN ('Earth', 'Air', 'Fire', 'Water', 'Spirit', 'All'))
+    CONSTRAINT valid_oil_type CHECK (oil_type IN ('essential', 'carrier', 'infused', 'blend', 'magical'))
 );
 
 -- Indexes for oils
 CREATE INDEX idx_oils_slug ON oils(slug) WHERE deleted_at IS NULL;
 CREATE INDEX idx_oils_name ON oils(name) WHERE deleted_at IS NULL;
 CREATE INDEX idx_oils_type ON oils(oil_type) WHERE deleted_at IS NULL;
-CREATE INDEX idx_oils_properties ON oils USING GIN (magical_properties);
 CREATE INDEX idx_oils_verified ON oils(is_verified) WHERE deleted_at IS NULL;
 
 -- =============================================================================

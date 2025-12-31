@@ -3,6 +3,20 @@
 -- =============================================================================
 -- Purpose: Comprehensive magical and essential oil data
 -- Note: This is permanent data, not sample data
+--
+-- NOTE: The following data is now linked through junction tables:
+-- - magical_properties → Link via entity_intentions junction table
+-- - element → Link via entity_elements junction table
+-- - planet → Link via planets table when created
+-- - zodiac_signs → Link via entity_zodiac_signs junction table
+-- - chakras → Link via entity_chakras junction table
+-- - blends_well_with → Link via oils combinations table or entity_substitutes
+-- - herb_combinations → Link via junction table to herbs
+-- - crystal_combinations → Link via junction table to crystals
+-- - candle_uses removed - use grimoire recipes instead
+-- - color removed - not essential for magical work
+-- - consistency removed - not essential for magical work
+-- - aromatherapy_uses removed - out of scope for magical database
 -- =============================================================================
 
 DO $$
@@ -12,9 +26,8 @@ BEGIN
     SELECT id INTO admin_user_id FROM users WHERE username = 'admin' LIMIT 1;
 
 INSERT INTO oils (
-    name, slug, oil_type, magical_properties,
-    magical_uses, element, planet, zodiac_signs,
-    description, safety_warnings, shelf_life,
+    name, slug, oil_type,
+    magical_uses, description, safety_warnings, shelf_life,
     history, scent_profile,
     created_by, is_verified
 ) VALUES
@@ -22,11 +35,7 @@ INSERT INTO oils (
     'Protection Oil',
     'protection-oil',
     'blend',
-    ARRAY['protection', 'shielding', 'banishing', 'purification'],
     'Anoint candles, doors, windows, yourself for protection. Use in shielding rituals.',
-    'Fire',
-    'Mars',
-    ARRAY['Aries', 'Scorpio'],
     'Protection Oil creates a powerful shield against negative energy. Used to anoint the body, candles, objects, and spaces for protection from harm, negativity, and psychic attack.',
     'For external use only. Contains frankincense and myrrh. Patch test before use. Avoid during pregnancy. May cause skin irritation in sensitive individuals.',
     '6-12 months',
@@ -39,11 +48,7 @@ INSERT INTO oils (
     'Love Oil',
     'love-oil',
     'blend',
-    ARRAY['love', 'attraction', 'romance', 'passion', 'self_love'],
     'Anoint candles for love spells, wear for attraction, use in romance rituals.',
-    'Water',
-    'Venus',
-    ARRAY['Taurus', 'Libra'],
     'Love Oil attracts romantic love, enhances passion, and promotes self-love. Blend of aphrodisiac and heart-opening oils to draw love and deepen romantic connections.',
     'For external use only. Contains rose and jasmine. Patch test required. Some oils may stain clothing. Avoid during pregnancy.',
     '6-12 months',
@@ -56,11 +61,7 @@ INSERT INTO oils (
     'Prosperity Oil',
     'prosperity-oil',
     'blend',
-    ARRAY['prosperity', 'abundance', 'money', 'success', 'luck'],
     'Anoint candles for money spells, wallet, cash register, business tools.',
-    'Earth',
-    'Jupiter',
-    ARRAY['Taurus', 'Sagittarius'],
     'Prosperity Oil attracts wealth, abundance, and financial success. Used to draw money, bless businesses, and create prosperity consciousness.',
     'For external use only. Contains cinnamon which can be a skin irritant. Always dilute. Patch test required. Do not apply to broken skin.',
     '6-12 months',
@@ -73,11 +74,7 @@ INSERT INTO oils (
     'Anointing Oil',
     'anointing-oil',
     'blend',
-    ARRAY['blessing', 'consecration', 'purification', 'spiritual_connection'],
     'Consecrate ritual tools, anoint yourself before ritual, bless candles and objects.',
-    'Spirit',
-    'Sun',
-    ARRAY['Leo', 'Sagittarius'],
     'Anointing Oil is used for consecration and blessing. A sacred oil for anointing yourself, ritual tools, candles, and spaces before magical or spiritual work.',
     'For external use only. Generally safe blend. Patch test recommended. Contains tree resins which may cause sensitivity in some individuals.',
     '12-24 months',
@@ -90,11 +87,7 @@ INSERT INTO oils (
     'Psychic Oil',
     'psychic-oil',
     'blend',
-    ARRAY['psychic_abilities', 'intuition', 'divination', 'clarity', 'third_eye'],
     'Anoint third eye before divination, use with tarot cards, enhance psychic work.',
-    'Air',
-    'Moon',
-    ARRAY['Pisces', 'Cancer'],
     'Psychic Oil enhances intuition, psychic abilities, and divination work. Opens the third eye and strengthens connection to subtle energies and spiritual guidance.',
     'For external use only. Contains mugwort. Avoid during pregnancy and breastfeeding. Patch test required.',
     '6-12 months',
@@ -107,11 +100,7 @@ INSERT INTO oils (
     'Healing Oil',
     'healing-oil',
     'blend',
-    ARRAY['healing', 'health', 'recovery', 'vitality', 'wellness'],
     'Anoint blue candles for healing, apply to body with intention, use in healing rituals.',
-    'Water',
-    'Sun',
-    ARRAY['Virgo', 'Cancer'],
     'Healing Oil promotes physical and emotional healing. Used to support recovery, enhance vitality, and focus healing intention. Combines medicinal and magical properties.',
     'For external use only. Contains eucalyptus. Keep away from eyes and mucous membranes. Not for internal use. Patch test required.',
     '6-12 months',
@@ -124,11 +113,7 @@ INSERT INTO oils (
     'Banishing Oil',
     'banishing-oil',
     'blend',
-    ARRAY['banishing', 'removing_obstacles', 'breaking_habits', 'ending_situations'],
     'Anoint black candles, use in banishing rituals, remove negativity and obstacles.',
-    'Fire',
-    'Saturn',
-    ARRAY['Capricorn', 'Scorpio'],
     'Banishing Oil removes unwanted influences, breaks negative patterns, and helps end situations that no longer serve. Powerful for removing obstacles and clearing away the old.',
     'For external use only. Can be skin irritant. Contains black pepper and clove. Patch test required. Keep away from eyes.',
     '6-12 months',
@@ -141,11 +126,7 @@ INSERT INTO oils (
     'Dream Oil',
     'dream-oil',
     'blend',
-    ARRAY['dreams', 'sleep', 'prophetic_dreams', 'astral_travel', 'rest'],
     'Anoint pillow, temples, feet before sleep for dreams. Enhance dream recall and prophetic dreams.',
-    'Water',
-    'Moon',
-    ARRAY['Pisces', 'Cancer'],
     'Dream Oil promotes restful sleep, enhances dream recall, and facilitates prophetic dreams. Used to prepare for dream work, astral travel, and receiving messages through dreams.',
     'For external use only. Safe and gentle blend. Patch test recommended. Relaxing - avoid using before driving or operating machinery.',
     '6-12 months',
