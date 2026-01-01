@@ -291,7 +291,8 @@ CREATE TABLE entity_intentions (
     CONSTRAINT valid_entity_type CHECK (entity_type IN (
         'crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 
         'deity', 'divination_method', 'ritual_tool', 'element',
-        'moon_phase', 'zodiac_sign', 'calendar', 'chakra', 'planet'
+        'moon_phase', 'zodiac_sign', 'calendar', 'chakra', 'planet',
+        'rune'
     )),
     CONSTRAINT valid_strength CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive'))
 );
@@ -517,7 +518,7 @@ CREATE TABLE entity_deities (
         'crystal', 'herb', 'candle', 'oil', 'incense', 'salt',
         'divination_method', 'ritual_tool', 'element', 'sabbat',
         'moon_phase', 'zodiac_sign', 'animal', 'tree', 'planet',
-        'grimoire'
+        'grimoire', 'rune'
     )),
     CONSTRAINT valid_relationship CHECK (relationship_type IN (
         'sacred_to', 'offering', 'invocation', 'symbol', 'associated', 'devotional'

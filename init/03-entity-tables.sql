@@ -668,7 +668,7 @@ CREATE TABLE runes (
     slug VARCHAR(255) UNIQUE NOT NULL,
     
     -- Rune identity
-    symbol VARCHAR(10) NOT NULL, -- The actual rune character: ᚠ, ᚢ, ᚦ, etc.
+    -- NOTE: Symbol removed - can be stored as alternative representation
     pronunciation VARCHAR(50),
     letter_equivalent VARCHAR(10), -- Latin alphabet equivalent
     position_in_futhark INTEGER, -- 1-24 for Elder Futhark
@@ -682,15 +682,15 @@ CREATE TABLE runes (
     
     -- Deeper interpretation
     description TEXT,
-    element VARCHAR(20), -- Fire, Water, Air, Earth, Ice
-    associated_god VARCHAR(100), -- Norse deity associated with this rune
+    -- NOTE: Element associations linked via entity_elements junction table (entity_type='rune')
+    -- NOTE: Deity associations linked via entity_deities junction table (entity_type='rune')
     tree_association VARCHAR(100), -- Tree in Norse tradition
     
     -- Symbolic meaning
     literal_meaning VARCHAR(255), -- e.g., Fehu = 'cattle', 'wealth'
     esoteric_meaning TEXT,
     divinatory_meaning TEXT,
-    magical_uses TEXT, -- How to use in rune magic/bindrunes
+    -- NOTE: Magical uses linked via entity_intentions junction table (entity_type='rune')
     
     -- In readings
     advice TEXT,
@@ -706,7 +706,7 @@ CREATE TABLE runes (
     -- Rune magic
     galdr TEXT, -- Rune chant/incantation
     stances TEXT, -- Body positions for this rune (stadha)
-    colors TEXT[], -- Associated colors
+    -- NOTE: Colors removed - can be stored in metadata or as tags if needed
     
     -- Metadata
     is_verified BOOLEAN DEFAULT FALSE,
