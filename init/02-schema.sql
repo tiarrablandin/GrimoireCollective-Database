@@ -681,29 +681,44 @@ CREATE INDEX idx_spell_methods_difficulty ON spell_methods(difficulty_level);
 -- =============================================================================
 -- Ethical categorization and intensity of spellwork
 
+-- ============================================================================
+-- SPELL ETHICS TABLE
+-- ============================================================================
+-- Simplified to contain only factual information without imposing specific
+-- ethical frameworks or religious perspectives. Users from different traditions
+-- can assess the nature of magical work based on factual descriptions.
+--
+-- REMOVED PRESCRIPTIVE/JUDGMENTAL COLUMNS:
+-- - category: Subjective categorization (magick_color, harmful, neutral)
+-- - ethical_considerations: Prescriptive ethical guidance
+-- - is_controversial: Subjective judgment about debate worthiness
+-- - wiccan_rede_compatible: Tradition-specific ethical framework
+-- - threefold_law_warning: Tradition-specific karmic warning
+-- - when_appropriate: Prescriptive guidance about usage
+-- - alternatives: Prescriptive suggestions
+-- - color: Non-essential visual metadata
+--
+-- RETAINED FACTUAL COLUMNS:
+-- - name, slug: Identifiers
+-- - description: Factual description of the spell type
+-- - intensity_level: Objective measure of magical intensity
+-- - examples: Factual examples of this type of work
+-- ============================================================================
+
 CREATE TABLE spell_ethics (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(100) NOT NULL UNIQUE,
     slug VARCHAR(100) UNIQUE NOT NULL,
-    category VARCHAR(50) NOT NULL, -- 'magick_color', 'harmful', 'neutral'
     description TEXT,
-    ethical_considerations TEXT, -- Important ethical points to consider
     intensity_level VARCHAR(20), -- 'minor', 'moderate', 'serious', 'severe'
-    is_controversial BOOLEAN DEFAULT FALSE, -- Does this spark ethical debate?
-    wiccan_rede_compatible BOOLEAN, -- Is this compatible with "Harm None"?
-    threefold_law_warning BOOLEAN DEFAULT FALSE, -- Should practitioners be warned about karmic return?
-    when_appropriate TEXT, -- When might this type of work be appropriate
-    alternatives TEXT, -- Suggest less harmful alternatives
-    color VARCHAR(7), -- Visual indicator color
+    examples TEXT, -- Factual examples of this type of magical work
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
-    CONSTRAINT valid_category CHECK (category IN ('magick_color', 'harmful', 'neutral')),
     CONSTRAINT valid_intensity CHECK (intensity_level IN ('minor', 'moderate', 'serious', 'severe'))
 );
 
 CREATE INDEX idx_spell_ethics_slug ON spell_ethics(slug);
-CREATE INDEX idx_spell_ethics_category ON spell_ethics(category);
 CREATE INDEX idx_spell_ethics_intensity ON spell_ethics(intensity_level);
 
 -- Grimoire traditions: Use entity_traditions table with entity_type='grimoire'

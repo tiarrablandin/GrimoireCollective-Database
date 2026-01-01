@@ -176,129 +176,100 @@ INSERT INTO spell_methods (name, slug, description, difficulty_level, typical_du
 -- SPELL ETHICS (The "Vibe" - ethical categories and intensity)
 -- =============================================================================
 
-INSERT INTO spell_ethics (name, slug, category, description, ethical_considerations, intensity_level, is_controversial, wiccan_rede_compatible, threefold_law_warning, when_appropriate, alternatives, color) VALUES
-    -- Magick Color Categories
-    ('White Magick', 'white-magick', 'magick_color',
+-- ============================================================================
+-- SPELL ETHICS DATA
+-- ============================================================================
+-- Simplified to contain only factual information about spell types without
+-- imposing specific ethical frameworks or judgmental categorizations.
+-- Users from different magical traditions can assess the nature of magical
+-- work based on factual descriptions and make their own ethical decisions.
+--
+-- REMOVED PRESCRIPTIVE COLUMNS:
+-- - category (magick_color/harmful/neutral classifications)
+-- - ethical_considerations (prescriptive ethical guidance)
+-- - is_controversial (subjective judgments)
+-- - wiccan_rede_compatible (tradition-specific framework)
+-- - threefold_law_warning (tradition-specific karmic warnings)
+-- - when_appropriate (prescriptive usage guidance)
+-- - alternatives (prescriptive suggestions)
+-- - color (visual metadata)
+-- ============================================================================
+
+INSERT INTO spell_ethics (name, slug, description, intensity_level, examples) VALUES
+    ('White Magick', 'white-magick',
      'Magical work focused on healing, helping, blessing, and positive outcomes for all involved. Altruistic in nature.',
-     'Generally accepted across all traditions. Focuses on "highest good of all." Does not manipulate free will or cause harm.',
-     'minor', FALSE, TRUE, FALSE,
-     'Healing work, blessings, protection, personal growth, helping others who have asked for assistance.',
-     'N/A - this is the positive baseline.',
- '#22C55E'),
+     'minor',
+     'Healing work, blessings, protection spells, personal growth rituals, helping others who have asked for assistance'),
     
-    ('Gray Magick', 'gray-magick', 'magick_color',
-     'Practical magic that is neither inherently good nor evil. Self-interested work that doesn''t harm others. The "mundane" middle ground.',
-     'Most everyday magic falls here. Getting a job, finding a parking spot, prosperity work. Benefits you but doesn''t hurt others.',
-     'minor', FALSE, TRUE, FALSE,
-     'Personal prosperity, job seeking, luck work, self-improvement, attracting opportunities. Any work that helps you without harming others.',
-     'Always consider if your gain is at another''s expense. If so, reconsider.',
- '#6B7280'),
+    ('Gray Magick', 'gray-magick',
+     'Practical magic that is neither inherently positive nor negative. Self-interested work that addresses personal needs without directly affecting others.',
+     'minor',
+     'Personal prosperity spells, job seeking magic, luck work, self-improvement rituals, attracting opportunities'),
     
-    ('Black Magick', 'black-magick', 'magick_color',
-     'Magical work intended to cause harm, control, manipulate, or act against another''s free will. Generally considered "dark" or "left-hand path."',
-     'HIGHLY CONTROVERSIAL. Wiccans and Rede-followers avoid entirely. Other practitioners view as valid for justice/defense. Consider karmic implications carefully.',
-     'severe', TRUE, FALSE, TRUE,
-     'Some practitioners use for justice when legal system fails, protection against active threats, or in self-defense. Many practitioners never use at all.',
-     'Protection work, boundary setting, freezer spells (less harmful), seeking legal justice, cutting cords.',
- '#1F2937'),
+    ('Black Magick', 'black-magick',
+     'Magical work involving influence, control, or work against another''s will. Often called "dark" or "left-hand path" magic.',
+     'severe',
+     'Coercive spells, justice work when legal systems fail, defensive magic against active threats'),
     
-    -- Harmful/Controversial Specific Categories
-    ('Jinx', 'jinx', 'harmful',
-     'A minor "bad luck" spell or curse. Typically short-term annoyance rather than serious harm. The lightest form of negative magick.',
-     'Still considered harmful work. Intent matters. Even minor negativity can escalate or backlash. Many traditions discourage.',
-     'minor', TRUE, FALSE, TRUE,
-     'Rarely appropriate. Perhaps for a harmless prank (shoelaces untying, minor inconveniences) among consenting friends. Most practitioners avoid.',
-     'Focus on your own protection and success rather than diminishing others.',
- '#F59E0B'),
+    ('Jinx', 'jinx',
+     'A minor "bad luck" working or small curse. Typically creates short-term inconvenience rather than serious harm.',
+     'minor',
+     'Minor inconvenience spells, temporary bad luck workings, small-scale retribution magic'),
     
-    ('Hex', 'hex', 'harmful',
-     'A more serious negative spell, often used for justice or "return to sender" purposes. Intended to bring bad luck or consequences.',
-     'CONTROVERSIAL. Some view as justified when legal recourse fails. Others see as violating core principles. Threefold Law concerns.',
-     'serious', TRUE, FALSE, TRUE,
-     'When someone has done serious harm, legal system won''t help, and you need to stop ongoing damage. "May they receive what they''ve given" approach.',
-     'Binding (prevents harm without harming), freezer spell, mirror shield (reflects back), strong boundary work, legal action.',
- '#EF4444'),
+    ('Hex', 'hex',
+     'A more serious negative working, often used for justice or "return to sender" purposes. Intended to bring consequences or bad fortune.',
+     'serious',
+     '"Return what was given" workings, justice spells when legal recourse is unavailable, consequence magic'),
     
-    ('Curse', 'curse', 'harmful',
-     'Heavy, long-term intention of significant harm. The most severe form of harmful magick. Creates lasting negative effects.',
-     'EXTREMELY CONTROVERSIAL. Most practitioners never curse. Those who do reserve it for severe situations. Karmic return is substantial.',
-     'severe', TRUE, FALSE, TRUE,
-     'Virtually never appropriate. Perhaps in extreme cases of ongoing abuse where all other methods have failed and lives are at stake.',
-     'ANYTHING ELSE. Seriously. Binding, protection, distance, legal action, physical safety measures. Curses should be absolute last resort.',
- '#7F1D1D'),
+    ('Curse', 'curse',
+     'Heavy, long-term working intended to create significant negative effects. The most severe form of harmful magic.',
+     'severe',
+     'Long-term consequence workings, serious retribution magic, substantial harmful spells'),
     
-    ('Binding', 'binding', 'neutral',
-     'Restricting someone''s ability to cause harm without causing harm to them. Prevents action rather than punishing.',
-     'More ethically defensible than hexes/curses. Doesn''t harm, just prevents. Still involves working on another without consent.',
-     'moderate', TRUE, TRUE, FALSE,
-     'When someone is actively causing harm to you or others, and you need to stop the behavior without harming them. Think "magical restraining order."',
-     'Strong personal boundaries, protection work, physical distance, legal restraining order.',
- '#6B7280'),
+    ('Binding', 'binding',
+     'Magic that restricts someone''s ability to cause harm without directly harming them. Prevents action rather than punishing.',
+     'moderate',
+     'Restraining harmful behavior, preventing someone from causing damage, magical restraint workings'),
     
-    -- Neutral/Descriptive Categories
-    ('Banishing', 'banishing', 'neutral',
+    ('Banishing', 'banishing',
      'Forcefully removing unwanted energy, habits, people, or situations from your life. Clearing what doesn''t serve.',
-     'Generally accepted as self-protection and self-care. Different from harmful work because focus is on removing from YOUR space, not harming them.',
-     'moderate', FALSE, TRUE, FALSE,
-     'Removing negative energy, breaking bad habits, ending toxic relationships, clearing spiritual attachments, removing obstacles.',
-     'Gentler releasing work, cord cutting, cleansing, simply creating distance.',
- '#06B6D4'),
+     'moderate',
+     'Removing negative energy, breaking bad habits, ending toxic relationships, clearing spiritual attachments, removing obstacles'),
     
-    ('Manipulation', 'manipulation', 'harmful',
-     'Spells designed to control another person''s thoughts, feelings, or actions against their natural will.',
-     'MAJOR ETHICAL VIOLATION. Includes love spells on specific people, job spells to make someone choose you over others, etc. Interferes with free will.',
-     'serious', TRUE, FALSE, TRUE,
-     'Never appropriate. Free will violation is considered deeply problematic in most traditions.',
-     'Attraction work (drawing love IN rather than targeting specific person), working on yourself to be best candidate, glamour work on yourself.',
- '#DC2626'),
+    ('Manipulation', 'manipulation',
+     'Spells designed to influence another person''s thoughts, feelings, or actions against their natural inclination.',
+     'serious',
+     'Love spells targeting specific individuals, spells to influence hiring decisions, workings to control another''s choices'),
     
-    ('Justice Work', 'justice-work', 'neutral',
-     'Spells seeking truth, fairness, or appropriate consequences. Often invokes divine justice rather than personal revenge.',
-     'More acceptable than revenge. Seeks balance and truth rather than harm. "May truth come to light" vs "May they suffer."',
-     'moderate', FALSE, TRUE, FALSE,
-     'Legal situations, finding truth, ensuring fairness, court cases, when wrongs need to be righted but you leave exact consequences to karma/universe.',
-     'Legal action, truth-seeking work, personal healing from injustice.',
- '#6366F1'),
+    ('Justice Work', 'justice-work',
+     'Spells seeking truth, fairness, or appropriate consequences. Often invokes divine or karmic justice.',
+     'moderate',
+     'Truth-seeking spells, court case magic, fairness workings, "may truth come to light" rituals'),
     
-    ('Glamour', 'glamour', 'neutral',
+    ('Glamour', 'glamour',
      'Spells affecting perception - making yourself appear more confident, attractive, or authoritative in others'' eyes.',
-     'When done on yourself, generally fine. When used to deceive or manipulate perceptions unethically, problematic.',
-     'minor', FALSE, TRUE, FALSE,
-     'Job interviews, first dates, presentations, situations where you want your best self to shine through. Enhancing natural qualities.',
-     'Working on genuine self-confidence, actual skill building, being authentically yourself.',
- '#EC4899'),
+     'minor',
+     'Confidence enhancement for interviews, attraction spells on yourself, presentation magic, charisma workings'),
     
-    ('Sweetening', 'sweetening', 'neutral',
-     'Using "sweet" ingredients (honey, sugar) to make a person or situation more favorable toward you. Honey jar spells.',
-     'Gentle influence. Less controlling than manipulation but still affecting another''s disposition. Consider if it''s nudging or controlling.',
-     'minor', TRUE, TRUE, FALSE,
-     'Smoothing difficult relationships, helping grumpy bosses be more reasonable, making stressful situations easier. "Take the edge off" rather than control.',
-     'Communication skills, addressing issues directly, finding compromise, working on your own responses.',
- '#F59E0B'),
+    ('Sweetening', 'sweetening',
+     'Using "sweet" ingredients (honey, sugar) to make a person or situation more favorable toward you.',
+     'minor',
+     'Honey jar spells, sugar bowl workings, sweetening difficult relationships, improving others'' dispositions toward you'),
     
-    ('Crossing', 'crossing', 'harmful',
-     'Southern folk magic term for sending negative energy or "crossing someone up" - similar to hexing.',
-     'Part of Hoodoo/rootwork tradition. Used for justice or defense. Not to be taken lightly. Practitioners trained in when/how.',
-     'serious', TRUE, FALSE, TRUE,
-     'In traditions where this is practiced: justice work, stopping harm, protection. Requires training and understanding of tradition.',
-     'Uncrossing (removing crossings), protection, binding, traditional justice work.',
- '#DC2626'),
+    ('Crossing', 'crossing',
+     'Term from Southern folk magic for sending negative energy or creating obstacles. Similar to hexing.',
+     'serious',
+     'Hoodoo justice work, rootwork consequence spells, crossing workings in traditional practice'),
     
-    ('Defensive Magick', 'defensive-magick', 'neutral',
-     'Protective work in response to active threats or attacks. Shields, wards, return-to-sender.',
-     'Generally accepted as valid self-defense. Difference between offensive (attacking) and defensive (protecting).',
-     'moderate', FALSE, TRUE, FALSE,
-     'When under active magical or psychic attack, dealing with negative energy directed at you, protecting from known threats.',
-     'Prevention through regular cleansing/protection, distance from toxic people, professional help if needed.',
- '#14B8A6'),
+    ('Defensive Magick', 'defensive-magick',
+     'Protective work in response to active threats or attacks. Shields, wards, return-to-sender magic.',
+     'moderate',
+     'Psychic self-defense, magical shielding, return-to-sender spells, warding against attacks'),
     
-    ('Love Spell', 'love-spell', 'harmful',
-     'Spells targeting a SPECIFIC person to make them love you or feel attracted to you.',
-     'MAJOR CONTROVERSY. Interferes with free will. Rede followers avoid completely. Results are often problematic - forced love isn''t real.',
-     'serious', TRUE, FALSE, TRUE,
-     'Generally NOT appropriate. If you must: only on yourself (self-love), or general "draw my perfect match" without targeting anyone specific.',
-     'Self-love work, removing personal blocks to love, "draw compatible partner" (not specific person), glamour on yourself, actual communication.',
-     '#FFB3C1');
+    ('Love Spell', 'love-spell',
+     'Spells targeting a specific person to create or enhance romantic feelings toward the practitioner.',
+     'serious',
+     'Targeted romantic attraction spells, specific-person love workings, compelling romantic interest');
 
 -- Add missing intentions related to spell types that weren't already in the system
 -- NOTE: Related elements linked via entity_elements junction table (entity_type='intention')
