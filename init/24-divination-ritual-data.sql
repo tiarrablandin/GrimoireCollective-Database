@@ -179,9 +179,17 @@ DECLARE
 BEGIN
     SELECT id INTO admin_user_id FROM users WHERE username = 'admin' LIMIT 1;
 
+    -- Ritual Tools Seed Data
+    -- NOTE: Additional relationships are managed via polymorphic junction tables:
+    --   - Element associations: entity_elements (entity_type='ritual_tool')
+    --   - Tradition associations: entity_traditions (entity_type='ritual_tool')
+    --   - Magical properties/uses: entity_intentions (entity_type='ritual_tool')
+    --   - Deity associations: entity_deities (entity_type='ritual_tool')
+    --   - Zodiac associations: entity_zodiac_signs (entity_type='ritual_tool')
+    --   - Sabbat associations: entity_ritual_tools (entity_type='sabbat', ritual_tool_id=tool_id)
     INSERT INTO ritual_tools (
-        name, slug, alternative_names, tool_category, element, tradition,
-        description, history, symbolism, magical_uses, how_to_use,
+        name, slug, alternative_names, tool_category,
+        description, history, symbolism, how_to_use,
         consecration_methods, traditional_materials, cleansing_methods,
         purposes, created_by, is_verified
     ) VALUES
@@ -189,11 +197,10 @@ BEGIN
     -- Athame
     (
         'Athame', 'athame', ARRAY['Ritual Knife', 'Black-Handled Knife'],
-        'elemental', 'Air', 'Wiccan/Western',
+        'elemental',
         'A ceremonial double-edged blade used to direct energy, cast circles, and perform ritual work. Traditionally has a black handle and is never used for physical cutting.',
         'The athame became prominent in modern Wicca through Gerald Gardner in the 1950s. Similar ritual knives appear in ceremonial magic traditions like the Key of Solomon. The black handle distinguishes it from the white-handled knife (boline) used for physical cutting.',
         'Represents the element of Air (in some traditions Fire). Symbolizes the masculine principle, will, and directed intention. The blade cuts through negative energy and marks boundaries.',
-        'Cast and close magic circles, direct energy during spellwork, invoke elements and deities, cut energetic cords, charge objects, symbolize authority in ritual.',
         'Hold with intention, point to direct energy. Draw a circle by pointing and walking clockwise. Use to "cut" doorways in the circle for entering/exiting. Never use for physical cutting in ritual context.',
         'Pass through incense smoke, anoint with oil, charge under full moon, consecrate with salt and water, perform dedicatory ritual.',
         ARRAY['steel blade', 'black handle (wood, bone, or resin)', 'traditionally double-edged'],
@@ -205,11 +212,10 @@ BEGIN
     -- Wand
     (
         'Wand', 'wand', ARRAY['Magic Wand', 'Ritual Wand'],
-        'elemental', 'Air', 'Universal',
+        'elemental',
         'A rod used to direct magical energy, invoke deities and elements, and channel will. Often made from wood, but can be crystal, metal, or other materials.',
         'Wands have been used in magic for thousands of years. Ancient Egyptian priests used wands. The ancient Greeks and Romans used wands (caduceus). Medieval grimoires detail wand construction. Each magical tradition has its own wand lore.',
         'Represents Air (or Fire in some traditions). Symbolizes will, power, and authority. The extension of the practitioner''s arm and intention. Channels and directs energy.',
-        'Invoke elements and quarters, direct energy in spellwork, channel healing energy, invoke deities, stir potions and brews, trace symbols in the air.',
         'Hold and point to direct energy. Use flowing motions rather than sharp gestures. Can trace pentacles, spirals, or other symbols. Use to gently invoke rather than command.',
         'Carve or paint with symbols, anoint with oil, bury in earth for three days, charge with your intention, consecrate in ritual.',
         ARRAY['wood (oak, willow, hazel, elder)', 'crystal wand', 'copper or other metal', 'often decorated with crystals/stones'],
@@ -221,11 +227,10 @@ BEGIN
     -- Chalice
     (
         'Chalice', 'chalice', ARRAY['Ritual Cup', 'Goblet'],
-        'elemental', 'Water', 'Universal',
+        'elemental',
         'A ceremonial cup or goblet representing the element of Water. Used to hold ritual beverages, water, wine, or represent the divine feminine on the altar.',
         'Ritual cups have been sacred for millennia. The Holy Grail of Arthurian legend is a famous magical chalice. Ancient cultures used special vessels for libations to gods. The chalice became central in modern witchcraft and ceremonial magic.',
         'Represents Water element and the womb. Symbolizes the feminine principle, receptivity, intuition, and emotion. The vessel that receives and holds.',
-        'Hold ritual beverages for cakes and ale ceremony, contain blessed water, represent Goddess on altar, scrying with water, mixing ritual potions.',
         'Fill with water, wine, or ritual beverage. Bless and consecrate contents. Drink mindfully during ritual. Can also contain water for scrying or blessing tools.',
         'Fill with salt water and let sit under full moon, anoint with oil, consecrate with all four elements, dedicate to deity.',
         ARRAY['silver', 'glass', 'ceramic', 'pewter', 'copper', 'brass'],
@@ -237,11 +242,10 @@ BEGIN
     -- Pentacle
     (
         'Pentacle', 'pentacle', ARRAY['Altar Pentacle', 'Paten'],
-        'elemental', 'Earth', 'Western',
+        'elemental',
         'A disk inscribed with a pentagram (five-pointed star), representing Earth. Used as a working surface for consecrating objects, grounding energy, and altar centerpiece.',
         'The pentagram is one of the oldest magical symbols, used by ancient Greeks and medieval magicians. The pentacle (pentagram within circle) became prominent in ceremonial magic and modern Wicca. Each point represents an element, with Spirit at the top.',
         'Represents Earth element. Symbolizes manifestation, grounding, and protection. The five points represent Earth, Air, Fire, Water, and Spirit. The circle represents wholeness and protection.',
-        'Consecrate and charge objects, ground energy, place offerings, charging plate for crystals, protective symbol on altar, focus for Earth energy work.',
         'Place items on pentacle to charge or consecrate them. Use as working surface during spellwork. Can trace pentagram shape in the air for protection or invocation.',
         'Bury in earth overnight, sprinkle with salt, anoint with oil, charge with elemental energies, consecrate in ritual.',
         ARRAY['wood', 'metal (brass, copper, silver)', 'ceramic', 'stone', 'clay'],
@@ -253,11 +257,10 @@ BEGIN
     -- Censer
     (
         'Censer', 'censer', ARRAY['Incense Burner', 'Thurible'],
-        'altar', 'Fire', 'Universal',
+        'altar',
         'A vessel for burning incense, representing the element of Fire or Air. Used to purify space, create sacred atmosphere, and send prayers and intentions skyward with the smoke.',
         'Incense burners have been used in religious and magical practices worldwide for thousands of years. Ancient Egypt, Greece, Rome, and Asia all had elaborate censers. Churches use thuribles. Burning incense creates sacred space.',
         'Represents Fire (heat and combustion) or Air (rising smoke). The rising smoke carries prayers to the divine. Purifies and sanctifies space. Creates boundary between mundane and sacred.',
-        'Burn loose incense or cones, cleanse ritual space, carry around space for purification, burn offerings, create sacred atmosphere, honor deities.',
         'Add charcoal disk and light it. Once glowing, sprinkle incense on top. For stick incense, simply light and place in holder. Walk around space to cleanse, or let burn on altar.',
         'Clean thoroughly, fill with salt overnight, pass through elements, charge with intention.',
         ARRAY['metal (brass, copper, cast iron)', 'ceramic', 'stone', 'abalone shell', 'heat-proof container'],
@@ -269,11 +272,10 @@ BEGIN
     -- Cauldron
     (
         'Cauldron', 'cauldron', ARRAY['Witch''s Cauldron', 'Ritual Pot'],
-        'altar', 'Water', 'Celtic/Universal',
+        'altar',
         'A three-legged pot used for brewing potions, burning offerings, scrying with water, and as a powerful altar tool. Symbol of the Goddess and transformation.',
         'Cauldrons are ancient cooking vessels that became magical symbols. Celtic mythology features magical cauldrons like the Cauldron of Dagda. The witch''s cauldron became iconic in folklore. Represents the womb of the Goddess.',
         'Represents transformation, rebirth, and the womb. The three legs represent the Triple Goddess. Contains and transforms. Where ingredients combine into something new.',
-        'Mix and brew potions, burn herbs and offerings, hold water for scrying, simmer ritual brews, burn spell papers safely, fill with water for Goddess ritual.',
         'Use on heat-safe surface. Can place over fire for brewing. Fill with water, herbs, or oils. Burn small items inside. Scry with water-filled cauldron.',
         'Fill with salt water under full moon, smoke cleanse, bury in earth, pass through all elements.',
         ARRAY['cast iron (traditional)', 'copper', 'brass', 'ceramic'],
@@ -285,11 +287,10 @@ BEGIN
     -- Besom
     (
         'Besom', 'besom', ARRAY['Witch''s Broom', 'Ritual Broom'],
-        'altar', 'Air', 'European',
+        'altar',
         'A traditional witch''s broom used to sweep away negative energy and cleanse ritual space. Not used for physical cleaning, but for energetic purification.',
         'Brooms have been magical symbols for centuries. European folklore associates brooms with witches. Jumping the broom is a Celtic handfasting tradition. The besom sweeps away old energy before ritual.',
         'Represents the union of masculine (staff) and feminine (bristles). Sweeps away negative energy and creates clean sacred space. Associated with flight and freedom in folklore.',
-        'Sweep ritual space before working, cleanse altar area, sweep away negativity, handfasting ceremonies (jumping the broom), protection when placed by doorway.',
         'Sweep just above the ground without touching, moving counterclockwise to banish or clockwise to invoke. Visualize negative energy being swept away. Never let bristles touch the ground in ritual.',
         'Pass through smoke, sprinkle with salt water, charge under full moon, bind with intention.',
         ARRAY['natural bristles (straw, twigs)', 'wooden handle', 'natural fiber binding'],
@@ -301,11 +302,10 @@ BEGIN
     -- Book of Shadows
     (
         'Book of Shadows', 'book-of-shadows', ARRAY['Grimoire', 'Magical Journal', 'BOS'],
-        'altar', 'All', 'Wiccan/Modern',
+        'altar',
         'A personal journal for recording spells, rituals, correspondences, magical experiences, and wisdom. Your most personal magical tool, containing your unique path and practice.',
         'The term "Book of Shadows" was popularized by Gerald Gardner in the 1950s for Wiccan practice books. Historical grimoires and magical texts served similar purposes for centuries. Each practitioner creates their own.',
         'Represents knowledge, wisdom, and personal power. Contains your magical history and growth. A living document that evolves with your practice.',
-        'Record spells and rituals, track moon phases and magical timing, document magical experiments and results, preserve correspondences and recipes, journal spiritual experiences.',
         'Write by hand for personal connection. Date entries. Include what worked and what didn''t. Add drawings, pressed herbs, or other meaningful items. Organize in a way that makes sense to you.',
         'Dedicate in ritual, bless with all elements, place crystals on it to charge, write intention on first page.',
         ARRAY['blank book or journal', 'binder for flexibility', 'handmade book', 'digital (modern option)'],

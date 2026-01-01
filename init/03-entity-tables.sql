@@ -736,8 +736,8 @@ CREATE TABLE ritual_tools (
     
     -- Classification
     tool_category VARCHAR(100), -- e.g., 'elemental', 'altar', 'energy_direction', 'divination'
-    element VARCHAR(20), -- Air, Fire, Water, Earth, Spirit
-    tradition VARCHAR(100),
+    -- NOTE: Element associations linked via entity_elements junction table (entity_type='ritual_tool')
+    -- NOTE: Tradition linked via entity_traditions junction table (entity_type='ritual_tool')
     
     -- Description
     description TEXT NOT NULL,
@@ -745,13 +745,13 @@ CREATE TABLE ritual_tools (
     symbolism TEXT,
     
     -- Usage
-    magical_uses TEXT,
+    -- NOTE: Magical uses/properties linked via entity_intentions junction table (entity_type='ritual_tool')
     how_to_use TEXT,
     consecration_methods TEXT,
     charging_methods TEXT,
     
     -- Magical Properties
-    magical_properties TEXT[],
+    -- NOTE: Magical properties linked via entity_intentions junction table (entity_type='ritual_tool')
     purposes TEXT[], -- e.g., ['directing energy', 'casting circle', 'divination']
     
     -- Materials & Creation
@@ -764,18 +764,16 @@ CREATE TABLE ritual_tools (
     storage_recommendations TEXT,
     
     -- Associations
-    associated_deities TEXT[],
-    zodiac_signs TEXT[],
-    sabbats_associated TEXT[],
+    -- NOTE: Deity associations linked via entity_deities junction table (entity_type='ritual_tool')
+    -- NOTE: Zodiac associations linked via entity_zodiac_signs junction table (entity_type='ritual_tool')
+    -- NOTE: Sabbat associations linked via entity_ritual_tools junction table (entity_type='sabbat', ritual_tool_id=this)
     
     -- Metadata
     is_verified BOOLEAN DEFAULT FALSE,
     created_by UUID REFERENCES users(id) ON DELETE SET NULL,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    
-    CONSTRAINT valid_element CHECK (element IN ('Air', 'Fire', 'Water', 'Earth', 'Spirit', 'All'))
+    deleted_at TIMESTAMP
 );
 
 -- Media: Use entity_media table with entity_type='ritual_tool'
@@ -784,7 +782,6 @@ CREATE TABLE ritual_tools (
 
 CREATE INDEX idx_ritual_tools_slug ON ritual_tools(slug);
 CREATE INDEX idx_ritual_tools_category ON ritual_tools(tool_category);
-CREATE INDEX idx_ritual_tools_element ON ritual_tools(element);
 
 -- =============================================================================
 -- TRIGGERS FOR UPDATED_AT
