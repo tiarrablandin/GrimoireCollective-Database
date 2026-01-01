@@ -417,7 +417,7 @@ CREATE TABLE salts (
     name VARCHAR(100) UNIQUE NOT NULL,
     slug VARCHAR(100) UNIQUE NOT NULL,
     alternative_names TEXT[],
-    salt_type VARCHAR(50) NOT NULL, -- bath, ritual, spell, protection, cleansing, etc.
+    -- NOTE: salt_type removed - use entity_intentions junction table (entity_type='salt') to link to intention types
     
     -- Base Salt Type
     base_salt VARCHAR(50), -- sea_salt, epsom_salt, himalayan_salt, black_salt, etc.
@@ -427,10 +427,10 @@ CREATE TABLE salts (
     texture VARCHAR(30), -- fine, coarse, chunky
     
     -- Magical Properties
-    magical_properties TEXT[],
-    element VARCHAR(20),
-    planet VARCHAR(50),
-    zodiac_signs TEXT[],
+    -- NOTE: Magical properties linked via entity_intentions junction table (entity_type='salt')
+    -- NOTE: Element associations linked via entity_elements junction table (entity_type='salt')
+    -- NOTE: Planet associations linked via entity_planets junction table (entity_type='salt')
+    -- NOTE: Zodiac associations linked via entity_zodiac_signs junction table (entity_type='salt')
     
     -- Usage Information
     description TEXT NOT NULL,
@@ -478,16 +478,12 @@ CREATE TABLE salts (
     -- Timestamps
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    deleted_at TIMESTAMP,
-    
-    CONSTRAINT valid_element CHECK (element IN ('Earth', 'Air', 'Fire', 'Water', 'Spirit', 'All'))
+    deleted_at TIMESTAMP
 );
 
 -- Indexes for salts
 CREATE INDEX idx_salts_slug ON salts(slug) WHERE deleted_at IS NULL;
 CREATE INDEX idx_salts_name ON salts(name) WHERE deleted_at IS NULL;
-CREATE INDEX idx_salts_type ON salts(salt_type) WHERE deleted_at IS NULL;
-CREATE INDEX idx_salts_properties ON salts USING GIN (magical_properties);
 CREATE INDEX idx_salts_verified ON salts(is_verified) WHERE deleted_at IS NULL;
 CREATE INDEX idx_salts_has_recipe ON salts(has_recipe) WHERE has_recipe = true AND deleted_at IS NULL;
 
