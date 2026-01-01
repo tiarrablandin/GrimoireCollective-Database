@@ -118,14 +118,27 @@ CREATE TABLE user_subscriptions (
     started_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     expires_at TIMESTAMP,
     cancelled_at TIMESTAMP,
+    -- Payment provider fields
     payment_provider VARCHAR(50),
     payment_id VARCHAR(255),
+    -- Square-specific fields
+    square_customer_id VARCHAR(255), -- Square customer ID for API operations
+    square_location_id VARCHAR(100), -- Square location where subscription was created
+    square_subscription_version BIGINT, -- Version number for optimistic locking
+    square_plan_id VARCHAR(255), -- Square catalog plan/subscription ID
+    trial_end_date TIMESTAMP, -- When trial period ends (if applicable)
+    next_billing_date TIMESTAMP, -- Next scheduled billing date
+    billing_anchor_day INTEGER, -- Day of month for billing (1-31)
+    square_webhook_events JSONB, -- Recent webhook events for debugging/audit
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT valid_status CHECK (status IN ('active', 'cancelled', 'expired', 'suspended'))
+    CONSTRAINT valid_status CHECK (status IN ('active', 'cancelled', 'expired', 'suspended')),
+    CONSTRAINT valid_billing_anchor CHECK (billing_anchor_day IS NULL OR (billing_anchor_day >= 1 AND billing_anchor_day <= 31))
 );
 
 CREATE INDEX idx_user_subscriptions_user_status ON user_subscriptions(user_id, status);
+CREATE INDEX idx_user_subscriptions_square_customer ON user_subscriptions(square_customer_id) WHERE square_customer_id IS NOT NULL;
+CREATE INDEX idx_user_subscriptions_next_billing ON user_subscriptions(next_billing_date) WHERE next_billing_date IS NOT NULL;
 
 -- =============================================================================
 -- CONTENT TYPES & STATUS
