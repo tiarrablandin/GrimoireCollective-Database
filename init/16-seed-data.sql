@@ -183,10 +183,10 @@ SELECT
     t.id
 FROM grimoires g
 CROSS JOIN tags t
-WHERE (g.slug = 'simple-protection-spell-beginners' AND t.slug IN ('beginner-friendly', 'candle-magic', 'quick-spell', 'solitary'))
-   OR (g.slug = 'full-moon-manifestation-ritual' AND t.slug IN ('full-moon', 'visualization', 'outdoor', 'solitary'))
-   OR (g.slug = 'rosemary-magical-herb' AND t.slug IN ('beginner-friendly', 'daily-practice'))
-   OR (g.slug = 'clear-quartz-master-healer' AND t.slug IN ('beginner-friendly', 'meditation'));
+WHERE (g.slug = 'simple-protection-spell-beginners' AND t.name IN ('beginner-friendly', 'candle-magic', 'quick-spell', 'solitary'))
+   OR (g.slug = 'full-moon-manifestation-ritual' AND t.name IN ('full-moon', 'visualization', 'outdoor', 'solitary'))
+   OR (g.slug = 'rosemary-magical-herb' AND t.name IN ('beginner-friendly', 'daily-practice'))
+   OR (g.slug = 'clear-quartz-master-healer' AND t.name IN ('beginner-friendly', 'meditation'));
 
 -- Link grimoires to moon phases using entity_moon_phases polymorphic table
 INSERT INTO entity_moon_phases (entity_type, entity_id, moon_phase_id, effectiveness)

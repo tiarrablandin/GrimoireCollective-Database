@@ -311,14 +311,11 @@ CREATE INDEX idx_categories_slug ON categories(slug);
 CREATE TABLE tags (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(50) UNIQUE NOT NULL,
-    slug VARCHAR(50) UNIQUE NOT NULL,
-    description TEXT,
     usage_count INTEGER DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE INDEX idx_tags_slug ON tags(slug);
 CREATE INDEX idx_tags_usage ON tags(usage_count DESC);
 
 -- Tag usage count trigger functions (must be defined before the triggers)
