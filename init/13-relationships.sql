@@ -219,8 +219,8 @@ CREATE TABLE entity_pairings (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     UNIQUE(entity_type_a, entity_id_a, entity_type_b, entity_id_b),
-    CONSTRAINT valid_entity_type_a CHECK (entity_type_a IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'divination_method', 'ritual_tool', 'element')),
-    CONSTRAINT valid_entity_type_b CHECK (entity_type_b IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'divination_method', 'ritual_tool', 'element')),
+    CONSTRAINT valid_entity_type_a CHECK (entity_type_a IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'divination_method', 'ritual_tool', 'element', 'spell_method')),
+    CONSTRAINT valid_entity_type_b CHECK (entity_type_b IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'divination_method', 'ritual_tool', 'element', 'spell_method')),
     CONSTRAINT valid_strength CHECK (strength IN ('strong', 'moderate', 'weak'))
 );
 
@@ -654,4 +654,5 @@ CREATE TABLE grimoire_spell_ethics (
 
 CREATE INDEX idx_grimoire_spell_ethics_grimoire ON grimoire_spell_ethics(grimoire_id);
 CREATE INDEX idx_grimoire_spell_ethics_ethic ON grimoire_spell_ethics(spell_ethic_id);
+
 

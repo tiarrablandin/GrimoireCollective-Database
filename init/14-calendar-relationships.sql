@@ -186,3 +186,30 @@ BEGIN
         ('calendar', new_moon_id, reflection_id, 'moderate');
         
 END $$;
+
+-- =============================================================================
+-- SPELL METHOD RELATIONSHIPS (using entity_pairings polymorphic table)
+-- =============================================================================
+-- Links related spell methods (similar techniques, variations, complementary practices)
+-- =============================================================================
+
+INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, purpose, strength)
+SELECT 'spell_method', sm1.id, 'spell_method', sm2.id, 'complementary', 'Poppet magick often uses sympathetic magick principles', 'strong'
+FROM spell_methods sm1, spell_methods sm2 
+WHERE sm1.slug = 'poppet-magick' AND sm2.slug = 'sympathetic-magick'
+UNION ALL
+SELECT 'spell_method', sm1.id, 'spell_method', sm2.id, 'complementary', 'Taglock work enhances sympathetic magick', 'strong'
+FROM spell_methods sm1, spell_methods sm2 
+WHERE sm1.slug = 'taglock-magick' AND sm2.slug = 'sympathetic-magick'
+UNION ALL
+SELECT 'spell_method', sm1.id, 'spell_method', sm2.id, 'complementary', 'Petition papers often used in jar spells', 'moderate'
+FROM spell_methods sm1, spell_methods sm2 
+WHERE sm1.slug = 'petition-paper' AND sm2.slug = 'jar-spells'
+UNION ALL
+SELECT 'spell_method', sm1.id, 'spell_method', sm2.id, 'complementary', 'Chanting enhances visualization work', 'moderate'
+FROM spell_methods sm1, spell_methods sm2 
+WHERE sm1.slug = 'chanting-incantation' AND sm2.slug = 'visualization-meditation'
+UNION ALL
+SELECT 'spell_method', sm1.id, 'spell_method', sm2.id, 'complementary', 'Candle magick often incorporates petition papers', 'moderate'
+FROM spell_methods sm1, spell_methods sm2 
+WHERE sm1.slug = 'candle-magick' AND sm2.slug = 'petition-paper';

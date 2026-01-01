@@ -655,6 +655,17 @@ CREATE INDEX idx_traditions_type ON traditions(tradition_type);
 -- =============================================================================
 -- Different techniques/delivery systems for spellwork
 
+-- =============================================================================
+-- SPELL METHODS (How you do the magick)
+-- =============================================================================
+-- Specific techniques for casting spells (candle magick, jar spells, etc.)
+--
+-- NORMALIZATION NOTES:
+-- - materials_needed: Removed - materials are actual entities (crystals, herbs, etc.)
+--   When creating a spell, link specific materials via grimoire_crystals, grimoire_herbs, etc.
+-- - related_methods: Removed - use entity_pairings polymorphic table with entity_type='spell_method'
+-- =============================================================================
+
 CREATE TABLE spell_methods (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(100) NOT NULL UNIQUE,
@@ -662,11 +673,9 @@ CREATE TABLE spell_methods (
     description TEXT,
     difficulty_level VARCHAR(20), -- 'beginner', 'intermediate', 'advanced'
     typical_duration VARCHAR(100), -- 'Instant', 'Minutes', 'Days', 'Ongoing', etc.
-    materials_needed TEXT[], -- Common materials for this method
     instructions_summary TEXT, -- Basic overview of the technique
     tips TEXT, -- Helpful tips for this method
     warnings TEXT, -- Safety or ethical warnings
-    related_methods TEXT[], -- Names of similar or related methods
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
