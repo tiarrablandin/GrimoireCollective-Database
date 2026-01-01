@@ -291,7 +291,7 @@ CREATE TABLE entity_intentions (
     CONSTRAINT valid_entity_type CHECK (entity_type IN (
         'crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 
         'deity', 'divination_method', 'ritual_tool', 'element',
-        'moon_phase', 'zodiac_sign', 'calendar', 'chakra'
+        'moon_phase', 'zodiac_sign', 'calendar', 'chakra', 'planet'
     )),
     CONSTRAINT valid_strength CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive'))
 );
@@ -423,7 +423,8 @@ CREATE TABLE entity_moon_phases (
     
     UNIQUE(entity_type, entity_id, moon_phase_id),
     CONSTRAINT valid_entity_type CHECK (entity_type IN (
-        'crystal', 'herb', 'divination_method', 'grimoire', 'spell_method',
+        'crystal', 'herb', 'candle', 'oil', 'incense', 'salt',
+        'divination_method', 'grimoire', 'spell_method',
         'ritual_tool', 'intention', 'sabbat', 'deity'
     )),
     CONSTRAINT valid_effectiveness CHECK (effectiveness IN ('optimal', 'good', 'suitable', 'avoid'))
@@ -515,7 +516,8 @@ CREATE TABLE entity_deities (
     CONSTRAINT valid_entity_type CHECK (entity_type IN (
         'crystal', 'herb', 'candle', 'oil', 'incense', 'salt',
         'divination_method', 'ritual_tool', 'element', 'sabbat',
-        'moon_phase', 'zodiac_sign', 'animal', 'tree', 'planet'
+        'moon_phase', 'zodiac_sign', 'animal', 'tree', 'planet',
+        'grimoire'
     )),
     CONSTRAINT valid_relationship CHECK (relationship_type IN (
         'sacred_to', 'offering', 'invocation', 'symbol', 'associated', 'devotional'
@@ -528,65 +530,6 @@ CREATE INDEX idx_entity_deities_relationship ON entity_deities(relationship_type
 CREATE INDEX idx_entity_deities_type_deity ON entity_deities(entity_type, deity_id);
 
 CREATE TRIGGER update_entity_deities_updated_at BEFORE UPDATE ON entity_deities
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
--- =============================================================================
--- INTENTION RELATIONSHIPS
--- =============================================================================
--- Link intentions to elements and moon phases for recommendations
-
--- Link intentions to elements
-CREATE TABLE intention_elements (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    intention_id UUID NOT NULL REFERENCES intentions(id) ON DELETE CASCADE,
-    element_id UUID NOT NULL REFERENCES elements(id) ON DELETE CASCADE,
-    
-    -- Relationship details
-    strength VARCHAR(20) DEFAULT 'moderate', -- 'primary', 'strong', 'moderate', 'supportive'
-    notes TEXT, -- Why this element supports this intention
-    
-    -- Metadata
-    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
-    verified BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    
-    UNIQUE(intention_id, element_id),
-    CONSTRAINT valid_strength CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive'))
-);
-
-CREATE INDEX idx_intention_elements_intention ON intention_elements(intention_id);
-CREATE INDEX idx_intention_elements_element ON intention_elements(element_id);
-CREATE INDEX idx_intention_elements_strength ON intention_elements(strength);
-
-CREATE TRIGGER update_intention_elements_updated_at BEFORE UPDATE ON intention_elements
-    FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-
--- Link intentions to moon phases
-CREATE TABLE intention_moon_phases (
-    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    intention_id UUID NOT NULL REFERENCES intentions(id) ON DELETE CASCADE,
-    moon_phase_id UUID NOT NULL REFERENCES moon_phases(id) ON DELETE CASCADE,
-    
-    -- Relationship details
-    effectiveness VARCHAR(20) DEFAULT 'effective', -- 'optimal', 'effective', 'suitable', 'possible'
-    reason TEXT, -- Why this moon phase is good for this intention
-    
-    -- Metadata
-    created_by UUID REFERENCES users(id) ON DELETE SET NULL,
-    verified BOOLEAN DEFAULT FALSE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    
-    UNIQUE(intention_id, moon_phase_id),
-    CONSTRAINT valid_effectiveness CHECK (effectiveness IN ('optimal', 'effective', 'suitable', 'possible'))
-);
-
-CREATE INDEX idx_intention_moon_phases_intention ON intention_moon_phases(intention_id);
-CREATE INDEX idx_intention_moon_phases_phase ON intention_moon_phases(moon_phase_id);
-CREATE INDEX idx_intention_moon_phases_effectiveness ON intention_moon_phases(effectiveness);
-
-CREATE TRIGGER update_intention_moon_phases_updated_at BEFORE UPDATE ON intention_moon_phases
     FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
 
 -- =============================================================================

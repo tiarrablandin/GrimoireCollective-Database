@@ -6,8 +6,8 @@
 -- Note: Contains both base intentions and entity-specific intentions.
 --       Organized by category for easy reference.
 --
--- NOTE: Related elements are linked via intention_elements junction table
--- NOTE: Moon phases are linked via intention_moon_phases junction table
+-- NOTE: Related elements are linked via entity_elements junction table (entity_type='intention')
+-- NOTE: Moon phases are linked via entity_moon_phases junction table (entity_type='intention')
 -- NOTE: Colors removed - use UI theming or tag system instead
 -- =============================================================================
 

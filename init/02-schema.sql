@@ -513,13 +513,9 @@ CREATE TABLE deities (
 CREATE INDEX idx_deities_slug ON deities(slug);
 CREATE INDEX idx_deities_pantheon ON deities(pantheon_id);
 
--- Grimoire deities junction
-CREATE TABLE grimoire_deities (
-    grimoire_id UUID NOT NULL REFERENCES grimoires(id) ON DELETE CASCADE,
-    deity_id UUID NOT NULL REFERENCES deities(id) ON DELETE CASCADE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (grimoire_id, deity_id)
-);
+-- Grimoire deities: Use entity_deities table with entity_type='grimoire'
+-- Example: INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type)
+--          VALUES ('grimoire', grimoire_id_here, deity_id_here, 'invocation');
 
 -- Calendar (Wheel of the Year: Sabbats, Esbats, and other celebrations)
 CREATE TABLE calendar (
@@ -614,8 +610,8 @@ CREATE TABLE intentions (
     category VARCHAR(50), -- e.g., 'healing', 'protection', 'manifestation', 'spiritual', 'emotional'
     keywords TEXT[], -- Related search terms
     usage_guide TEXT, -- How to work with this intention
-    -- NOTE: Related elements are linked via intention_elements junction table
-    -- NOTE: Moon phases are linked via intention_moon_phases junction table
+    -- NOTE: Related elements are linked via entity_elements junction table (entity_type='intention')
+    -- NOTE: Moon phases are linked via entity_moon_phases junction table (entity_type='intention')
     -- NOTE: Colors removed - use UI theming or tag system instead
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -710,28 +706,14 @@ CREATE INDEX idx_spell_ethics_slug ON spell_ethics(slug);
 CREATE INDEX idx_spell_ethics_category ON spell_ethics(category);
 CREATE INDEX idx_spell_ethics_intensity ON spell_ethics(intensity_level);
 
--- Junction table for grimoires to traditions
-CREATE TABLE grimoire_traditions (
-    grimoire_id UUID NOT NULL REFERENCES grimoires(id) ON DELETE CASCADE,
-    tradition_id UUID NOT NULL REFERENCES traditions(id) ON DELETE CASCADE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (grimoire_id, tradition_id)
-);
-
-CREATE INDEX idx_grimoire_traditions_grimoire ON grimoire_traditions(grimoire_id);
-CREATE INDEX idx_grimoire_traditions_tradition ON grimoire_traditions(tradition_id);
+-- Grimoire traditions: Use entity_traditions table with entity_type='grimoire'
+-- Example: INSERT INTO entity_traditions (entity_type, entity_id, tradition_id, is_primary)
+--          VALUES ('grimoire', grimoire_id_here, tradition_id_here, TRUE);
 
 -- Calendar to Traditions junction (many-to-many since a holiday can be celebrated by multiple traditions)
-CREATE TABLE calendar_traditions (
-    calendar_id UUID NOT NULL REFERENCES calendar(id) ON DELETE CASCADE,
-    tradition_id UUID NOT NULL REFERENCES traditions(id) ON DELETE CASCADE,
-    is_primary BOOLEAN DEFAULT FALSE, -- Mark if this is the primary tradition for this holiday
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (calendar_id, tradition_id)
-);
-
-CREATE INDEX idx_calendar_traditions_calendar ON calendar_traditions(calendar_id);
-CREATE INDEX idx_calendar_traditions_tradition ON calendar_traditions(tradition_id);
+-- Calendar traditions: Use entity_traditions table with entity_type='calendar'
+-- Example: INSERT INTO entity_traditions (entity_type, entity_id, tradition_id, is_primary)
+--          VALUES ('calendar', calendar_id_here, tradition_id_here, TRUE);
 
 -- Zodiac Signs
 CREATE TABLE zodiac_signs (
@@ -753,13 +735,9 @@ CREATE TABLE zodiac_signs (
 
 CREATE INDEX idx_zodiac_slug ON zodiac_signs(slug);
 
--- Grimoire zodiac junction
-CREATE TABLE grimoire_zodiac (
-    grimoire_id UUID NOT NULL REFERENCES grimoires(id) ON DELETE CASCADE,
-    zodiac_id UUID NOT NULL REFERENCES zodiac_signs(id) ON DELETE CASCADE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (grimoire_id, zodiac_id)
-);
+-- Grimoire zodiac: Use entity_zodiac_signs table with entity_type='grimoire'
+-- Example: INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+--          VALUES ('grimoire', grimoire_id_here, zodiac_id_here, 'strong');
 
 -- Moon Phases
 CREATE TABLE moon_phases (
@@ -772,13 +750,9 @@ CREATE TABLE moon_phases (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
--- Grimoire moon phases junction
-CREATE TABLE grimoire_moon_phases (
-    grimoire_id UUID NOT NULL REFERENCES grimoires(id) ON DELETE CASCADE,
-    moon_phase_id UUID NOT NULL REFERENCES moon_phases(id) ON DELETE CASCADE,
-    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    PRIMARY KEY (grimoire_id, moon_phase_id)
-);
+-- Grimoire moon phases: Use entity_moon_phases table with entity_type='grimoire'
+-- Example: INSERT INTO entity_moon_phases (entity_type, entity_id, moon_phase_id, strength)
+--          VALUES ('grimoire', grimoire_id_here, moon_phase_id_here, 'primary');
 
 -- =============================================================================
 -- ANALYTICS & TRACKING
@@ -1032,60 +1006,33 @@ CREATE TABLE planets (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(50) NOT NULL,
     slug VARCHAR(50) UNIQUE NOT NULL,
-    symbol VARCHAR(10),
+    -- NOTE: symbol removed - not essential for magical work
     description TEXT,
-    magical_properties TEXT[],
+    -- NOTE: magical_properties → Link via entity_intentions junction table
     day_of_week VARCHAR(20),
-    associated_with TEXT[], -- Themes, concepts, deities
-    colors TEXT[],
-    metals TEXT[],
+    -- NOTE: associated_with removed - use entity relationships (deities, etc.) instead
+    -- NOTE: colors removed - not essential for magical work
+    -- NOTE: metals removed - not essential for magical work
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE INDEX idx_planets_slug ON planets(slug);
 
 -- Seed planet data
-INSERT INTO planets (name, slug, symbol, description, magical_properties, day_of_week, associated_with, colors, metals) VALUES
-    ('Sun', 'sun', '☉', 'The source of light and life, representing vitality and power.',
-     ARRAY['success', 'power', 'vitality', 'leadership', 'confidence', 'healing'],
-     'Sunday', ARRAY['Ra', 'Apollo', 'success', 'health', 'power', 'leadership'],
-     ARRAY['gold', 'yellow', 'orange'], ARRAY['gold']),
-    ('Moon', 'moon', '☽', 'The emotional and intuitive luminary, governing cycles and emotions.',
-     ARRAY['intuition', 'emotions', 'dreams', 'psychic abilities', 'fertility', 'mystery'],
-     'Monday', ARRAY['Diana', 'Selene', 'emotions', 'intuition', 'dreams', 'cycles'],
-     ARRAY['silver', 'white', 'pale blue'], ARRAY['silver']),
-    ('Mercury', 'mercury', '☿', 'The messenger planet, governing communication and intellect.',
-     ARRAY['communication', 'intelligence', 'travel', 'learning', 'business', 'versatility'],
-     'Wednesday', ARRAY['Hermes', 'Thoth', 'communication', 'intellect', 'commerce', 'travel'],
-     ARRAY['orange', 'light blue', 'multicolored'], ARRAY['quicksilver', 'aluminum']),
-    ('Venus', 'venus', '♀', 'The planet of love, beauty, and harmony.',
-     ARRAY['love', 'beauty', 'harmony', 'pleasure', 'relationships', 'art'],
-     'Friday', ARRAY['Aphrodite', 'Venus', 'love', 'beauty', 'pleasure', 'art'],
-     ARRAY['green', 'pink', 'light blue'], ARRAY['copper']),
-    ('Mars', 'mars', '♂', 'The warrior planet, representing action and courage.',
-     ARRAY['courage', 'action', 'passion', 'strength', 'protection', 'conflict'],
-     'Tuesday', ARRAY['Ares', 'Mars', 'war', 'courage', 'energy', 'passion'],
-     ARRAY['red', 'scarlet', 'burgundy'], ARRAY['iron', 'steel']),
-    ('Jupiter', 'jupiter', '♃', 'The planet of expansion, abundance, and wisdom.',
-     ARRAY['abundance', 'prosperity', 'growth', 'wisdom', 'luck', 'expansion'],
-     'Thursday', ARRAY['Zeus', 'Jupiter', 'prosperity', 'wisdom', 'abundance', 'growth'],
-     ARRAY['royal blue', 'purple', 'indigo'], ARRAY['tin']),
-    ('Saturn', 'saturn', '♄', 'The teacher planet, representing discipline and structure.',
-     ARRAY['discipline', 'structure', 'protection', 'binding', 'time', 'karma'],
-     'Saturday', ARRAY['Cronus', 'Saturn', 'time', 'discipline', 'boundaries', 'karma'],
-     ARRAY['black', 'dark blue', 'indigo'], ARRAY['lead']),
-    ('Uranus', 'uranus', '♅', 'The planet of change, innovation, and rebellion.',
-     ARRAY['change', 'innovation', 'rebellion', 'freedom', 'awakening', 'originality'],
-     NULL, ARRAY['change', 'innovation', 'freedom', 'electricity', 'awakening'],
-     ARRAY['electric blue', 'neon colors'], ARRAY['uranium']),
-    ('Neptune', 'neptune', '♆', 'The planet of dreams, intuition, and mysticism.',
-     ARRAY['dreams', 'intuition', 'mysticism', 'compassion', 'spirituality', 'illusion'],
-     NULL, ARRAY['Poseidon', 'Neptune', 'ocean', 'dreams', 'mysticism', 'compassion'],
-     ARRAY['sea green', 'aquamarine', 'lavender'], ARRAY['platinum']),
-    ('Pluto', 'pluto', '♇', 'The planet of transformation, death, and rebirth.',
-     ARRAY['transformation', 'death', 'rebirth', 'power', 'shadow work', 'regeneration'],
-     NULL, ARRAY['Hades', 'Pluto', 'underworld', 'transformation', 'power', 'death'],
-     ARRAY['deep red', 'black', 'maroon'], ARRAY['plutonium']);
+-- NOTE: Magical properties linked via entity_intentions junction table
+-- NOTE: Associated deities linked via entity_deities junction table
+-- NOTE: Colors and metals removed - not essential for magical database
+INSERT INTO planets (name, slug, description, day_of_week) VALUES
+    ('Sun', 'sun', 'The source of light and life, representing vitality and power.', 'Sunday'),
+    ('Moon', 'moon', 'The emotional and intuitive luminary, governing cycles and emotions.', 'Monday'),
+    ('Mercury', 'mercury', 'The messenger planet, governing communication and intellect.', 'Wednesday'),
+    ('Venus', 'venus', 'The planet of love, beauty, and harmony.', 'Friday'),
+    ('Mars', 'mars', 'The warrior planet, representing action and courage.', 'Tuesday'),
+    ('Jupiter', 'jupiter', 'The planet of expansion, abundance, and wisdom.', 'Thursday'),
+    ('Saturn', 'saturn', 'The teacher planet, representing discipline and structure.', 'Saturday'),
+    ('Uranus', 'uranus', 'The planet of change, innovation, and rebellion.', NULL),
+    ('Neptune', 'neptune', 'The planet of dreams, intuition, and mysticism.', NULL),
+    ('Pluto', 'pluto', 'The planet of transformation, death, and rebirth.', NULL);
 
 -- =============================================================================
 -- ENTITY RELATIONSHIP TABLES FOR CHAKRAS, ZODIACS, AND PLANETS
@@ -1118,7 +1065,7 @@ CREATE TABLE entity_zodiac_signs (
     strength VARCHAR(20) DEFAULT 'moderate',
     notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT valid_entity_type_zodiac CHECK (entity_type IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'ritual_tool', 'calendar', 'moon_phase')),
+    CONSTRAINT valid_entity_type_zodiac CHECK (entity_type IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'ritual_tool', 'calendar', 'moon_phase', 'grimoire')),
     CONSTRAINT valid_strength_zodiac CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive')),
     UNIQUE(entity_type, entity_id, zodiac_id)
 );

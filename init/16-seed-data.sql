@@ -188,11 +188,13 @@ WHERE (g.slug = 'simple-protection-spell-beginners' AND t.slug IN ('beginner-fri
    OR (g.slug = 'rosemary-magical-herb' AND t.slug IN ('beginner-friendly', 'daily-practice'))
    OR (g.slug = 'clear-quartz-master-healer' AND t.slug IN ('beginner-friendly', 'meditation'));
 
--- Link grimoires to moon phases
-INSERT INTO grimoire_moon_phases (grimoire_id, moon_phase_id)
+-- Link grimoires to moon phases using entity_moon_phases polymorphic table
+INSERT INTO entity_moon_phases (entity_type, entity_id, moon_phase_id, effectiveness)
 SELECT 
+    'grimoire' as entity_type,
     g.id,
-    mp.id
+    mp.id,
+    'optimal' as effectiveness
 FROM grimoires g
 CROSS JOIN moon_phases mp
 WHERE g.slug = 'full-moon-manifestation-ritual' AND mp.slug = 'full-moon';

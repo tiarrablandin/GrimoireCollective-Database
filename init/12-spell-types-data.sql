@@ -301,8 +301,8 @@ INSERT INTO spell_ethics (name, slug, category, description, ethical_considerati
      '#FFB3C1');
 
 -- Add missing intentions related to spell types that weren't already in the system
--- NOTE: Related elements linked via intention_elements junction table
--- NOTE: Moon phases linked via intention_moon_phases junction table
+-- NOTE: Related elements linked via entity_elements junction table (entity_type='intention')
+-- NOTE: Moon phases linked via entity_moon_phases junction table (entity_type='intention')
 -- NOTE: Colors removed - use UI theming or tag system instead
 INSERT INTO intentions (name, slug, description, category, keywords, usage_guide) VALUES
     ('Glamour', 'glamour', 'Enhancing how others perceive you through magical means', 'expression',

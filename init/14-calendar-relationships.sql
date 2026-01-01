@@ -103,26 +103,26 @@ BEGIN
     SELECT id INTO planning_id FROM intentions WHERE slug = 'planning';
     SELECT id INTO rest_id FROM intentions WHERE slug = 'rest';
     
-    -- Link calendars to traditions
-    INSERT INTO calendar_traditions (calendar_id, tradition_id, is_primary) VALUES
-        (samhain_id, celtic_id, true),
-        (samhain_id, wicca_id, false),
-        (yule_id, germanic_id, true),
-        (yule_id, wicca_id, false),
-        (imbolc_id, celtic_id, true),
-        (imbolc_id, wicca_id, false),
-        (ostara_id, germanic_id, true),
-        (ostara_id, wicca_id, false),
-        (beltane_id, celtic_id, true),
-        (beltane_id, wicca_id, false),
-        (litha_id, germanic_id, true),
-        (litha_id, wicca_id, false),
-        (lammas_id, celtic_id, true),
-        (lammas_id, wicca_id, false),
-        (mabon_id, germanic_id, true),
-        (mabon_id, wicca_id, false),
-        (full_moon_id, wicca_id, true),
-        (new_moon_id, wicca_id, true);
+    -- Link calendars to traditions using entity_traditions polymorphic table
+    INSERT INTO entity_traditions (entity_type, entity_id, tradition_id, is_primary) VALUES
+        ('calendar', samhain_id, celtic_id, true),
+        ('calendar', samhain_id, wicca_id, false),
+        ('calendar', yule_id, germanic_id, true),
+        ('calendar', yule_id, wicca_id, false),
+        ('calendar', imbolc_id, celtic_id, true),
+        ('calendar', imbolc_id, wicca_id, false),
+        ('calendar', ostara_id, germanic_id, true),
+        ('calendar', ostara_id, wicca_id, false),
+        ('calendar', beltane_id, celtic_id, true),
+        ('calendar', beltane_id, wicca_id, false),
+        ('calendar', litha_id, germanic_id, true),
+        ('calendar', litha_id, wicca_id, false),
+        ('calendar', lammas_id, celtic_id, true),
+        ('calendar', lammas_id, wicca_id, false),
+        ('calendar', mabon_id, germanic_id, true),
+        ('calendar', mabon_id, wicca_id, false),
+        ('calendar', full_moon_id, wicca_id, true),
+        ('calendar', new_moon_id, wicca_id, true);
     
     -- Link calendars to intentions (themes)
     INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
