@@ -180,21 +180,91 @@ CREATE TABLE content_types (
 
 -- Insert default content types
 INSERT INTO content_types (name, slug, description) VALUES
-    ('Spell', 'spell', 'Magical spells and incantations'),
-    ('Ritual', 'ritual', 'Ceremonial rituals and practices'),
-    ('Recipe', 'recipe', 'Potions, tinctures, and magical recipes'),
+    -- Core Magical Content
+    ('Spell', 'spell', 'Magical spells and incantations for various purposes'),
+    ('Ritual', 'ritual', 'Ceremonial rituals, rites of passage, and sacred practices'),
+    ('Recipe', 'recipe', 'Potions, tinctures, oils, incenses, and magical recipes'),
     ('Guide', 'guide', 'Instructions and how-to guides (casting circles, grounding, etc.)'),
-    ('Herb', 'herb', 'Information about magical herbs'),
-    ('Crystal', 'crystal', 'Crystal properties and uses'),
-    ('Deity', 'deity', 'Gods, goddesses, and deities'),
+    ('Invocation', 'invocation', 'Prayers, invocations, and summoning texts'),
+    ('Chant', 'chant', 'Magical chants, mantras, and power words'),
+    ('Sigil', 'sigil', 'Sigil designs, creation methods, and activation techniques'),
+    
+    -- Natural & Material Magic
+    ('Herb', 'herb', 'Information about magical herbs, plants, and botanicals'),
+    ('Crystal', 'crystal', 'Crystal properties, uses, and healing techniques'),
+    ('Oil', 'oil', 'Essential oils, magical oils, and blending recipes'),
+    ('Incense', 'incense', 'Incense blends, correspondences, and burning practices'),
+    ('Candle', 'candle', 'Candle magic, color correspondences, and burning techniques'),
+    ('Stone', 'stone', 'Stones, minerals, and their magical properties'),
+    ('Tea', 'tea', 'Magical tea blends, herbal infusions, and brewing methods'),
+    ('Bath', 'bath', 'Ritual baths, spiritual cleansing, and purification recipes'),
+    ('Powder', 'powder', 'Magical powders, dusts, and sprinkling blends'),
+    ('Salt', 'salt', 'Salt types, purification uses, and protection magic'),
+    
+    -- Divination & Psychic Work
+    ('Divination', 'divination', 'Divination methods, techniques, and interpretations'),
+    ('Tarot', 'tarot', 'Tarot card meanings, spreads, and reading techniques'),
+    ('Oracle', 'oracle', 'Oracle card systems and divination methods'),
+    ('Rune', 'rune', 'Rune meanings, casting methods, and interpretations'),
+    ('Scrying', 'scrying', 'Scrying techniques, tools, and vision interpretation'),
+    ('Pendulum', 'pendulum', 'Pendulum dowsing, charts, and divination methods'),
+    ('Dream', 'dream', 'Dream interpretation, symbolism, and dream magic'),
+    ('Omen', 'omen', 'Signs, omens, portents, and their meanings'),
+    
+    -- Spiritual & Energy Work
+    ('Meditation', 'meditation', 'Meditation practices, techniques, and guided journeys'),
+    ('Visualization', 'visualization', 'Visualization exercises and guided imagery'),
+    ('Energy Work', 'energy-work', 'Chakra work, aura cleansing, and energy techniques'),
+    ('Grounding', 'grounding', 'Grounding techniques and earthing practices'),
+    ('Shielding', 'shielding', 'Psychic protection and shielding methods'),
+    ('Astral', 'astral', 'Astral projection, travel, and out-of-body experiences'),
+    ('Trance', 'trance', 'Trance work, altered states, and consciousness exploration'),
+    
+    -- Deities & Spirits
+    ('Deity', 'deity', 'Gods, goddesses, and divine beings'),
+    ('Spirit', 'spirit', 'Spirit guides, helpers, and non-deity entities'),
+    ('Ancestor', 'ancestor', 'Ancestor veneration, communication, and honoring'),
+    ('Angel', 'angel', 'Angelic beings, hierarchies, and workings'),
+    ('Demon', 'demon', 'Demonic entities and goetic workings'),
+    ('Fae', 'fae', 'Faerie folk, nature spirits, and fae magic'),
+    ('Element', 'element', 'Elemental beings and elemental magic'),
+    
+    -- Calendar & Timing
     ('Holiday', 'holiday', 'Magical holidays and celebrations (Sabbats, Esbats, etc.)'),
-    ('Divination', 'divination', 'Divination methods and techniques'),
-    ('Astrology', 'astrology', 'Astrological information and charts'),
-    ('Meditation', 'meditation', 'Meditation practices and guides'),
+    ('Sabbat', 'sabbat', 'Wheel of the Year celebrations and seasonal rituals'),
+    ('Esbat', 'esbat', 'Full moon and new moon rituals'),
+    ('Moon Phase', 'moon-phase', 'Moon phase correspondences and lunar magic'),
+    ('Planetary Hour', 'planetary-hour', 'Planetary hours, days, and timing magic'),
+    ('Astrology', 'astrology', 'Astrological information, charts, and correspondences'),
+    ('Zodiac', 'zodiac', 'Zodiac signs, meanings, and astrological magic'),
+    
+    -- Knowledge & Theory
     ('Principles', 'principles', 'Magical laws, redes, ethics, and guidelines'),
     ('Tradition', 'tradition', 'Information about magical traditions and paths'),
-    ('Article', 'article', 'General articles and information'),
-    ('Note', 'note', 'Personal notes and observations');
+    ('History', 'history', 'Historical magical practices and traditions'),
+    ('Correspondence', 'correspondence', 'Magical correspondences, tables, and associations'),
+    ('Symbol', 'symbol', 'Magical symbols, glyphs, and their meanings'),
+    ('Theory', 'theory', 'Magical theory, philosophy, and understanding'),
+    ('Etymology', 'etymology', 'Word origins, meanings, and linguistic magic'),
+    ('Lore', 'lore', 'Myths, legends, folklore, and traditional knowledge'),
+    
+    -- Practical & Tools
+    ('Tool', 'tool', 'Magical tools, implements, and their uses'),
+    ('Altar', 'altar', 'Altar setup, arrangements, and devotional practices'),
+    ('Book', 'book', 'Book reviews, recommendations, and grimoire keeping'),
+    ('Journal', 'journal', 'Personal journal entries and magical logs'),
+    ('Note', 'note', 'Personal notes, observations, and quick references'),
+    ('Reference', 'reference', 'Quick reference guides, tables, and charts'),
+    ('Glossary', 'glossary', 'Definitions, terms, and vocabulary'),
+    
+    -- General Content
+    ('Article', 'article', 'General articles, essays, and informational content'),
+    ('Tutorial', 'tutorial', 'Step-by-step tutorials and learning materials'),
+    ('Course', 'course', 'Structured learning courses and lesson plans'),
+    ('Workshop', 'workshop', 'Workshop materials and group activities'),
+    ('Exercise', 'exercise', 'Practical exercises and skill-building activities'),
+    ('FAQ', 'faq', 'Frequently asked questions and answers'),
+    ('Resource', 'resource', 'External resources, links, and recommendations');
 
 -- =============================================================================
 -- MAIN CONTENT TABLE (GRIMOIRES)
@@ -543,6 +613,7 @@ CREATE TABLE deities (
     domains TEXT[],
     symbols TEXT[],
     description TEXT,
+    pronunciation VARCHAR(200),
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );

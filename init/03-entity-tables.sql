@@ -28,16 +28,13 @@ CREATE TABLE crystals (
     
     -- Cleansing Methods (as array)
     cleansing_methods TEXT[], -- e.g., ['full_moon', 'sun', 'running_water', 'salt', 'smoke', 'sound']
-    cleansing_notes TEXT, -- Additional details about cleansing
     
     -- Charging Methods
     charging_methods TEXT[], -- e.g., ['moonlight', 'sunlight', 'earth', 'crystal_cluster']
-    charging_notes TEXT,
     
     -- Usage Information
     description TEXT NOT NULL, -- Main description
     uses TEXT, -- How to use this crystal
-    affirmations TEXT[], -- Affirmations to use with this crystal
     
     -- Care & Safety
     water_safe BOOLEAN DEFAULT TRUE,
@@ -47,7 +44,6 @@ CREATE TABLE crystals (
     
     -- Rarity & Sourcing
     rarity VARCHAR(20), -- common, uncommon, rare, very_rare
-    primary_sources TEXT[], -- Countries/regions where found
     ethical_sourcing_notes TEXT,
     
     -- Additional Fields

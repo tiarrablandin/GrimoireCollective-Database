@@ -20,6 +20,16 @@ DECLARE
     yellow_candle_id UUID;
     orange_candle_id UUID;
     brown_candle_id UUID;
+    silver_candle_id UUID;
+    gold_candle_id UUID;
+    gray_candle_id UUID;
+    copper_candle_id UUID;
+    lavender_candle_id UUID;
+    indigo_candle_id UUID;
+    teal_candle_id UUID;
+    burgundy_candle_id UUID;
+    peach_candle_id UUID;
+    turquoise_candle_id UUID;
     
     -- Planet IDs
     moon_planet_id UUID;
@@ -110,6 +120,16 @@ BEGIN
     SELECT id INTO yellow_candle_id FROM candles WHERE slug = 'yellow-candle';
     SELECT id INTO orange_candle_id FROM candles WHERE slug = 'orange-candle';
     SELECT id INTO brown_candle_id FROM candles WHERE slug = 'brown-candle';
+    SELECT id INTO silver_candle_id FROM candles WHERE slug = 'silver-candle';
+    SELECT id INTO gold_candle_id FROM candles WHERE slug = 'gold-candle';
+    SELECT id INTO gray_candle_id FROM candles WHERE slug = 'gray-candle';
+    SELECT id INTO copper_candle_id FROM candles WHERE slug = 'copper-candle';
+    SELECT id INTO lavender_candle_id FROM candles WHERE slug = 'lavender-candle';
+    SELECT id INTO indigo_candle_id FROM candles WHERE slug = 'indigo-candle';
+    SELECT id INTO teal_candle_id FROM candles WHERE slug = 'teal-candle';
+    SELECT id INTO burgundy_candle_id FROM candles WHERE slug = 'burgundy-candle';
+    SELECT id INTO peach_candle_id FROM candles WHERE slug = 'peach-candle';
+    SELECT id INTO turquoise_candle_id FROM candles WHERE slug = 'turquoise-candle';
 
     -- =========================================================================
     -- FETCH PLANET IDs
@@ -206,7 +226,17 @@ BEGIN
     ('candle', purple_candle_id, jupiter_planet_id, 'Jupiter expands wisdom and spiritual power'),
     ('candle', yellow_candle_id, sun_planet_id, 'Sun energy brings success and mental clarity'),
     ('candle', orange_candle_id, sun_planet_id, 'Sun energy brings enthusiasm and creative power'),
-    ('candle', brown_candle_id, saturn_planet_id, 'Saturn brings stability and grounding');
+    ('candle', brown_candle_id, saturn_planet_id, 'Saturn brings stability and grounding'),
+    ('candle', silver_candle_id, moon_planet_id, 'Moon rules silver and lunar magic'),
+    ('candle', gold_candle_id, sun_planet_id, 'Sun rules gold and solar power'),
+    ('candle', gray_candle_id, saturn_planet_id, 'Saturn brings neutrality and balance'),
+    ('candle', copper_candle_id, venus_planet_id, 'Venus rules copper, love, and prosperity'),
+    ('candle', lavender_candle_id, moon_planet_id, 'Moon governs gentle spiritual work'),
+    ('candle', indigo_candle_id, jupiter_planet_id, 'Jupiter brings deep wisdom and spiritual expansion'),
+    ('candle', teal_candle_id, moon_planet_id, 'Moon influences emotional communication'),
+    ('candle', burgundy_candle_id, mars_planet_id, 'Mars brings controlled power and ambition'),
+    ('candle', peach_candle_id, venus_planet_id, 'Venus brings nurturing love and gentle strength'),
+    ('candle', turquoise_candle_id, moon_planet_id, 'Moon brings emotional wisdom and protection');
 
     -- =========================================================================
     -- LINK CANDLES TO CHAKRAS
@@ -221,7 +251,17 @@ BEGIN
     ('candle', purple_candle_id, third_eye_chakra_id, 'primary'),
     ('candle', yellow_candle_id, solar_plexus_chakra_id, 'primary'),
     ('candle', orange_candle_id, sacral_chakra_id, 'primary'),
-    ('candle', brown_candle_id, root_chakra_id, 'primary');
+    ('candle', brown_candle_id, root_chakra_id, 'primary'),
+    ('candle', silver_candle_id, third_eye_chakra_id, 'primary'),
+    ('candle', gold_candle_id, solar_plexus_chakra_id, 'primary'),
+    ('candle', gray_candle_id, crown_chakra_id, 'primary'),
+    ('candle', copper_candle_id, heart_chakra_id, 'primary'),
+    ('candle', lavender_candle_id, crown_chakra_id, 'primary'),
+    ('candle', indigo_candle_id, third_eye_chakra_id, 'primary'),
+    ('candle', teal_candle_id, throat_chakra_id, 'primary'),
+    ('candle', burgundy_candle_id, solar_plexus_chakra_id, 'primary'),
+    ('candle', peach_candle_id, sacral_chakra_id, 'primary'),
+    ('candle', turquoise_candle_id, throat_chakra_id, 'primary');
 
     -- =========================================================================
     -- LINK CANDLES TO ELEMENTS (using entity_pairings for element associations)
@@ -269,6 +309,50 @@ BEGIN
     -- Brown candle: Earth
     INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
     ('candle', brown_candle_id, 'element', earth_element_id, 'works-with', 'strong', 'Earth provides grounding');
+
+    -- Silver candle: Water
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', silver_candle_id, 'element', water_element_id, 'works-with', 'strong', 'Water reflects lunar energy');
+    
+    -- Gold candle: Fire
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', gold_candle_id, 'element', fire_element_id, 'works-with', 'strong', 'Fire brings solar power');
+    
+    -- Gray candle: Air
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', gray_candle_id, 'element', air_element_id, 'works-with', 'strong', 'Air brings neutrality and balance');
+    
+    -- Copper candle: Earth
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', copper_candle_id, 'element', earth_element_id, 'works-with', 'strong', 'Earth grounds Venus energy');
+    
+    -- Lavender candle: Spirit
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', lavender_candle_id, 'element', spirit_element_id, 'works-with', 'strong', 'Spirit elevates gently');
+    
+    -- Indigo candle: Spirit
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', indigo_candle_id, 'element', spirit_element_id, 'works-with', 'strong', 'Spirit connects to deep wisdom');
+    
+    -- Teal candle: Water/Air blend
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', teal_candle_id, 'element', water_element_id, 'works-with', 'strong', 'Water brings emotional healing'),
+    ('candle', teal_candle_id, 'element', air_element_id, 'works-with', 'strong', 'Air brings clear communication');
+    
+    -- Burgundy candle: Fire/Earth blend
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', burgundy_candle_id, 'element', fire_element_id, 'works-with', 'strong', 'Fire brings controlled power'),
+    ('candle', burgundy_candle_id, 'element', earth_element_id, 'works-with', 'strong', 'Earth grounds ambition');
+    
+    -- Peach candle: Fire/Water blend
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', peach_candle_id, 'element', fire_element_id, 'works-with', 'strong', 'Fire brings gentle strength'),
+    ('candle', peach_candle_id, 'element', water_element_id, 'works-with', 'strong', 'Water nurtures emotions');
+    
+    -- Turquoise candle: Water/Air blend
+    INSERT INTO entity_pairings (entity_type_a, entity_id_a, entity_type_b, entity_id_b, pairing_type, strength, purpose) VALUES
+    ('candle', turquoise_candle_id, 'element', water_element_id, 'works-with', 'strong', 'Water flows with wisdom'),
+    ('candle', turquoise_candle_id, 'element', air_element_id, 'works-with', 'strong', 'Air protects communication');
 
     -- =========================================================================
     -- LINK CANDLES TO INTENTIONS (Magical Properties)
@@ -363,10 +447,81 @@ BEGIN
     ('candle', brown_candle_id, material_matters_id, 'primary'),
     ('candle', brown_candle_id, endurance_id, 'primary');
 
+    -- SILVER CANDLE: spirituality, psychic_abilities, protection, divination
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', silver_candle_id, spirituality_id, 'primary'),
+    ('candle', silver_candle_id, psychic_abilities_id, 'primary'),
+    ('candle', silver_candle_id, protection_id, 'primary'),
+    ('candle', silver_candle_id, divination_id, 'primary');
+
+    -- GOLD CANDLE: success, abundance, prosperity, power, confidence
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', gold_candle_id, success_id, 'primary'),
+    ('candle', gold_candle_id, abundance_id, 'primary'),
+    ('candle', gold_candle_id, prosperity_id, 'primary'),
+    ('candle', gold_candle_id, power_id, 'primary'),
+    ('candle', gold_candle_id, confidence_id, 'primary');
+
+    -- GRAY CANDLE: protection (neutralizing)
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', gray_candle_id, protection_id, 'primary');
+
+    -- COPPER CANDLE: love, prosperity, luck, healing, energy
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', copper_candle_id, love_id, 'primary'),
+    ('candle', copper_candle_id, prosperity_id, 'primary'),
+    ('candle', copper_candle_id, luck_id, 'primary'),
+    ('candle', copper_candle_id, healing_id, 'primary'),
+    ('candle', copper_candle_id, energy_id, 'primary');
+
+    -- LAVENDER CANDLE: spirituality, healing, peace, psychic_abilities
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', lavender_candle_id, spirituality_id, 'primary'),
+    ('candle', lavender_candle_id, healing_id, 'primary'),
+    ('candle', lavender_candle_id, peace_id, 'primary'),
+    ('candle', lavender_candle_id, psychic_abilities_id, 'primary');
+
+    -- INDIGO CANDLE: psychic_abilities, divination, wisdom, spirituality, connection_to_divine
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', indigo_candle_id, psychic_abilities_id, 'primary'),
+    ('candle', indigo_candle_id, divination_id, 'primary'),
+    ('candle', indigo_candle_id, wisdom_id, 'primary'),
+    ('candle', indigo_candle_id, spirituality_id, 'primary'),
+    ('candle', indigo_candle_id, connection_to_divine_id, 'primary');
+
+    -- TEAL CANDLE: communication, healing, emotional_healing, truth
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', teal_candle_id, communication_id, 'primary'),
+    ('candle', teal_candle_id, healing_id, 'primary'),
+    ('candle', teal_candle_id, emotional_healing_id, 'primary'),
+    ('candle', teal_candle_id, truth_id, 'primary');
+
+    -- BURGUNDY CANDLE: power, success, strength, ambition
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', burgundy_candle_id, power_id, 'primary'),
+    ('candle', burgundy_candle_id, success_id, 'primary'),
+    ('candle', burgundy_candle_id, strength_id, 'primary'),
+    ('candle', burgundy_candle_id, ambition_id, 'primary');
+
+    -- PEACH CANDLE: love, healing, emotional_healing, self_love, confidence
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', peach_candle_id, love_id, 'primary'),
+    ('candle', peach_candle_id, healing_id, 'primary'),
+    ('candle', peach_candle_id, emotional_healing_id, 'primary'),
+    ('candle', peach_candle_id, self_love_id, 'primary'),
+    ('candle', peach_candle_id, confidence_id, 'primary');
+
+    -- TURQUOISE CANDLE: protection, communication, emotional_healing, wisdom
+    INSERT INTO entity_intentions (entity_type, entity_id, intention_id, strength) VALUES
+    ('candle', turquoise_candle_id, protection_id, 'primary'),
+    ('candle', turquoise_candle_id, communication_id, 'primary'),
+    ('candle', turquoise_candle_id, emotional_healing_id, 'primary'),
+    ('candle', turquoise_candle_id, wisdom_id, 'primary');
+
     RAISE NOTICE 'Candle relationships created successfully';
-    RAISE NOTICE '- 10 candles linked to planets';
-    RAISE NOTICE '- 10 candles linked to chakras';
-    RAISE NOTICE '- 10 candles linked to elements (14 total element associations)';
-    RAISE NOTICE '- 10 candles linked to 59 intention relationships';
+    RAISE NOTICE '- 20 candles linked to planets';
+    RAISE NOTICE '- 20 candles linked to chakras';
+    RAISE NOTICE '- 20 candles linked to elements (34 total element associations)';
+    RAISE NOTICE '- 20 candles linked to 109 intention relationships';
 
 END $$;
