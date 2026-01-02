@@ -227,6 +227,9 @@ CREATE TABLE grimoires (
     -- Extended metadata as JSONB for flexibility
     metadata JSONB,
     
+    -- References and sources
+    source_references TEXT[], -- Books, websites, teachers, or other sources for this grimoire/recipe
+    
     -- Timestamps
     published_at TIMESTAMP,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -246,6 +249,9 @@ CREATE INDEX idx_grimoires_featured ON grimoires(is_featured, featured_at DESC) 
 
 -- Full-text search index
 CREATE INDEX idx_grimoires_fulltext ON grimoires USING GIN (to_tsvector('english', title || ' ' || content));
+
+-- Media: Use entity_media table with entity_type='grimoire'
+--        Recipe photos, step-by-step images, final result photos linked via entity_media
 
 -- =============================================================================
 -- MEDIA FILES
@@ -306,10 +312,10 @@ CREATE TABLE entity_media (
     UNIQUE(entity_type, entity_id, media_id),
     
     CONSTRAINT valid_entity_type CHECK (entity_type IN (
-        'candle', 'chakra', 'crystal', 'deity', 'divination_method',
+        'candle', 'chakra', 'crystal', 'deity', 'divination_method', 'divination_spread',
         'element', 'grimoire', 'herb', 'incense', 'moon_phase',
-        'oil', 'pantheon', 'planet', 'ritual_tool', 'sabbat', 
-        'salt', 'spell_ethic', 'spell_method', 'tradition', 
+        'oil', 'pantheon', 'planet', 'ritual_tool', 'rune', 'sabbat', 
+        'salt', 'spell_ethic', 'spell_method', 'tarot_card', 'tradition', 
         'user', 'user_board', 'zodiac_sign'
     ))
 );
@@ -658,6 +664,8 @@ CREATE INDEX idx_intentions_keywords ON intentions USING GIN (keywords);
 -- MAGICAL TRADITIONS & PRACTICE TYPES
 -- =============================================================================
 -- Reference table for different types of magical practice and traditions
+-- Media: Use entity_media table with entity_type='tradition'
+--        Symbols, altar photos, representative imagery linked via entity_media
 
 CREATE TABLE traditions (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -779,20 +787,22 @@ CREATE TABLE zodiac_signs (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
     name VARCHAR(50) NOT NULL,
     slug VARCHAR(50) UNIQUE NOT NULL,
-    symbol VARCHAR(10) NOT NULL,
-    element VARCHAR(20) NOT NULL,
+    element_id UUID NOT NULL REFERENCES elements(id),
     modality VARCHAR(20) NOT NULL,
-    ruling_planet VARCHAR(50),
     date_range_start VARCHAR(10),
     date_range_end VARCHAR(10),
     traits TEXT[],
     description TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT valid_element CHECK (element IN ('fire', 'earth', 'air', 'water')),
     CONSTRAINT valid_modality CHECK (modality IN ('cardinal', 'fixed', 'mutable'))
 );
 
 CREATE INDEX idx_zodiac_slug ON zodiac_signs(slug);
+CREATE INDEX idx_zodiac_element ON zodiac_signs(element_id);
+
+COMMENT ON COLUMN zodiac_signs.element_id IS 'Each zodiac sign belongs to one element (Fire, Earth, Air, Water)';
+-- NOTE: Symbol/glyph images → link via entity_media (entity_type='zodiac_sign', is_primary=true)
+-- NOTE: Ruling planets → link via entity_planets (entity_type='zodiac_sign', strength='primary'/'traditional'/'modern')
 
 -- Grimoire zodiac: Use entity_zodiac_signs table with entity_type='grimoire'
 -- Example: INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
@@ -808,6 +818,9 @@ CREATE TABLE moon_phases (
     best_for TEXT[],
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- Media: Use entity_media table with entity_type='moon_phase'
+--        Moon phase images, illustrations, astronomical photos linked via entity_media
 
 -- Grimoire moon phases: Use entity_moon_phases table with entity_type='grimoire'
 -- Example: INSERT INTO entity_moon_phases (entity_type, entity_id, moon_phase_id, strength)
@@ -978,34 +991,10 @@ INSERT INTO moon_phases (name, slug, description, best_for) VALUES
      ARRAY['introspection', 'rest', 'contemplation', 'divination']);
 
 -- =============================================================================
--- SAMPLE ZODIAC DATA
+-- ZODIAC DATA
 -- =============================================================================
-
-INSERT INTO zodiac_signs (name, slug, symbol, element, modality, ruling_planet, date_range_start, date_range_end, traits) VALUES
-    ('Aries', 'aries', '♈', 'fire', 'cardinal', 'Mars', 'Mar 21', 'Apr 19', 
-     ARRAY['courageous', 'determined', 'confident', 'enthusiastic', 'passionate']),
-    ('Taurus', 'taurus', '♉', 'earth', 'fixed', 'Venus', 'Apr 20', 'May 20',
-     ARRAY['reliable', 'patient', 'practical', 'devoted', 'stable']),
-    ('Gemini', 'gemini', '♊', 'air', 'mutable', 'Mercury', 'May 21', 'Jun 20',
-     ARRAY['curious', 'adaptable', 'communicative', 'witty', 'versatile']),
-    ('Cancer', 'cancer', '♋', 'water', 'cardinal', 'Moon', 'Jun 21', 'Jul 22',
-     ARRAY['intuitive', 'emotional', 'protective', 'nurturing', 'loyal']),
-    ('Leo', 'leo', '♌', 'fire', 'fixed', 'Sun', 'Jul 23', 'Aug 22',
-     ARRAY['creative', 'passionate', 'generous', 'warm-hearted', 'cheerful']),
-    ('Virgo', 'virgo', '♍', 'earth', 'mutable', 'Mercury', 'Aug 23', 'Sep 22',
-     ARRAY['analytical', 'practical', 'loyal', 'hardworking', 'kind']),
-    ('Libra', 'libra', '♎', 'air', 'cardinal', 'Venus', 'Sep 23', 'Oct 22',
-     ARRAY['diplomatic', 'fair-minded', 'social', 'gracious', 'cooperative']),
-    ('Scorpio', 'scorpio', '♏', 'water', 'fixed', 'Pluto', 'Oct 23', 'Nov 21',
-     ARRAY['passionate', 'resourceful', 'brave', 'determined', 'intense']),
-    ('Sagittarius', 'sagittarius', '♐', 'fire', 'mutable', 'Jupiter', 'Nov 22', 'Dec 21',
-     ARRAY['generous', 'idealistic', 'adventurous', 'philosophical', 'honest']),
-    ('Capricorn', 'capricorn', '♑', 'earth', 'cardinal', 'Saturn', 'Dec 22', 'Jan 19',
-     ARRAY['responsible', 'disciplined', 'ambitious', 'practical', 'patient']),
-    ('Aquarius', 'aquarius', '♒', 'air', 'fixed', 'Uranus', 'Jan 20', 'Feb 18',
-     ARRAY['progressive', 'original', 'independent', 'humanitarian', 'intellectual']),
-    ('Pisces', 'pisces', '♓', 'water', 'mutable', 'Neptune', 'Feb 19', 'Mar 20',
-     ARRAY['compassionate', 'artistic', 'intuitive', 'gentle', 'wise']);
+-- Zodiac signs data moved to 07.5-zodiac-data.sql (runs after 07-elements-data.sql)
+-- This ensures elements table is populated before zodiac INSERT with element_id lookups
 
 -- =============================================================================
 -- CHAKRAS
@@ -1030,6 +1019,9 @@ CREATE TABLE chakras (
 
 CREATE INDEX idx_chakras_slug ON chakras(slug);
 CREATE INDEX idx_chakras_number ON chakras(number);
+
+-- Media: Use entity_media table with entity_type='chakra'
+--        Chakra symbols, energy flow diagrams, body location images linked via entity_media
 
 -- Seed chakra data
 -- NOTE: Keywords/properties moved to entity_intentions junction table
@@ -1076,6 +1068,9 @@ CREATE TABLE planets (
 );
 
 CREATE INDEX idx_planets_slug ON planets(slug);
+
+-- Media: Use entity_media table with entity_type='planet'
+--        Planet symbols, astronomical images, astrological glyphs linked via entity_media
 
 -- Seed planet data
 -- NOTE: Magical properties linked via entity_intentions junction table
@@ -1136,14 +1131,14 @@ CREATE INDEX idx_entity_zodiac_strength ON entity_zodiac_signs(strength);
 -- Entity to Planet relationships (polymorphic)
 CREATE TABLE entity_planets (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
-    entity_type VARCHAR(50) NOT NULL, -- 'crystal', 'herb', 'candle', 'oil', etc.
+    entity_type VARCHAR(50) NOT NULL, -- 'crystal', 'herb', 'candle', 'oil', 'zodiac_sign', etc.
     entity_id UUID NOT NULL,
     planet_id UUID NOT NULL REFERENCES planets(id) ON DELETE CASCADE,
     strength VARCHAR(20) DEFAULT 'moderate',
     notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT valid_entity_type_planet CHECK (entity_type IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'ritual_tool', 'calendar', 'moon_phase', 'tarot_card')),
-    CONSTRAINT valid_strength_planet CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive')),
+    CONSTRAINT valid_entity_type_planet CHECK (entity_type IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'ritual_tool', 'calendar', 'moon_phase', 'tarot_card', 'zodiac_sign')),
+    CONSTRAINT valid_strength_planet CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive', 'traditional', 'modern')),
     UNIQUE(entity_type, entity_id, planet_id)
 );
 
@@ -1151,6 +1146,16 @@ CREATE INDEX idx_entity_planets_entity ON entity_planets(entity_type, entity_id)
 CREATE INDEX idx_entity_planets_planet ON entity_planets(planet_id);
 CREATE INDEX idx_entity_planets_strength ON entity_planets(strength);
 
+COMMENT ON TABLE entity_planets IS 'Links entities to planets. For zodiac_sign: use strength=''primary''/''traditional''/''modern'' to indicate rulership type (e.g., Aquarius: Uranus=modern, Saturn=traditional)';
+
+-- =============================================================================
+-- =============================================================================
+-- ZODIAC RULING PLANETS DATA
+-- =============================================================================
+-- Zodiac ruling planets data moved to 07.5-zodiac-data.sql (runs after zodiac_signs INSERT)
+-- This ensures zodiac_signs and planets tables are populated before entity_planets relationships
+
 -- =============================================================================
 -- END OF SCHEMA
 -- =============================================================================
+

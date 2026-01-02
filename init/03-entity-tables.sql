@@ -560,6 +560,8 @@ CREATE INDEX idx_divination_methods_difficulty ON divination_methods(difficulty_
 -- =============================================================================
 -- DIVINATION SPREADS (for card and rune systems)
 -- =============================================================================
+-- Media: Use entity_media table with entity_type='divination_spread'
+--        Spread layout diagrams, example photos linked via entity_media
 
 CREATE TABLE divination_spreads (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -596,6 +598,8 @@ CREATE INDEX idx_divination_spreads_positions ON divination_spreads(position_cou
 -- =============================================================================
 -- TAROT CARDS
 -- =============================================================================
+-- Media: Use entity_media table with entity_type='tarot_card'
+--        Card images, alternate deck artwork linked via entity_media
 
 CREATE TABLE tarot_cards (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
@@ -657,6 +661,8 @@ CREATE INDEX idx_tarot_cards_arcana ON tarot_cards(arcana_number);
 -- =============================================================================
 -- RUNES (Elder Futhark)
 -- =============================================================================
+-- Media: Use entity_media table with entity_type='rune'
+--        Rune symbols, stone images, bindrunes linked via entity_media
 
 CREATE TABLE runes (
     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
