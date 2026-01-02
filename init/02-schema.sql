@@ -1122,7 +1122,7 @@ CREATE TABLE entity_zodiac_signs (
     strength VARCHAR(20) DEFAULT 'moderate',
     notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT valid_entity_type_zodiac CHECK (entity_type IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'ritual_tool', 'calendar', 'moon_phase', 'grimoire')),
+    CONSTRAINT valid_entity_type_zodiac CHECK (entity_type IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'ritual_tool', 'calendar', 'moon_phase', 'grimoire', 'tarot_card')),
     CONSTRAINT valid_strength_zodiac CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive')),
     UNIQUE(entity_type, entity_id, zodiac_id)
 );
@@ -1140,7 +1140,7 @@ CREATE TABLE entity_planets (
     strength VARCHAR(20) DEFAULT 'moderate',
     notes TEXT,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT valid_entity_type_planet CHECK (entity_type IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'ritual_tool', 'calendar', 'moon_phase')),
+    CONSTRAINT valid_entity_type_planet CHECK (entity_type IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'ritual_tool', 'calendar', 'moon_phase', 'tarot_card')),
     CONSTRAINT valid_strength_planet CHECK (strength IN ('primary', 'strong', 'moderate', 'supportive')),
     UNIQUE(entity_type, entity_id, planet_id)
 );

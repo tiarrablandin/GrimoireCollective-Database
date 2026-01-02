@@ -617,9 +617,9 @@ CREATE TABLE tarot_cards (
     -- Deeper interpretation
     description TEXT,
     symbolism TEXT, -- Description of imagery and symbols
-    elemental_association VARCHAR(20), -- Fire, Water, Air, Earth, Spirit
-    astrological_association VARCHAR(100), -- Zodiac sign or planet
     numerological_meaning TEXT,
+    -- NOTE: Element associations linked via entity_elements (entity_type='tarot_card')
+    -- NOTE: Astrological associations (zodiac/planets) linked via entity_zodiac_signs and entity_planets (entity_type='tarot_card')
     
     -- Journey and lessons
     archetype VARCHAR(255), -- e.g., 'The Fool', 'The Magician', 'The High Priestess'
