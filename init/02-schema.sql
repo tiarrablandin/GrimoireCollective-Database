@@ -669,9 +669,7 @@ CREATE TABLE traditions (
     time_period VARCHAR(100), -- When it originated/was practiced
     key_beliefs TEXT[], -- Core beliefs or principles
     common_practices TEXT[], -- Typical practices or rituals
-    deities_honored TEXT[], -- Associated deities or pantheons
-    related_traditions TEXT[], -- Names of related or similar traditions
-    resources TEXT[], -- Books, websites, or other resources
+    resources TEXT[], -- Books, websites, or other learning resources about this tradition
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
@@ -679,6 +677,10 @@ CREATE TABLE traditions (
         'practice_style', 'cultural', 'religious', 'modern', 'ancient', 'reconstructionist', 'eclectic'
     ))
 );
+
+COMMENT ON COLUMN traditions.resources IS 'Educational resources: books, websites, documentaries, courses, etc.';
+-- NOTE: Deities honored/associated with tradition → link via entity_deities (entity_type='tradition')
+-- NOTE: Related traditions → link via entity_pairings (entity_type_a='tradition', entity_type_b='tradition', pairing_type='related')
 
 CREATE INDEX idx_traditions_slug ON traditions(slug);
 CREATE INDEX idx_traditions_type ON traditions(tradition_type);

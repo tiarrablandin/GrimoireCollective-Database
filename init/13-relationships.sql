@@ -219,8 +219,8 @@ CREATE TABLE entity_pairings (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     
     UNIQUE(entity_type_a, entity_id_a, entity_type_b, entity_id_b),
-    CONSTRAINT valid_entity_type_a CHECK (entity_type_a IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'divination_method', 'ritual_tool', 'element', 'spell_method')),
-    CONSTRAINT valid_entity_type_b CHECK (entity_type_b IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'divination_method', 'ritual_tool', 'element', 'spell_method')),
+    CONSTRAINT valid_entity_type_a CHECK (entity_type_a IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'divination_method', 'ritual_tool', 'element', 'spell_method', 'tradition')),
+    CONSTRAINT valid_entity_type_b CHECK (entity_type_b IN ('crystal', 'herb', 'candle', 'oil', 'incense', 'salt', 'deity', 'divination_method', 'ritual_tool', 'element', 'spell_method', 'tradition')),
     CONSTRAINT valid_strength CHECK (strength IN ('strong', 'moderate', 'weak'))
 );
 
@@ -518,7 +518,7 @@ CREATE TABLE entity_deities (
         'crystal', 'herb', 'candle', 'oil', 'incense', 'salt',
         'divination_method', 'ritual_tool', 'element', 'sabbat',
         'moon_phase', 'zodiac_sign', 'animal', 'tree', 'planet',
-        'grimoire', 'rune'
+        'grimoire', 'rune', 'tradition'
     )),
     CONSTRAINT valid_relationship CHECK (relationship_type IN (
         'sacred_to', 'offering', 'invocation', 'symbol', 'associated', 'devotional'
