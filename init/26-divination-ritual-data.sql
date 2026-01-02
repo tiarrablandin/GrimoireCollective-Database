@@ -250,6 +250,162 @@ BEGIN
         'Handwriting may look different from normal. Messages may be cryptic or metaphorical. Don''t force it - let it flow naturally. With practice, clarity improves. Can be used for guidance, creativity, or spirit communication.',
         ARRAY['channeling messages', 'creative inspiration', 'subconscious access', 'spirit communication', 'personal guidance'],
         admin_user_id, TRUE
+    ),
+    
+    -- Candle Wax Reading
+    (
+        'Candle Wax Reading', 'ceromancy', ARRAY['Ceromancy', 'Wax Divination', 'Candle Dripping'],
+        'pyromancy', 'beginner',
+        'Reading patterns and shapes formed by melted candle wax. The wax is dripped into water or allowed to pool and cool, then interpreted based on the shapes formed.',
+        'Wax divination has ancient roots in many cultures. Popular in European folk magic and Mediterranean traditions. Used to diagnose problems, answer questions, and remove negative energy.',
+        'Light a candle and focus on your question. Let wax drip into a bowl of cold water, or let it pool on a surface. Observe the shapes, patterns, and figures that form. Interpret based on symbols you recognize.',
+        'Look for recognizable shapes: animals, people, objects, letters, or symbols. Smooth shapes indicate ease, jagged edges suggest challenges. Multiple pieces can show scattered energy. The position and size matter.',
+        ARRAY['quick divination', 'spell work validation', 'yes/no questions', 'symbolic messages', 'candle magic'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Dream Interpretation
+    (
+        'Dream Interpretation', 'dream-interpretation', ARRAY['Dream Analysis', 'Dream Divination', 'Oneiromancy'],
+        'divination tool', 'intermediate',
+        'Analyzing dreams for messages, warnings, and guidance from the subconscious or spiritual realm. Dreams can be prophetic, symbolic, or processing.',
+        'Dream interpretation is found in all ancient cultures. Ancient Egyptians, Greeks, and Mesopotamians had dream temples. Modern psychology explores dreams through Freud and Jung.',
+        'Keep a dream journal by your bed. Record dreams immediately upon waking with as much detail as possible. Look for recurring symbols, emotions, and patterns. Consider both personal and universal symbolism.',
+        'Note emotions felt in the dream - they are often more important than the content. Recurring dreams indicate unresolved issues. Lucid dreams can be used for active divination. Universal symbols exist but personal associations matter most.',
+        ARRAY['subconscious messages', 'prophetic visions', 'personal growth', 'problem solving', 'spiritual guidance'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Smoke Reading
+    (
+        'Smoke Reading', 'libanomancy', ARRAY['Libanomancy', 'Smoke Divination', 'Incense Reading'],
+        'pyromancy', 'intermediate',
+        'Reading the patterns, direction, and behavior of smoke from incense, herbs, or ritual fires. The way smoke moves reveals answers and energies.',
+        'Smoke reading has been practiced in ancient temples and shamanic traditions worldwide. Used in Greek, Roman, and Indigenous ceremonies to communicate with spirits and read omens.',
+        'Light incense, herbs, or a candle while focusing on your question. Observe how the smoke moves: direction, thickness, patterns, spirals. Note if it rises straight, wavers, or moves in a specific direction.',
+        'Smoke rising straight and quickly indicates positive energy and clear path. Wandering smoke suggests confusion or obstacles. Smoke moving toward you brings energy, away sends it out. Thick smoke shows strong energy, thin shows weak. Spirals indicate transformation.',
+        ARRAY['energy reading', 'space cleansing validation', 'yes/no questions', 'spirit communication', 'ritual guidance'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Dice Divination
+    (
+        'Dice Divination', 'cleromancy', ARRAY['Cleromancy', 'Astragalomancy', 'Dice Reading'],
+        'lithomancy', 'beginner',
+        'Using dice to receive answers and guidance. Can use standard dice, custom dice with symbols, or ancient knucklebones. Numbers and their combinations reveal messages.',
+        'Dice divination dates back to ancient Greece and Rome. Astragalomancy used knucklebones of sheep. Used for gambling and divination. Simple, accessible form of cleromancy.',
+        'Use one or more dice (traditionally three). Focus on your question and roll. Add the numbers together or read them individually. Can also use dice positions on a board or mat with meanings.',
+        'Single die: 1=new beginnings, 2=balance, 3=creativity, 4=stability, 5=change, 6=completion. Multiple dice totals have meanings. High numbers show success, low show delays. Doubles and triples amplify meaning.',
+        ARRAY['quick answers', 'yes/no questions', 'simple divination', 'gaming divination', 'accessible practice'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Lenormand Cards
+    (
+        'Lenormand Cards', 'lenormand', ARRAY['Petit Lenormand', 'Lenormand Oracle'],
+        'cartomancy', 'intermediate',
+        'A 36-card divination system with simple, concrete symbols. Each card has a specific meaning. Cards are read in combinations, creating sentences and stories.',
+        'Named after famous French fortune teller Marie Anne Lenormand (1772-1843). Became popular in 19th century Europe. Different from tarot - more literal and predictive.',
+        'Shuffle and draw cards in lines or spreads. Read cards in pairs and triplets. Cards modify each other''s meanings. The Grand Tableau uses all 36 cards for comprehensive readings.',
+        'Unlike tarot, Lenormand is more literal. Rider=news, Ship=travel, House=home, etc. Cards combine: Ship+Letter=news from afar. Distance between cards shows timing. The Significator (person card) represents the querent.',
+        ARRAY['predictive reading', 'practical questions', 'timing events', 'daily life guidance', 'European tradition'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Ogham Staves
+    (
+        'Ogham Staves', 'ogham', ARRAY['Ogham Divination', 'Celtic Tree Oracle', 'Ogham Fews'],
+        'lithomancy', 'intermediate',
+        'Ancient Celtic alphabet carved on wooden staves or stones. 20 symbols representing trees and plants, each with divinatory meanings. Cast or draw for guidance.',
+        'Ogham is the ancient Irish alphabet dating to 4th century CE. Each letter represents a sacred tree. Used for writing and later adopted for divination, particularly in Celtic and Druid practices.',
+        'Cast staves onto a cloth or draw them from a bag like runes. Read based on which land face-up, their positions, and combinations. Can also arrange in specific spreads.',
+        'Each Ogham represents a tree with specific meanings: Birch=beginnings, Oak=strength, Willow=intuition, etc. Consider both the tree''s properties and Celtic lore. Reversed or hidden staves can indicate blocked energy.',
+        ARRAY['Celtic tradition', 'nature wisdom', 'tree magic', 'ancestral guidance', 'seasonal readings'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Geomancy
+    (
+        'Geomancy', 'geomancy', ARRAY['Earth Divination', 'Sand Divination', 'Casting the Dots'],
+        'geomancy', 'advanced',
+        'Creating random dots or marks in sand/earth, then organizing them into 16 figures. These figures combine to answer questions. Mathematical and systematic.',
+        'Geomancy originated in Arab and African traditions, spread to Europe in medieval times. Called "science of the sand". Related to feng shui and I Ching. Highly structured system.',
+        'Generate four lines of random dots (or marks). Count dots in each line - odd or even. This creates one figure. Repeat to make four Mother figures. These generate Daughter, Niece, and other figures through specific rules.',
+        'The 16 geomantic figures have Latin names and meanings: Via=journey, Puella=love, Fortuna Major=great fortune, etc. Figures are combined in a shield chart. Consider house positions like astrology.',
+        ARRAY['complex questions', 'systematic divination', 'medieval magic', 'structured readings', 'African tradition'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Fire Gazing
+    (
+        'Fire Gazing', 'pyromancy', ARRAY['Pyromancy', 'Flame Reading', 'Fire Scrying'],
+        'pyromancy', 'intermediate',
+        'Gazing into flames to receive visions and messages. Reading the behavior, color, and patterns of fire for divination and insight.',
+        'Fire divination is one of the oldest forms, used in ancient Greece, Rome, and by shamans worldwide. Vestal Virgins read sacred flames. Fire is considered a direct connection to the divine.',
+        'Sit before a fire (candle, bonfire, fireplace). Gaze softly at the flames without straining. Watch how the fire moves, flickers, and changes color. Notice any images or impressions that arise.',
+        'High flames show strong energy and success. Low flames indicate obstacles. Blue flames suggest spirit presence. Popping and crackling can be messages. Images in flames should be interpreted symbolically. Direction of flames shows direction of energy.',
+        ARRAY['spirit communication', 'powerful magic', 'ritual validation', 'meditation', 'elemental work'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Coffee Grounds Reading
+    (
+        'Coffee Grounds Reading', 'tasseomancy-coffee', ARRAY['Turkish Coffee Reading', 'Coffee Fortune Telling', 'Kafemancia'],
+        'divination tool', 'beginner',
+        'Reading symbols and patterns in coffee grounds left in a cup. Similar to tea leaf reading but with its own traditions, especially popular in Middle Eastern and Balkan cultures.',
+        'Coffee reading tradition comes from Turkey, Greece, and the Balkans, dating back centuries. An important social and spiritual practice. Each region has its own variations and symbolism.',
+        'Prepare thick Turkish or Greek coffee. Drink it, leaving grounds and a small amount of liquid. Swirl three times, turn cup upside down on saucer. Wait for it to cool, then turn up and read patterns.',
+        'Read from rim (present/near future) to bottom (distant past/future). Handle side represents home/querent. Symbols appear in the grounds: animals, letters, shapes, people. Darker areas show challenges, lighter show ease.',
+        ARRAY['cultural tradition', 'social divination', 'quick readings', 'symbolic interpretation', 'daily guidance'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Angel Numbers
+    (
+        'Angel Numbers', 'angel-numbers', ARRAY['Number Sequences', 'Repeating Numbers', 'Divine Numbers'],
+        'numeric divination', 'beginner',
+        'Noticing and interpreting repeating number sequences (111, 222, 333, etc.) as messages from angels, spirit guides, or the universe.',
+        'Angel numbers became popular in New Age spirituality. Based on numerology but focuses on modern digital displays, clocks, receipts, etc. Doreen Virtue popularized the concept.',
+        'Pay attention when you repeatedly see the same number sequences. Note what you were thinking or doing when you saw them. Look up the traditional meanings or trust your intuition.',
+        'Common meanings: 111=manifestation/new beginnings, 222=balance/trust, 333=ascended masters, 444=angels present, 555=change coming, 666=rebalance material focus, 777=spiritual path, 888=abundance, 999=completion, 000=oneness/potential.',
+        ARRAY['synchronicity', 'daily signs', 'beginner friendly', 'modern divination', 'spiritual guidance'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Shell Casting
+    (
+        'Shell Casting', 'conchomancy', ARRAY['Conchomancy', 'Shell Divination', 'Cowrie Shell Reading'],
+        'lithomancy', 'intermediate',
+        'Casting shells (especially cowrie shells) to receive answers and guidance. Each shell or combination has meanings. Popular in African diaspora traditions.',
+        'Shell divination is ancient, used in African, Pacific Islander, and Caribbean traditions. Cowrie shells were currency and sacred objects. Diloggun (16 cowries) is used in Santería and Ifá.',
+        'Use a set of shells (commonly 4, 5, or 16 cowries). Cast them on a mat or surface. Read based on how many land open-side up, their positions, and patterns formed.',
+        'In four-shell systems, combinations create 16 possible patterns, each with meanings. Open shells are "speaking", closed are "silent". Position matters - near you is personal, far is distant. Patterns can indicate yes/no or complex stories.',
+        ARRAY['African tradition', 'ancestral wisdom', 'spiritual guidance', 'traditional practice', 'yes/no answers'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Flower Petal Divination
+    (
+        'Flower Petal Divination', 'floromancy', ARRAY['Floromancy', 'Petal Reading', 'Flower Oracle'],
+        'natural divination', 'beginner',
+        'Using flowers and petals for divination. Can pluck petals for yes/no, read falling petals, or interpret which flowers bloom. Connected to language of flowers.',
+        'Flower divination appears in folklore worldwide. "He loves me, he loves me not" is a simple form. Victorian flower language (floriography) assigned meanings to blooms. Ancient Greeks used flowers in oracle work.',
+        'For yes/no: pluck petals while alternating answers. For deeper reading: toss petals and read their pattern. Notice which flowers appear in your life. Can also divine by which flowers bloom in your garden.',
+        'Each flower has traditional meanings: rose=love, daisy=innocence, lavender=devotion, etc. Petal patterns can form shapes or symbols. Color matters: red=passion, white=purity, yellow=friendship. Wilting vs. blooming shows energy state.',
+        ARRAY['nature magic', 'love divination', 'gentle practice', 'garden magic', 'Victorian tradition'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Water Divination
+    (
+        'Water Divination', 'hydromancy', ARRAY['Hydromancy', 'Water Scrying', 'Water Reading'],
+        'scrying', 'intermediate',
+        'Using water as a scrying surface or reading water patterns, ripples, and reflections for divination. Can also read rain patterns and water behavior.',
+        'Water divination is ancient - practiced in Greek, Celtic, and many indigenous traditions. Sacred springs and wells were oracle sites. Water is considered a conduit to the spiritual realm.',
+        'Fill a dark bowl with water. Gaze at the surface in dim light like scrying. Or drop objects into water and read the ripples and patterns. Can also divine by observing natural water bodies.',
+        'Still water shows peace, ripples indicate movement or change. Images appearing on the surface should be interpreted symbolically. Direction of ripples shows direction of energy. Clarity of water reflects clarity of answer.',
+        ARRAY['emotional insight', 'scrying practice', 'lunar magic', 'purification', 'intuitive development'],
+        admin_user_id, TRUE
     );
     
     -- Insert common tarot spreads
