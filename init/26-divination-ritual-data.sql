@@ -101,6 +101,157 @@ BEGIN
     )
     RETURNING id INTO pendulum_id;
     
+    INSERT INTO divination_methods (
+        name, slug, alternative_names, method_type, difficulty_level,
+        description, history, how_to_use, interpretation_guide,
+        best_for,
+        created_by, is_verified
+    ) VALUES
+    
+    -- Astrology
+    (
+        'Astrology', 'astrology', ARRAY['Natal Chart Reading', 'Horoscopes', 'Astrological Divination'],
+        'celestial divination', 'advanced',
+        'The study of celestial bodies and their influence on human affairs and natural phenomena. Uses birth charts, planetary transits, and zodiac signs to gain insight.',
+        'Astrology dates back to ancient Babylon (2nd millennium BCE). Developed independently in various cultures including Greek, Vedic, Chinese, and Mayan. Modern Western astrology is based on Hellenistic traditions.',
+        'Create a natal chart using exact birth time, date, and location. Study the positions of planets in signs and houses. Examine aspects (angles) between planets. Consider current transits and progressions for timing.',
+        'The 12 zodiac signs represent archetypes. The 12 houses represent life areas. Planets represent different energies and drives. Aspects show how planetary energies interact. Transits show current influences.',
+        ARRAY['personality insight', 'timing decisions', 'relationship compatibility', 'life path guidance', 'understanding patterns'],
+        admin_user_id, TRUE
+    ),
+    
+    -- I Ching
+    (
+        'I Ching', 'i-ching', ARRAY['Book of Changes', 'Yi Jing', 'Chinese Oracle'],
+        'bibliomancy', 'intermediate',
+        'Ancient Chinese divination text using 64 hexagrams. Cast coins or yarrow stalks to generate a hexagram, then read its wisdom and guidance.',
+        'The I Ching originated in ancient China over 3,000 years ago. Used by Confucius and generations of scholars. One of the oldest systems of divination still in use today.',
+        'Focus on your question. Toss three coins six times (or use yarrow stalks) to build a hexagram from bottom up. Note any changing lines. Look up the hexagram number and read its text. Changing lines transform to a second hexagram showing future development.',
+        'Each hexagram has a name, judgment, and image. The six lines can be yin (broken) or yang (solid). Changing lines indicate transformation. Read primary hexagram for present, secondary for future. The text speaks in metaphor and symbolism.',
+        ARRAY['philosophical guidance', 'decision making', 'understanding change', 'spiritual wisdom', 'complex situations'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Numerology
+    (
+        'Numerology', 'numerology', ARRAY['Number Divination', 'Pythagorean Numerology'],
+        'numeric divination', 'beginner',
+        'The study of numbers and their mystical significance. Uses birth dates and names converted to numbers to reveal personality traits, life path, and destiny.',
+        'Numerology has roots in ancient Greece (Pythagoras), Hebrew Kabbalah, and other mystical traditions. Modern numerology was popularized in the early 20th century.',
+        'Convert letters to numbers using A=1, B=2, etc. Add digits until you get a single digit (1-9) or master number (11, 22, 33). Calculate Life Path (birth date), Expression (full name), Soul Urge (vowels), and Personality (consonants) numbers.',
+        'Each number 1-9 has specific meanings: 1=leader, 2=diplomat, 3=creative, 4=builder, 5=freedom, 6=nurturer, 7=seeker, 8=power, 9=humanitarian. Master numbers (11, 22, 33) are not reduced and carry special spiritual significance.',
+        ARRAY['personality analysis', 'life purpose', 'name meanings', 'compatibility', 'understanding cycles'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Palmistry
+    (
+        'Palmistry', 'palmistry', ARRAY['Palm Reading', 'Chiromancy', 'Hand Analysis'],
+        'body divination', 'intermediate',
+        'Reading the lines, mounts, and shapes of the palm to gain insight into personality, potential, and life events. Each hand tells a different story.',
+        'Palmistry has been practiced for thousands of years in India, China, Tibet, and Persia. Spread to Europe during the Middle Ages. Gained popularity in Victorian era.',
+        'Examine both hands - the non-dominant shows potential, dominant shows current reality. Study the major lines (heart, head, life, fate). Examine mounts (raised areas under fingers). Note hand shape, finger length, and flexibility.',
+        'Heart line shows emotions and relationships. Head line shows thinking and intellect. Life line shows vitality and life changes (not length of life). Fate line shows career and life direction. Mounts relate to planets and show strengths.',
+        ARRAY['personality insight', 'relationship patterns', 'career guidance', 'health indicators', 'life path'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Tea Leaf Reading
+    (
+        'Tea Leaf Reading', 'tasseography', ARRAY['Tasseomancy', 'Tea Leaf Divination', 'Tasseography'],
+        'divination tool', 'beginner',
+        'Reading symbols and patterns formed by tea leaves in a cup. The arrangement of leaves reveals messages about past, present, and future.',
+        'Tea leaf reading became popular in Europe and America in the 19th century after tea became widely available. Has roots in ancient Chinese tea culture and fortune telling traditions.',
+        'Brew loose leaf tea and drink, leaving a small amount of liquid with the leaves. Swirl the cup three times clockwise, then turn it upside down on a saucer. Turn it back up and read the patterns formed by the leaves.',
+        'Symbols near the rim represent the near future, bottom represents distant future or past. Handle area represents the querent and home. Look for recognizable shapes, symbols, letters, or numbers. Trust your intuition.',
+        ARRAY['casual divination', 'quick insights', 'social readings', 'intuitive practice', 'daily guidance'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Oracle Cards
+    (
+        'Oracle Cards', 'oracle-cards', ARRAY['Oracle Deck Reading', 'Angel Cards', 'Affirmation Cards'],
+        'cartomancy', 'beginner',
+        'Similar to tarot but with more freedom and variety. Oracle decks have their own themes and number of cards. Each deck comes with its own guidebook and meanings.',
+        'Oracle cards emerged in the late 20th century as a more accessible alternative to tarot. Decks can focus on angels, goddesses, animals, affirmations, or any theme.',
+        'Shuffle the deck while focusing on your question. Draw one or more cards intuitively. Read the card meanings from the guidebook or trust your intuition. Some decks work well with tarot spreads.',
+        'Unlike tarot, there is no standard structure. Each deck is unique. Cards typically have uplifting, direct messages. Focus on the imagery and your intuitive response. Consult the guidebook for additional insight.',
+        ARRAY['daily guidance', 'affirmations', 'gentle messages', 'specific themes', 'beginner-friendly'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Bibliomancy
+    (
+        'Bibliomancy', 'bibliomancy', ARRAY['Book Divination', 'Stichomancy', 'Bible Dipping'],
+        'bibliomancy', 'beginner',
+        'Opening a book at random and reading the passage as guidance. Can be done with any meaningful text - religious texts, poetry, novels, or oracle books.',
+        'Bibliomancy has been practiced since ancient times with sacred texts. The Sortes Virgilianae (using Virgil''s works) was popular in Rome. Bible divination was common in Christian traditions.',
+        'Hold your question in mind. Close your eyes and open the book randomly. Point to a passage or read the first thing your eyes fall on. Read that passage as your message.',
+        'The passage may be literal or metaphorical. Consider how it relates to your question. What stands out to you? What emotions does it evoke? Trust synchronicity and meaningful coincidence.',
+        ARRAY['spiritual guidance', 'synchronicity', 'simple answers', 'working with sacred texts', 'daily inspiration'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Bone Casting
+    (
+        'Bone Casting', 'bone-casting', ARRAY['Osteomancy', 'Bone Reading', 'Throwing the Bones'],
+        'lithomancy', 'advanced',
+        'Casting bones, shells, stones, and other objects onto a surface and reading their patterns. Each object has specific meanings and their relationships tell a story.',
+        'Bone casting is one of the oldest forms of divination, practiced in African, Indigenous, and ancient cultures worldwide. Traditional healers and shamans used bones from animals, along with shells, stones, and other sacred objects.',
+        'Create or obtain a bone set with meaningful objects. Cast them onto a cloth or in a circle. Read based on position (near/far, direction), which bones touch, which land face up, and overall pattern.',
+        'Each bone or object has assigned meanings (e.g., love, money, health, danger). Proximity shows connection. Direction shows movement or influence. Pattern shapes (triangle, line, cluster) add meaning. Intuition is key.',
+        ARRAY['ancestral wisdom', 'complex questions', 'traditional practices', 'shamanic work', 'deep insight'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Crystal Ball Gazing
+    (
+        'Crystal Ball Gazing', 'crystal-ball', ARRAY['Crystal Scrying', 'Crystallomancy', 'Spheromancy'],
+        'scrying', 'advanced',
+        'A specific form of scrying using a crystal sphere. Gaze into the clear or cloudy crystal to receive visions, symbols, and messages.',
+        'Crystal balls have been used for divination for millennia. Associated with Druids, medieval seers, and Romani fortune tellers. John Dee famously used one in Elizabethan England.',
+        'Set up in dim light. Gaze into the crystal ball without staring hard. Let your vision soften. Watch for clouds, colors, symbols, or images that form within or appear to your mind''s eye.',
+        'Images may appear physically in the crystal or in your mind. Clouds forming indicate activity. Colors have meaning (white=good, black=challenges, etc.). Symbols and scenes should be interpreted intuitively.',
+        ARRAY['psychic development', 'future sight', 'spirit communication', 'meditation', 'mystical practice'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Cartomancy (Playing Cards)
+    (
+        'Cartomancy', 'cartomancy-playing', ARRAY['Playing Card Reading', 'Card Divination'],
+        'cartomancy', 'beginner',
+        'Divination using regular playing cards. Each suit and number has specific meanings. Can be read similarly to tarot with spreads and combinations.',
+        'Playing card divination predates tarot and has been used across Europe for centuries. Each suit corresponds to elements and life areas similar to tarot.',
+        'Use a standard 52-card deck. Assign meanings to suits (Hearts=love, Clubs=work, Diamonds=money, Spades=challenges). Shuffle and draw cards in spreads. Read combinations and patterns.',
+        'Hearts relate to emotions and relationships. Clubs to career and growth. Diamonds to finances and material matters. Spades to challenges and endings. Numbers 1-10 and face cards each have meanings.',
+        ARRAY['accessible divination', 'no special tools needed', 'quick readings', 'traditional practice'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Pendulum Charts
+    (
+        'Pendulum Charts', 'pendulum-charts', ARRAY['Chart Dowsing', 'Pendulum Boards'],
+        'divination tool', 'beginner',
+        'Using a pendulum over charts, wheels, or boards to get more detailed answers beyond yes/no. Charts can show letters, numbers, options, or complex information.',
+        'Developed as an extension of simple pendulum dowsing to get more detailed information. Became popular in mid-20th century with various chart designs.',
+        'Hold pendulum over the center of a chart. Ask your question. Watch which direction the pendulum swings toward. It will point to or circle around the answer on the chart.',
+        'Start with simple charts before complex ones. Common types include: percentage wheels, letter boards for messages, chakra charts, body charts for healing, direction/map charts.',
+        ARRAY['detailed answers', 'multiple choice questions', 'healing work', 'receiving messages', 'chart work'],
+        admin_user_id, TRUE
+    ),
+    
+    -- Automatic Writing
+    (
+        'Automatic Writing', 'automatic-writing', ARRAY['Spirit Writing', 'Psychography', 'Channeled Writing'],
+        'mediumship', 'intermediate',
+        'Writing that comes through you without conscious thought. The pen moves automatically, channeling messages from your higher self, spirit guides, or subconscious.',
+        'Automatic writing gained popularity in the Spiritualist movement of the 19th century. Mediums would enter trance states to receive messages. Now used for personal guidance and creativity.',
+        'Sit quietly with paper and pen (or keyboard). Set an intention or ask a question. Clear your mind and let your hand write without thinking. Don''t edit or analyze while writing. Read the message afterward.',
+        'Handwriting may look different from normal. Messages may be cryptic or metaphorical. Don''t force it - let it flow naturally. With practice, clarity improves. Can be used for guidance, creativity, or spirit communication.',
+        ARRAY['channeling messages', 'creative inspiration', 'subconscious access', 'spirit communication', 'personal guidance'],
+        admin_user_id, TRUE
+    );
+    
     -- Insert common tarot spreads
     INSERT INTO divination_spreads (
         name, slug, divination_method_id, description, position_count,
@@ -166,6 +317,158 @@ BEGIN
         'Draw three runes or cast and read the first three that land face-up. Read in order but also consider their interaction.',
         admin_user_id, TRUE
     );
+    
+    -- Add more spreads for other divination methods
+    DECLARE
+        astrology_id UUID;
+        iching_id UUID;
+        oracle_id UUID;
+        cartomancy_id UUID;
+        palmistry_id UUID;
+    BEGIN
+        SELECT id INTO astrology_id FROM divination_methods WHERE slug = 'astrology';
+        SELECT id INTO iching_id FROM divination_methods WHERE slug = 'i-ching';
+        SELECT id INTO oracle_id FROM divination_methods WHERE slug = 'oracle-cards';
+        SELECT id INTO cartomancy_id FROM divination_methods WHERE slug = 'cartomancy-playing';
+        SELECT id INTO palmistry_id FROM divination_methods WHERE slug = 'palmistry';
+        
+        -- Oracle card spreads
+        INSERT INTO divination_spreads (
+            name, slug, divination_method_id, description, position_count,
+            positions, layout_diagram, difficulty_level, best_for, interpretation_tips,
+            created_by, is_verified
+        ) VALUES
+        (
+            'Single Card Pull', 'single-oracle', oracle_id,
+            'Draw one oracle card for daily guidance or a quick answer to a question.',
+            1,
+            '[
+                {"position": 1, "name": "Message", "meaning": "The guidance or message for your question"}
+            ]'::jsonb,
+            'Card 1',
+            'beginner',
+            ARRAY['daily guidance', 'quick answers', 'affirmations', 'beginner practice'],
+            'Focus on your question or intention. Trust your first impression of the card. Read the guidebook message but also notice your intuitive response.',
+            admin_user_id, TRUE
+        ),
+        (
+            'Mind Body Spirit Spread', 'mind-body-spirit', oracle_id,
+            'Three card spread examining mental, physical, and spiritual aspects.',
+            3,
+            '[
+                {"position": 1, "name": "Mind", "meaning": "Mental state, thoughts, or intellectual guidance"},
+                {"position": 2, "name": "Body", "meaning": "Physical health, material matters, or grounding"},
+                {"position": 3, "name": "Spirit", "meaning": "Spiritual guidance, higher self, or soul purpose"}
+            ]'::jsonb,
+            'Mind  Body  Spirit',
+            'beginner',
+            ARRAY['holistic guidance', 'self-care', 'balance check', 'wellness readings'],
+            'Consider how all three areas interact. Look for imbalances or where attention is needed.',
+            admin_user_id, TRUE
+        ),
+        
+        -- Playing card spreads
+        (
+            'Five Card Horseshoe', 'five-card-horseshoe', cartomancy_id,
+            'Versatile five card spread shaped like a horseshoe, reading influences from past to future.',
+            5,
+            '[
+                {"position": 1, "name": "Past", "meaning": "Past influences affecting the situation"},
+                {"position": 2, "name": "Present", "meaning": "Current situation"},
+                {"position": 3, "name": "Hidden Influences", "meaning": "Unknown factors at play"},
+                {"position": 4, "name": "Advice", "meaning": "Recommended approach or action"},
+                {"position": 5, "name": "Outcome", "meaning": "Likely result"}
+            ]'::jsonb,
+            E'    5\n   / \\\n  4   1\n  3   2',
+            'intermediate',
+            ARRAY['life questions', 'decision making', 'understanding situations', 'general readings'],
+            'Red cards (Hearts/Diamonds) are generally positive. Black cards (Spades/Clubs) indicate challenges or changes. Face cards can represent people.',
+            admin_user_id, TRUE
+        ),
+        (
+            'Seven Card Week Ahead', 'week-ahead-playing', cartomancy_id,
+            'Draw seven cards to see the energy of each day of the upcoming week.',
+            7,
+            '[
+                {"position": 1, "name": "Monday", "meaning": "Monday energy and guidance"},
+                {"position": 2, "name": "Tuesday", "meaning": "Tuesday energy and guidance"},
+                {"position": 3, "name": "Wednesday", "meaning": "Wednesday energy and guidance"},
+                {"position": 4, "name": "Thursday", "meaning": "Thursday energy and guidance"},
+                {"position": 5, "name": "Friday", "meaning": "Friday energy and guidance"},
+                {"position": 6, "name": "Saturday", "meaning": "Saturday energy and guidance"},
+                {"position": 7, "name": "Sunday", "meaning": "Sunday energy and guidance"}
+            ]'::jsonb,
+            'Mon Tue Wed Thu Fri Sat Sun',
+            'beginner',
+            ARRAY['weekly planning', 'time-based readings', 'daily guidance', 'scheduling'],
+            'Look for patterns across the week. Note which days have multiple positive or challenging cards.',
+            admin_user_id, TRUE
+        ),
+        
+        -- Tarot spreads - add more
+        (
+            'Relationship Spread', 'relationship-tarot', tarot_id,
+            'Seven card spread examining the dynamics of a relationship.',
+            7,
+            '[
+                {"position": 1, "name": "You", "meaning": "Your position and feelings"},
+                {"position": 2, "name": "The Other", "meaning": "Their position and feelings"},
+                {"position": 3, "name": "Connection", "meaning": "The energy between you"},
+                {"position": 4, "name": "Challenges", "meaning": "What stands in the way"},
+                {"position": 5, "name": "Advice for You", "meaning": "What you need to understand"},
+                {"position": 6, "name": "Advice for Them", "meaning": "What they need to understand"},
+                {"position": 7, "name": "Outcome", "meaning": "Where the relationship is heading"}
+            ]'::jsonb,
+            E'      3\n     / \\\n    1   2\n    |   |\n    5   6\n       4\n       7',
+            'intermediate',
+            ARRAY['relationships', 'partnerships', 'connection insight', 'love readings'],
+            'Pay attention to how cards 1 and 2 relate. Card 3 shows the dynamic between you. Cards 5 and 6 show individual work needed.',
+            admin_user_id, TRUE
+        ),
+        (
+            'Year Ahead Spread', 'year-ahead-tarot', tarot_id,
+            'Thirteen card spread showing the themes for the year ahead - one card per month plus an overall theme.',
+            13,
+            '[
+                {"position": 1, "name": "Overall Theme", "meaning": "The overarching energy of the year"},
+                {"position": 2, "name": "Month 1", "meaning": "First month energy"},
+                {"position": 3, "name": "Month 2", "meaning": "Second month energy"},
+                {"position": 4, "name": "Month 3", "meaning": "Third month energy"},
+                {"position": 5, "name": "Month 4", "meaning": "Fourth month energy"},
+                {"position": 6, "name": "Month 5", "meaning": "Fifth month energy"},
+                {"position": 7, "name": "Month 6", "meaning": "Sixth month energy"},
+                {"position": 8, "name": "Month 7", "meaning": "Seventh month energy"},
+                {"position": 9, "name": "Month 8", "meaning": "Eighth month energy"},
+                {"position": 10, "name": "Month 9", "meaning": "Ninth month energy"},
+                {"position": 11, "name": "Month 10", "meaning": "Tenth month energy"},
+                {"position": 12, "name": "Month 11", "meaning": "Eleventh month energy"},
+                {"position": 13, "name": "Month 12", "meaning": "Twelfth month energy"}
+            ]'::jsonb,
+            E'        1\n   2 3 4 5 6 7\n   8 9 10 11 12 13',
+            'advanced',
+            ARRAY['annual planning', 'birthday readings', 'yearly forecast', 'big picture insight'],
+            'Card 1 is the theme that weaves through the whole year. Look for patterns in the monthly cards - which suits or numbers repeat?',
+            admin_user_id, TRUE
+        ),
+        (
+            'Career Path Spread', 'career-path-tarot', tarot_id,
+            'Five card spread for career guidance and professional direction.',
+            5,
+            '[
+                {"position": 1, "name": "Current Situation", "meaning": "Your current career position"},
+                {"position": 2, "name": "Challenges", "meaning": "Obstacles or difficulties"},
+                {"position": 3, "name": "Strengths", "meaning": "Your skills and advantages"},
+                {"position": 4, "name": "Advice", "meaning": "Recommended action or focus"},
+                {"position": 5, "name": "Outcome", "meaning": "Where this path leads"}
+            ]'::jsonb,
+            E'    3\n  2 1 4\n    5',
+            'intermediate',
+            ARRAY['career questions', 'professional development', 'job decisions', 'business guidance'],
+            'Pentacles show financial success, Wands show growth and creativity, Swords show challenges or communication, Cups show fulfillment.',
+            admin_user_id, TRUE
+        );
+        
+    END;
 
 END $$;
 
