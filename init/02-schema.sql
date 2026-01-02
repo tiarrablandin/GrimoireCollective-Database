@@ -49,10 +49,8 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     display_name VARCHAR(100),
-    avatar_url TEXT,
     bio TEXT,
     location VARCHAR(100),
-    website_url TEXT,
     is_email_verified BOOLEAN DEFAULT FALSE,
     is_active BOOLEAN DEFAULT TRUE,
     last_login_at TIMESTAMP,
@@ -62,6 +60,8 @@ CREATE TABLE users (
     CONSTRAINT username_min_length CHECK (char_length(username) >= 3),
     CONSTRAINT email_format CHECK (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
 );
+
+COMMENT ON COLUMN users.id IS 'Avatar image linked via entity_media table with entity_type=user and is_primary=true';
 
 -- User roles junction table
 CREATE TABLE user_roles (
@@ -86,6 +86,29 @@ CREATE TABLE user_settings (
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+-- User social media accounts
+CREATE TABLE user_social_media (
+    id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+    user_id UUID NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+    platform VARCHAR(50) NOT NULL,
+    username VARCHAR(100) NOT NULL,
+    url TEXT NOT NULL,
+    display_order INTEGER DEFAULT 0,
+    is_verified BOOLEAN DEFAULT FALSE,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    
+    CONSTRAINT valid_platform CHECK (platform IN (
+        'website', 'instagram', 'twitter', 'tiktok', 'youtube', 
+        'facebook', 'pinterest', 'tumblr', 'reddit', 'discord',
+        'twitch', 'patreon', 'ko-fi', 'etsy', 'shopify', 'linktree', 'other'
+    )),
+    CONSTRAINT unique_user_platform_username UNIQUE(user_id, platform, username)
+);
+
+CREATE INDEX idx_user_social_media_user ON user_social_media(user_id);
+CREATE INDEX idx_user_social_media_platform ON user_social_media(platform);
 
 -- =============================================================================
 -- SUBSCRIPTION SYSTEM (Future-ready)
