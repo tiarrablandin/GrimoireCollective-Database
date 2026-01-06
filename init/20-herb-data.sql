@@ -25,7 +25,10 @@ BEGIN
         parts_used, preparation_methods, description, magical_uses, contraindications,
         scientific_name, safety_warnings, pregnancy_safe,
         toxicity_level, history, directions, scent_profile,
-        skin_safe, created_by, is_verified
+        skin_safe, plant_family, plant_type, growing_zones, native_regions,
+        best_harvest_time, harvesting_notes, storage_methods, shelf_life,
+        ritual_uses, preparation_notes, pet_safe, meta_description,
+        created_by, is_verified
     ) VALUES
 
     -- Lavender
@@ -39,7 +42,15 @@ BEGIN
         'Safe for most uses. Avoid ingesting essential oil undiluted.', true, 'non_toxic',
         'Lavender has been cherished since ancient times, with evidence of its use found in Egyptian tombs and Roman baths. The Romans introduced lavender to Britain, where it became a staple in Tudor gardens. Medieval herbalists used it to ward off plague and evil spirits. The name derives from the Latin "lavare" meaning "to wash," reflecting its long use in bathing rituals. In Victorian times, lavender was used in smelling salts and to revive fainting ladies. Folk traditions across Europe associated lavender with love divination and protection magic.',
         'For sleep magic: Place dried lavender flowers in a small sachet and tuck under your pillow or inside pillowcase. For purification: Add 1-2 handfuls of dried flowers to bathwater. For love spells: Burn dried lavender on charcoal while focusing on your intention. For protection: Hang bundles above doorways or windows. Steep flowers in hot water for 10-15 minutes for a magical tea to promote calm and clarity.',
-        'Sweet, floral, slightly herbaceous with calming undertones', true, admin_user_id, true
+        'Sweet, floral, slightly herbaceous with calming undertones', true,
+        'Lamiaceae', 'Perennial herb', ARRAY['5-9'], ARRAY['Mediterranean'],
+        'Mid-summer when flowers are in full bloom but before they fully open', 
+        'Harvest in morning after dew has dried. Cut stems 6-8 inches long. Best harvested in the first year of blooming for strongest scent.',
+        ARRAY['dried bundles', 'airtight containers', 'away from light'], '1-2 years when properly dried and stored',
+        'Burn dried flowers for purification and peace. Add to ritual baths for cleansing. Scatter flowers in sacred circles. Use in love and fidelity spells. Incorporate in sleep and dream magic.',
+        'Dry by hanging bundles upside down in dark, well-ventilated area for 1-2 weeks. Store dried flowers in airtight jars away from sunlight. For tea, use 1-2 teaspoons per cup, steep 5-10 minutes.',
+        true, 'Lavender: Calming herb for peace, love, purification, and restful sleep. Used in magical practice for centuries.',
+        admin_user_id, true
     ),
 
     -- Rosemary
@@ -53,7 +64,15 @@ BEGIN
         'Generally safe. Avoid essential oil during pregnancy. May cause skin irritation in sensitive individuals.', false, 'mildly_toxic',
         'Rosemary''s history stretches back to ancient Greece and Rome, where students wore garlands of rosemary to improve memory during examinations. The herb was considered sacred to remembrance and fidelity - it was woven into bridal wreaths and funeral arrangements alike. In medieval times, rosemary was believed to ward off evil spirits and plague. Shakespeare referenced it in Hamlet ("There''s rosemary, that''s for remembrance"). During the Middle Ages, it was burned in sickrooms and courts to purify the air. The Virgin Mary was said to have spread her blue cloak over a white-flowered rosemary bush, turning its flowers blue forever.',
         'For protection: Hang sprigs above doorways or burn as smudge. For memory: Make a tea and drink before studying or important mental tasks. For purification: Add fresh or dried rosemary to ritual baths. For love: Create sachets with rosemary and rose petals. Steep 1 teaspoon dried leaves in hot water for 5-7 minutes for magical tea to enhance mental clarity and focus.',
-        'Pine-like, sharp, camphoraceous with woody undertones', true, admin_user_id, true
+        'Pine-like, sharp, camphoraceous with woody undertones', true,
+        'Lamiaceae', 'Perennial shrub', ARRAY['7-10'], ARRAY['Mediterranean'],
+        'Spring through fall, best before flowering', 
+        'Harvest sprigs in morning after dew dries. Cut 4-6 inch sprigs from growing tips. Avoid harvesting more than one-third of plant at once.',
+        ARRAY['dried bundles', 'refrigerated fresh', 'airtight containers'], '2-3 years dried, 2 weeks fresh refrigerated',
+        'Burn as smudge for protection and cleansing. Add to ritual baths for purification. Place sprigs at thresholds for protection. Use in remembrance rituals. Incorporate in fidelity and love spells.',
+        'Strip leaves from stems if desired. Dry by hanging bundles in dark, dry place for 1-2 weeks. Store whole or crushed in airtight containers. For tea, use 1 teaspoon per cup, steep 5-7 minutes.',
+        false, 'Rosemary: Powerful protective herb for memory, purification, and fidelity. Sacred to remembrance.',
+        admin_user_id, true
     ),
 
     -- Mugwort
@@ -67,7 +86,15 @@ BEGIN
         'Avoid during pregnancy and breastfeeding. Can cause allergic reactions. May interact with medications. Do not use long-term.', false, 'mildly_toxic',
         'Named after the Greek goddess Artemis, mugwort has been used for millennia across cultures. In ancient Rome, travelers placed mugwort in their shoes to prevent fatigue on long journeys. Anglo-Saxons considered it one of the nine sacred herbs. In Chinese medicine, it''s used in moxibustion. European folklore held that mugwort protected against evil spirits and wild beasts. The herb was traditionally gathered on St. John''s Eve and worn as a belt during summer solstice celebrations. It was also sewn into pillows to induce prophetic dreams and astral projection.',
         'For prophetic dreams: Place dried mugwort in a small pillow or sachet under your regular pillow. For divination: Burn dried leaves before scrying or tarot reading to enhance psychic abilities. For astral travel: Drink a weak tea 30 minutes before meditation (1/2 teaspoon in 1 cup hot water, steep 5 minutes). For protection: Hang above doorways or carry in a charm bag. Cleanse divination tools by passing them through mugwort smoke.',
-        'Bitter, earthy, slightly sweet with sage-like notes', false, admin_user_id, true
+        'Bitter, earthy, slightly sweet with sage-like notes', false,
+        'Asteraceae', 'Perennial herb', ARRAY['4-9'], ARRAY['Europe', 'Asia', 'North America'],
+        'Late summer before flowering or during early flowering', 
+        'Harvest aerial parts in late summer. Cut stems 6-10 inches from top. Best harvested during full moon for magical work. Wear gloves if skin-sensitive.',
+        ARRAY['dried bundles', 'airtight containers', 'dark storage'], '1 year dried',
+        'Burn before divination and scrying. Place in dream pillows for lucid dreaming. Use in lunar magic and full moon rituals. Add to astral projection incense. Scatter at thresholds for protection.',
+        'Dry by hanging in bundles in dark, dry place. Crumble when fully dry. Use sparingly - very potent. For dream work, use small amount (1-2 tablespoons in pillow). Do not use in large quantities internally.',
+        false, 'Mugwort: Sacred herb for dreams, divination, and psychic enhancement. Associated with lunar magic.',
+        admin_user_id, true
     ),
 
     -- Bay Laurel
@@ -81,7 +108,15 @@ BEGIN
         'Generally safe. May cause contact dermatitis. Avoid large amounts during pregnancy.', true, 'non_toxic',
         'Sacred to Apollo, god of prophecy, bay laurel has a rich mythological history. The Greeks believed the tree originated when the nymph Daphne transformed into a laurel tree to escape Apollo''s pursuit. The Oracle of Delphi chewed bay leaves to induce prophetic visions. Roman emperors wore laurel crowns as symbols of triumph and protection. The tradition of crowning victorious athletes and scholars with laurel wreaths continued through ancient Rome. Medieval witches used bay in divination and love spells. The term "poet laureate" comes from the practice of crowning accomplished poets with laurel.',
         'For wish magic: Write your wish on a dried bay leaf with pencil or pen, then burn it completely in a fireproof dish while visualizing your desire manifesting. For prophetic dreams: Place 3 bay leaves under your pillow before sleep. For success: Carry a bay leaf in your wallet or place in business corners. For purification: Burn leaves as incense or add to ritual baths. For protection: Hang bay wreaths above doorways.',
-        'Eucalyptus-like, slightly minty with herbal bitterness', true, admin_user_id, true
+        'Eucalyptus-like, slightly minty with herbal bitterness', true,
+        'Lauraceae', 'Evergreen tree', ARRAY['8-10'], ARRAY['Mediterranean'],
+        'Summer months, leaves can be harvested year-round from established plants', 
+        'Pick mature, unblemished leaves. Can harvest throughout year from healthy plants. Fresh leaves have stronger scent but dried are traditional for magic.',
+        ARRAY['dried whole leaves', 'airtight containers'], '1-2 years whole, 6 months crushed',
+        'Write wishes on leaves and burn for manifestation. Use in victory and success rituals. Place in corners for protection. Burn for prophetic visions. Add to divination incense.',
+        'Dry leaves flat on screens or in single layers. Store whole leaves in airtight jars. Leaves become more aromatic after drying. For wish magic, ensure leaf is completely dry before writing on it.',
+        true, 'Bay Laurel: Sacred herb of victory, prophecy, and success. Associated with Apollo and divination.',
+        admin_user_id, true
     ),
 
     -- Sage
@@ -95,7 +130,15 @@ BEGIN
         'Generally safe for cleansing. Avoid burning in poorly ventilated areas. Pregnant and breastfeeding women should avoid large amounts. May affect blood sugar.', false, 'mildly_toxic',
         'Sage''s name comes from the Latin "salvere" meaning "to save" or "to heal." The Romans considered it sacred and harvested it with special rituals. A medieval saying claimed "Why should a man die whilst sage grows in his garden?" In ancient times, sage was believed to grant wisdom and longevity. Greek and Roman physicians used it for numerous ailments. Indigenous peoples of the Americas used white sage (Salvia apiana) for ceremonial cleansing for thousands of years. The practice of burning sage for purification spread globally, though cultural appropriation concerns have led to more mindful use.',
         'For space cleansing: Light dried sage bundle, let flame catch then blow out. Walk through space while wafting smoke with feather or hand, focusing on corners and doorways. For object cleansing: Pass objects through sage smoke several times. For protection: Burn sage while visualizing white protective light filling your space. For wisdom: Drink sage tea before study or divination. Always extinguish completely after use and never leave burning sage unattended.',
-        'Herbal, slightly peppery, earthy with camphor notes', true, admin_user_id, true
+        'Herbal, slightly peppery, earthy with camphor notes', true,
+        'Lamiaceae', 'Perennial shrub', ARRAY['5-9'], ARRAY['Mediterranean'],
+        'Before flowering in late spring/early summer, or throughout growing season', 
+        'Harvest in morning after dew dries. Cut sprigs 4-6 inches long. First harvest after plant is established (usually second year). Don''t harvest more than one-third at once.',
+        ARRAY['dried bundles', 'airtight containers'], '1-2 years dried',
+        'Burn for space and object cleansing. Use in purification and protection rituals. Add to wisdom and longevity spells. Burn to break hexes. Include in blessing ceremonies.',
+        'Bundle fresh sage stems and tie with cotton string. Hang to dry in dark, dry place for 1-2 weeks. Can also dry loose leaves on screens. Store dried bundles in paper bags or loose leaves in jars.',
+        false, 'Sage: Powerful cleansing herb for purification, wisdom, and protection. Sacred purification plant.',
+        admin_user_id, true
     ),
 
     -- Cinnamon
@@ -109,7 +152,15 @@ BEGIN
         'Safe in small amounts. Can irritate skin and mucous membranes in large amounts. Avoid essential oil during pregnancy. May interact with blood thinners.', false, 'mildly_toxic',
         'Cinnamon was once more valuable than gold, sought after by ancient traders from Egypt to China. It was mentioned in the Old Testament and was used in Egyptian embalming. Arab traders kept the source of cinnamon secret for centuries to maintain their monopoly. In ancient Rome, Emperor Nero burned a year''s supply of cinnamon at his wife''s funeral as a sign of grief. Medieval physicians used it in healing potions and believed it could cure everything from colds to poisoning. Cinnamon was so prized that wars were fought over its trade routes.',
         'For prosperity: Sprinkle cinnamon powder in corners of home or business. Add a pinch to money-drawing sachets. For success: Light a green candle rolled in cinnamon powder while focusing on your goal. For love: Add ground cinnamon to love sachets or sprinkle on love-drawing candles. For fast-acting spells: Add cinnamon to any spell to speed up results. For healing: Make cinnamon tea and visualize healing energy while drinking. Warning: Cinnamon essential oil is very potent - use sparingly and always dilute.',
-        'Sweet, warm, spicy with woody undertones', false, admin_user_id, true
+        'Sweet, warm, spicy with woody undertones', false,
+        'Lauraceae', 'Evergreen tree', ARRAY['10-12'], ARRAY['Sri Lanka', 'India', 'Southeast Asia'],
+        'Bark harvested from branches 2-3 years old', 
+        'Bark is stripped from young branches after rainy season. Inner bark curls into quills as it dries. Commercial harvesting requires specialized knowledge.',
+        ARRAY['ground powder in airtight containers', 'whole sticks', 'dark storage'], '2-3 years for sticks, 6 months for powder',
+        'Add to prosperity and success spells. Burn for energy raising. Use in love and passion magic. Add to healing incense. Incorporate in fast-working spells. Use in solar magic.',
+        'Buy pre-ground for convenience or grind sticks as needed. Store away from light and heat. Ground cinnamon loses potency faster than sticks. Use small amounts - very potent magically.',
+        false, 'Cinnamon: Warming spice for prosperity, success, love, and fast-acting magic. Raises spiritual vibrations.',
+        admin_user_id, true
     ),
 
     -- Basil
@@ -123,7 +174,15 @@ BEGIN
         'Generally safe. Avoid large amounts during pregnancy. May cause allergic reactions. Essential oil should be diluted before skin contact.', false, 'non_toxic',
         'Basil holds sacred status in many cultures. In India, holy basil (tulsi) is worshipped as an incarnation of the goddess Tulsi. Ancient Greeks and Romans believed basil could generate wealth and ease childbirth. In medieval Europe, basil was associated with both love and hatred - it was said that a woman could win a man''s love by feeding him basil, yet it was also believed scorpions were born beneath basil pots. Italian tradition holds that a pot of basil on a balcony signals a woman''s availability for love. African American hoodoo traditions use basil to attract money and customers to businesses.',
         'For prosperity: Place fresh basil leaves in cash register or wallet. Sprinkle dried basil in corners of home. For love: Carry basil leaves to attract love or give basil to a potential partner. For protection: Place basil leaves at corners of your home or above doorways. For harmony: Grow basil plant near your front door or in kitchen. For purification: Add fresh basil to ritual baths. For business success: Sprinkle basil around your business threshold or desk.',
-        'Sweet, slightly peppery, anise-like with clove notes', true, admin_user_id, true
+        'Sweet, slightly peppery, anise-like with clove notes', true,
+        'Lamiaceae', 'Annual herb', ARRAY['10-11'], ARRAY['Tropical Asia', 'India'],
+        'Throughout growing season, best before flowering', 
+        'Harvest leaves in morning after dew dries. Pinch off top sets of leaves regularly to encourage bushiness. Best flavor and scent before flowering.',
+        ARRAY['dried leaves', 'fresh in water', 'frozen', 'airtight containers'], 'Few days fresh, 1 year dried',
+        'Place in corners for prosperity. Use in love and fidelity spells. Add to protection charms. Include in harmony and peace rituals. Use in business success magic.',
+        'Dry by hanging or on screens in dark, dry place. Freezing preserves flavor better than drying. Use fresh when possible for strongest magical properties. Store dried leaves whole for longer shelf life.',
+        true, 'Basil: Versatile herb for love, prosperity, protection, and harmony. Attracts positive energy.',
+        admin_user_id, true
     ),
 
     -- Peppermint
@@ -137,7 +196,15 @@ BEGIN
         'Generally safe. Avoid giving to infants or young children. May cause heartburn. Can interact with certain medications. Essential oil should be diluted.', false, 'non_toxic',
         'Peppermint is a hybrid of watermint and spearmint, first cultivated in England in the 17th century. The ancient Greeks and Romans crowned themselves with peppermint at feasts and used it to scent their bathwater. Pliny the Elder noted that the scent of peppermint stirs up the mind and appetite. In medieval times, peppermint was used to whiten teeth and freshen breath. Folk magic traditions use peppermint to attract money and prosperity - rubbing peppermint oil on furniture and doorways was believed to cleanse a space and invite abundance. Modern herbalism recognizes peppermint''s ability to enhance mental clarity and focus.',
         'For prosperity: Place dried peppermint in wallet or cash register. Wash hands with peppermint tea before handling money. For mental clarity: Drink peppermint tea before studying or important mental work. Anoint temples with diluted peppermint oil. For purification: Add peppermint to cleansing baths or floor washes. For healing: Drink peppermint tea while visualizing healing energy. For prophetic dreams: Place dried peppermint under your pillow. Rub fresh leaves to release scent and inhale for quick mental boost.',
-        'Cool, fresh, intensely minty with slight sweetness', true, admin_user_id, true
+        'Cool, fresh, intensely minty with slight sweetness', true,
+        'Lamiaceae', 'Perennial herb', ARRAY['3-9'], ARRAY['Europe', 'Middle East'],
+        'Just before flowering for best flavor and potency', 
+        'Harvest in morning after dew dries. Cut stems 4-6 inches from top. Can harvest multiple times per season. Most potent just before flowering.',
+        ARRAY['dried leaves', 'fresh refrigerated', 'airtight containers'], '1-2 weeks fresh, 1 year dried',
+        'Use in prosperity and money magic. Add to purification and cleansing spells. Include in mental clarity rituals. Use in healing work. Add to travel protection charms.',
+        'Dry by hanging bundles or spreading on screens. Dries quickly. Strip leaves from stems when dry. Store in airtight jars. Fresh leaves can be stored in water like flowers for a few days.',
+        true, 'Peppermint: Refreshing herb for prosperity, mental clarity, and purification. Attracts abundance.',
+        admin_user_id, true
     ),
 
     -- Chamomile
@@ -151,7 +218,15 @@ BEGIN
         'Generally safe. May cause allergic reactions in those sensitive to ragweed. Avoid during pregnancy. May interact with blood thinners.', true, 'non_toxic',
         'Chamomile''s history spans thousands of years. Ancient Egyptians dedicated chamomile to the sun god Ra and used it in embalming. The name comes from Greek "chamaimelon" meaning "ground apple" due to its apple-like scent. Romans used chamomile to flavor beverages and as incense. Medieval monks cultivated chamomile in monastery gardens for medicine and magic. In the Victorian language of flowers, chamomile meant "energy in adversity." English folklore held that chamomile was one of the nine sacred herbs given to the world by the god Woden. Folk magic traditions use chamomile to attract money and ensure success in gambling.',
         'For sleep and dreams: Drink chamomile tea before bed or place dried flowers in dream pillow. For prosperity: Sprinkle dried chamomile around property or wash hands with chamomile tea before handling money. For peace: Add chamomile to ritual baths or burn as gentle incense. For meditation: Drink chamomile tea before meditation to promote calm focus. For protection: Sprinkle around home perimeter. For luck in gambling: Wash hands in chamomile tea before playing games of chance. Steep flowers for 5-10 minutes for magical tea.',
-        'Sweet, apple-like, honey notes with slight hay undertones', true, admin_user_id, true
+        'Sweet, apple-like, honey notes with slight hay undertones', true,
+        'Asteraceae', 'Annual herb', ARRAY['2-9'], ARRAY['Europe', 'Western Asia'],
+        'When flowers are fully open', 
+        'Harvest flowers in morning after dew dries. Pick when fully open but before browning. Flowers close at night and open in morning - harvest after opening.',
+        ARRAY['dried flowers', 'airtight containers', 'dark storage'], '1 year dried',
+        'Use in peace and calm spells. Add to prosperity magic. Include in sleep and dream work. Use in meditation rituals. Add to purification baths. Include in luck and gambling charms.',
+        'Dry flowers on screens or in paper bags in dark, dry place. Flowers dry quickly. Store whole flowers for best preservation. They become more apple-scented as they dry.',
+        true, 'Chamomile: Gentle herb for peace, prosperity, and restful sleep. Attracts calm and abundance.',
+        admin_user_id, true
     ),
 
     -- Yarrow
@@ -165,7 +240,15 @@ BEGIN
         'Generally safe. May cause allergic reactions or skin sensitivity. Avoid during pregnancy. May interact with blood thinning medications.', false, 'mildly_toxic',
         'Yarrow''s Latin name Achillea honors the Greek hero Achilles, who according to legend used yarrow to heal his soldiers'' wounds during the Trojan War. The plant has been found in Neanderthal burial sites, suggesting its use dates back over 60,000 years. Ancient Chinese texts describe yarrow stalks used in I Ching divination. In medieval Europe, yarrow was sewn into pillows to bring dreams of future lovers. Scottish highlanders made ointment from yarrow for wounds. Anglo-Saxons called it one of the nine sacred herbs. Folk traditions across Europe used yarrow in love divination - a yarrow plant placed under a pillow was said to bring dreams of a future spouse.',
         'For love divination: Place yarrow under pillow before sleep and recite "Thou pretty herb of Venus'' tree, thy true name it is yarrow. Now who my true love must be, pray tell thou me tomorrow." For courage: Carry yarrow in a charm bag before facing challenges. For healing: Make yarrow tea and visualize healing while drinking (avoid if taking blood thinners). For protection: Hang dried yarrow above doorways or carry for protection during travel. For psychic powers: Hold yarrow during divination to enhance clarity. Steep 1-2 teaspoons in hot water for 10 minutes for magical tea.',
-        'Slightly bitter, earthy, camphoraceous with sweet undertones', false, admin_user_id, true
+        'Slightly bitter, earthy, camphoraceous with sweet undertones', false,
+        'Asteraceae', 'Perennial herb', ARRAY['3-9'], ARRAY['Europe', 'Asia', 'North America'],
+        'Summer when flowers are in full bloom', 
+        'Harvest flowers and leaves in summer when in full bloom. Cut stems 6-12 inches long. Best harvested on sunny mornings after dew dries.',
+        ARRAY['dried bundles', 'airtight containers'], '1 year dried',
+        'Use in love divination and attraction spells. Carry for courage and protection. Add to healing magic. Use in psychic development work. Include in wedding and handfasting rituals.',
+        'Dry by hanging small bundles upside down in dark, dry place. Can also dry flat on screens. Flowers and leaves both useful. Store dried herb in airtight jars away from light.',
+        false, 'Yarrow: Powerful herb for courage, divination, love, and protection. Sacred to Achilles and Venus.',
+        admin_user_id, true
     );
 
 END $$;
