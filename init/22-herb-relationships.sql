@@ -1,9 +1,9 @@
 -- =============================================================================
--- GRIMOIRE COLLECTIVE - HERB ENTITY RELATIONSHIPS (PART 1)
+-- GRIMOIRE COLLECTIVE - HERB ENTITY RELATIONSHIPS
 -- =============================================================================
--- Purpose: Entity relationships for herbs (intentions and elements)
+-- Purpose: Entity relationships for herbs (intentions, elements, deities, traditions, etc.)
 -- Dependencies: Requires 20-herb-data.sql
--- Part 1: All 54 herbs with intentions and elements
+-- Note: All 54 herbs with complete magical correspondences
 -- =============================================================================
 
 DO $$
