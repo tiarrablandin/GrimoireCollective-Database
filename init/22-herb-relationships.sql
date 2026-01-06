@@ -94,6 +94,54 @@ DECLARE
     air_id UUID;
     spirit_id UUID;
     
+    -- Deity IDs (common ones)
+    aphrodite_id UUID;
+    venus_id UUID;
+    artemis_id UUID;
+    diana_id UUID;
+    hecate_id UUID;
+    apollo_id UUID;
+    mercury_deity_id UUID;
+    hermes_id UUID;
+    mars_deity_id UUID;
+    jupiter_deity_id UUID;
+    saturn_deity_id UUID;
+    demeter_id UUID;
+    ceres_id UUID;
+    brigid_id UUID;
+    
+    -- Planet IDs
+    sun_id UUID;
+    moon_id UUID;
+    mercury_planet_id UUID;
+    venus_planet_id UUID;
+    mars_planet_id UUID;
+    jupiter_planet_id UUID;
+    saturn_planet_id UUID;
+    
+    -- Zodiac IDs
+    aries_id UUID;
+    taurus_id UUID;
+    gemini_id UUID;
+    cancer_id UUID;
+    leo_id UUID;
+    virgo_id UUID;
+    libra_id UUID;
+    scorpio_id UUID;
+    sagittarius_id UUID;
+    capricorn_id UUID;
+    aquarius_id UUID;
+    pisces_id UUID;
+    
+    -- Chakra IDs
+    root_chakra_id UUID;
+    sacral_chakra_id UUID;
+    solar_plexus_id UUID;
+    heart_chakra_id UUID;
+    throat_chakra_id UUID;
+    third_eye_id UUID;
+    crown_chakra_id UUID;
+    
 BEGIN
     -- Get Herb IDs
     SELECT id INTO agrimony_id FROM herbs WHERE slug = 'agrimony';
@@ -180,6 +228,54 @@ BEGIN
     SELECT id INTO earth_id FROM elements WHERE name = 'Earth';
     SELECT id INTO air_id FROM elements WHERE name = 'Air';
     SELECT id INTO spirit_id FROM elements WHERE name = 'Spirit';
+    
+    -- Get Deity IDs
+    SELECT id INTO aphrodite_id FROM deities WHERE name = 'Aphrodite';
+    SELECT id INTO venus_id FROM deities WHERE name = 'Venus';
+    SELECT id INTO artemis_id FROM deities WHERE name = 'Artemis';
+    SELECT id INTO diana_id FROM deities WHERE name = 'Diana';
+    SELECT id INTO hecate_id FROM deities WHERE name = 'Hecate';
+    SELECT id INTO apollo_id FROM deities WHERE name = 'Apollo';
+    SELECT id INTO mercury_deity_id FROM deities WHERE name = 'Mercury';
+    SELECT id INTO hermes_id FROM deities WHERE name = 'Hermes';
+    SELECT id INTO mars_deity_id FROM deities WHERE name = 'Mars';
+    SELECT id INTO jupiter_deity_id FROM deities WHERE name = 'Jupiter';
+    SELECT id INTO saturn_deity_id FROM deities WHERE name = 'Saturn';
+    SELECT id INTO demeter_id FROM deities WHERE name = 'Demeter';
+    SELECT id INTO ceres_id FROM deities WHERE name = 'Ceres';
+    SELECT id INTO brigid_id FROM deities WHERE name = 'Brigid';
+    
+    -- Get Planet IDs
+    SELECT id INTO sun_id FROM planets WHERE slug = 'sun';
+    SELECT id INTO moon_id FROM planets WHERE slug = 'moon';
+    SELECT id INTO mercury_planet_id FROM planets WHERE slug = 'mercury';
+    SELECT id INTO venus_planet_id FROM planets WHERE slug = 'venus';
+    SELECT id INTO mars_planet_id FROM planets WHERE slug = 'mars';
+    SELECT id INTO jupiter_planet_id FROM planets WHERE slug = 'jupiter';
+    SELECT id INTO saturn_planet_id FROM planets WHERE slug = 'saturn';
+    
+    -- Get Zodiac IDs
+    SELECT id INTO aries_id FROM zodiac_signs WHERE name = 'Aries';
+    SELECT id INTO taurus_id FROM zodiac_signs WHERE name = 'Taurus';
+    SELECT id INTO gemini_id FROM zodiac_signs WHERE name = 'Gemini';
+    SELECT id INTO cancer_id FROM zodiac_signs WHERE name = 'Cancer';
+    SELECT id INTO leo_id FROM zodiac_signs WHERE name = 'Leo';
+    SELECT id INTO virgo_id FROM zodiac_signs WHERE name = 'Virgo';
+    SELECT id INTO libra_id FROM zodiac_signs WHERE name = 'Libra';
+    SELECT id INTO scorpio_id FROM zodiac_signs WHERE name = 'Scorpio';
+    SELECT id INTO sagittarius_id FROM zodiac_signs WHERE name = 'Sagittarius';
+    SELECT id INTO capricorn_id FROM zodiac_signs WHERE name = 'Capricorn';
+    SELECT id INTO aquarius_id FROM zodiac_signs WHERE name = 'Aquarius';
+    SELECT id INTO pisces_id FROM zodiac_signs WHERE name = 'Pisces';
+    
+    -- Get Chakra IDs
+    SELECT id INTO root_chakra_id FROM chakras WHERE name = 'Root';
+    SELECT id INTO sacral_chakra_id FROM chakras WHERE name = 'Sacral';
+    SELECT id INTO solar_plexus_id FROM chakras WHERE name = 'Solar Plexus';
+    SELECT id INTO heart_chakra_id FROM chakras WHERE name = 'Heart';
+    SELECT id INTO throat_chakra_id FROM chakras WHERE name = 'Throat';
+    SELECT id INTO third_eye_id FROM chakras WHERE name = 'Third Eye';
+    SELECT id INTO crown_chakra_id FROM chakras WHERE name = 'Crown';
     
     -- =============================================================================
     -- AGRIMONY - Protection, banishing, healing
@@ -1012,5 +1108,242 @@ BEGIN
     VALUES 
         ('herb', yarrow_id, water_id, true, 'primary'),
         ('herb', yarrow_id, air_id, false, 'moderate');
+    
+    -- =============================================================================
+    -- DEITY, PLANET, ZODIAC, AND CHAKRA RELATIONSHIPS
+    -- =============================================================================
+    -- Adding extended correspondences for key magical herbs
+    
+    -- LAVENDER - Mercury, Gemini/Virgo, Crown/Third Eye
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES 
+        ('herb', lavender_id, mercury_deity_id, 'associated', 'Mercurial communication and clarity'),
+        ('herb', lavender_id, hecate_id, 'sacred_to', 'Used in Hecate rituals for protection');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', lavender_id, mercury_planet_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES 
+        ('herb', lavender_id, gemini_id, 'strong'),
+        ('herb', lavender_id, virgo_id, 'strong');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES 
+        ('herb', lavender_id, crown_chakra_id, 'primary'),
+        ('herb', lavender_id, third_eye_id, 'strong');
+    
+    -- ROSE - Venus/Aphrodite, Taurus/Libra, Heart
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES 
+        ('herb', rose_id, aphrodite_id, 'sacred_to', 'Sacred flower of Aphrodite'),
+        ('herb', rose_id, venus_id, 'sacred_to', 'Venus''s flower of love');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', rose_id, venus_planet_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES 
+        ('herb', rose_id, taurus_id, 'primary'),
+        ('herb', rose_id, libra_id, 'strong');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', rose_id, heart_chakra_id, 'primary');
+    
+    -- BAY LAUREL - Apollo, Sun, Leo
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES ('herb', bay_laurel_id, apollo_id, 'sacred_to', 'Apollo''s sacred tree of prophecy');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', bay_laurel_id, sun_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES ('herb', bay_laurel_id, leo_id, 'primary');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES 
+        ('herb', bay_laurel_id, crown_chakra_id, 'strong'),
+        ('herb', bay_laurel_id, third_eye_id, 'primary');
+    
+    -- MUGWORT - Artemis/Diana, Moon, Cancer, Third Eye
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES 
+        ('herb', mugwort_id, artemis_id, 'sacred_to', 'Sacred to Artemis for divination'),
+        ('herb', mugwort_id, diana_id, 'sacred_to', 'Diana''s herb of the moon'),
+        ('herb', mugwort_id, hecate_id, 'sacred_to', 'Hecate''s visionary herb');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', mugwort_id, moon_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES ('herb', mugwort_id, cancer_id, 'primary');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', mugwort_id, third_eye_id, 'primary');
+    
+    -- ROSEMARY - Sun, Aries/Leo, Solar Plexus
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES 
+        ('herb', rosemary_id, aphrodite_id, 'associated', 'Associated with remembrance and fidelity'),
+        ('herb', rosemary_id, apollo_id, 'associated', 'Solar herb of clarity');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', rosemary_id, sun_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES 
+        ('herb', rosemary_id, aries_id, 'strong'),
+        ('herb', rosemary_id, leo_id, 'strong');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', rosemary_id, solar_plexus_id, 'primary');
+    
+    -- SAGE - Jupiter, Sagittarius, Crown/Throat
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', sage_id, jupiter_planet_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES ('herb', sage_id, sagittarius_id, 'primary');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES 
+        ('herb', sage_id, crown_chakra_id, 'strong'),
+        ('herb', sage_id, throat_chakra_id, 'strong');
+    
+    -- BASIL - Mars, Aries/Scorpio, Sacral
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES ('herb', basil_id, mars_deity_id, 'associated', 'Warrior herb of protection');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', basil_id, mars_planet_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES 
+        ('herb', basil_id, aries_id, 'strong'),
+        ('herb', basil_id, scorpio_id, 'strong');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', basil_id, sacral_chakra_id, 'strong');
+    
+    -- CHAMOMILE - Moon, Cancer, Solar Plexus
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', chamomile_id, moon_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES ('herb', chamomile_id, cancer_id, 'primary');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', chamomile_id, solar_plexus_id, 'primary');
+    
+    -- THYME - Venus, Taurus/Libra, Throat
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES ('herb', thyme_id, aphrodite_id, 'associated', 'Associated with courage and beauty');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', thyme_id, venus_planet_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES 
+        ('herb', thyme_id, taurus_id, 'strong'),
+        ('herb', thyme_id, libra_id, 'moderate');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', thyme_id, throat_chakra_id, 'strong');
+    
+    -- CINNAMON - Sun/Mars, Leo/Aries, Sacral/Solar Plexus
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES 
+        ('herb', cinnamon_id, sun_id, 'primary'),
+        ('herb', cinnamon_id, mars_planet_id, 'strong');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES 
+        ('herb', cinnamon_id, leo_id, 'strong'),
+        ('herb', cinnamon_id, aries_id, 'strong');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES 
+        ('herb', cinnamon_id, sacral_chakra_id, 'primary'),
+        ('herb', cinnamon_id, solar_plexus_id, 'strong');
+    
+    -- PATCHOULI - Saturn, Capricorn, Root
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', patchouli_id, saturn_planet_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES ('herb', patchouli_id, capricorn_id, 'primary');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', patchouli_id, root_chakra_id, 'primary');
+    
+    -- JASMINE - Moon, Cancer/Pisces, Heart/Sacral
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES ('herb', jasmine_id, artemis_id, 'associated', 'Lunar love herb');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', jasmine_id, moon_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES 
+        ('herb', jasmine_id, cancer_id, 'strong'),
+        ('herb', jasmine_id, pisces_id, 'strong');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES 
+        ('herb', jasmine_id, heart_chakra_id, 'strong'),
+        ('herb', jasmine_id, sacral_chakra_id, 'strong');
+    
+    -- FRANKINCENSE - Sun, Leo, Crown
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES ('herb', frankincense_id, apollo_id, 'offering', 'Sacred offering to solar deities');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', frankincense_id, sun_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES ('herb', frankincense_id, leo_id, 'primary');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', frankincense_id, crown_chakra_id, 'primary');
+    
+    -- MYRRH - Moon, Scorpio/Pisces, Crown
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', myrrh_id, moon_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES 
+        ('herb', myrrh_id, scorpio_id, 'strong'),
+        ('herb', myrrh_id, pisces_id, 'strong');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', myrrh_id, crown_chakra_id, 'strong');
+    
+    -- YARROW - Venus, Virgo, Heart
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES ('herb', yarrow_id, aphrodite_id, 'associated', 'Love divination herb');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', yarrow_id, venus_planet_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES ('herb', yarrow_id, virgo_id, 'primary');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', yarrow_id, heart_chakra_id, 'strong');
+    
+    -- WORMWOOD - Mars, Scorpio, Third Eye
+    INSERT INTO entity_deities (entity_type, entity_id, deity_id, relationship_type, significance)
+    VALUES 
+        ('herb', wormwood_id, artemis_id, 'sacred_to', 'Sacred to Artemis'),
+        ('herb', wormwood_id, hecate_id, 'sacred_to', 'Hecate''s dark divination herb');
+    
+    INSERT INTO entity_planets (entity_type, entity_id, planet_id, strength)
+    VALUES ('herb', wormwood_id, mars_planet_id, 'primary');
+    
+    INSERT INTO entity_zodiac_signs (entity_type, entity_id, zodiac_id, strength)
+    VALUES ('herb', wormwood_id, scorpio_id, 'primary');
+    
+    INSERT INTO entity_chakras (entity_type, entity_id, chakra_id, strength)
+    VALUES ('herb', wormwood_id, third_eye_id, 'primary');
     
 END $$;
